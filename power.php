@@ -61,8 +61,8 @@
 	//	Execute the request
 	//
 
-	// $response = curl_exec($curl_handle);
-	$response = file_get_contents('./source.html');
+	$response = curl_exec($curl_handle);
+	// $response = file_get_contents('./source.html');
 
 	//
 	//	Clean up malformed HTML
@@ -124,6 +124,8 @@
 	//
 
 	$tables = $dom->getElementsByTagName('table');
+
+	echo "There are " . $tables->length . " tables. \n\n\n\n\n";
 
 	//
 	//	Create a buffer for the courses

@@ -53,7 +53,7 @@ class Course
 
 	function description(){
 
-		$description = " ------------- Course: ------------- <br />" . "\n";
+		$description = " ------------- Course: -------------" . "\n";
 		$description .= "Name: " . $this->name . "\n"; 
 		$description .= "Credits: " . $this->credits . "\n";
 		$description .= "Hours: " . $this->hours . "\n"; 
@@ -62,7 +62,7 @@ class Course
 	
 		$numberOfSections = count($this->sections);
 		
-		$description .= "Sections: " . $numberOfSections . "<br />" . "\n"; 		
+		$description .= "Sections: " . $numberOfSections . "" . "\n"; 		
 
 		foreach ($this->sections as $section) {
 			$description .= "\n";
