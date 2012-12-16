@@ -36,6 +36,27 @@ class Course
 	function Course(){
 		$sections = array();
 	}
+
+	//
+	//
+	//
+
+	function description(){
+
+		$description = " ------------- Course: ------------- <br />";
+		$description = $description . "Name: " . $name . "<br />"; 
+		$description = $description . "Credits: " . $credits . "<br />";
+		$description = $description . "Hours: " . $hours . "<br />"; 
+		$description = $description . "Division: " . $division . "<br />"; 
+		$description = $description . "Subject: " . $subject . "<br />"; 
+
+		foreach ($sections as $section) {
+			$description = $description . $section->description() . "<br />";
+		}
+
+
+		return $description;
+	}
 }
 
 /**
@@ -54,6 +75,18 @@ class Section
 
 	function Section(){
 
+	}
+
+	function description(){
+		$description = "Section: " . $section . "<br />";
+		$description = $description . "Code: " . $code . "<br />";
+		$description = $description . "Seats: " . $openSeats . "<br />"; 		
+		$description = $description . "Day and Time: " . $dayAndTime . "<br />"; 		
+		$description = $description . "Instructor: " . $instructor . "<br />"; 		
+		$description = $description . "Where: " . $buildingAndRoom . "<br />"; 				
+		$description = $description . "Online: " . $isOnline . "<br />"; 
+
+		return $description;				
 	}
 }
 
