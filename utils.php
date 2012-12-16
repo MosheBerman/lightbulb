@@ -67,7 +67,6 @@
 		$section->dayAndTime = valueForElementInList(3, $cells);		
 		$section->instructor = valueForElementInList(4, $cells);		
 		$section->isOnline = valueForElementInList(5, $cells);		
-
 		return $section;
 
 	}

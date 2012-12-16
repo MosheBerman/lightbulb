@@ -45,7 +45,6 @@ class Course
 
 	function addSection($section){
 		array_push($this->sections, $section);
-		echo count($this->sections) . " sections in course " . $name . ". <br />\n";
 	}
 
 	//
@@ -54,17 +53,20 @@ class Course
 
 	function description(){
 
-		$description = " ------------- Course: ------------- <br />";
-		$description .= "Name: " . $this->name . "<br />"; 
-		$description .= "Credits: " . $this->credits . "<br />";
-		$description .= "Hours: " . $this->hours . "<br />"; 
-		$description .= "Division: " . $this->division . "<br />"; 
-		$description .= "Subject: " . $this->subject . "<br />"; 
+		$description = " ------------- Course: ------------- <br />" . "\n";
+		$description .= "Name: " . $this->name . "<br />" ."\n"; 
+		$description .= "Credits: " . $this->credits . "<br />" . "\n";
+		$description .= "Hours: " . $this->hours . "<br />" . "\n"; 
+		$description .= "Division: " . $this->division . "<br />" . "\n"; 
+		$description .= "Subject: " . $this->subject . "<br />" . "\n"; 
+	
+		$numberOfSections = count($this->sections);
 		
-		$numberOfSections = $this->sections->length;
+		$description .= "Sections: " . $numberOfSections . "<br />" . "\n"; 		
 
 		foreach ($this->sections as $section) {
-			$description .= $section->description() . "<br />";
+			$description .= " --- Section: ---" .  "\n";
+			$description .= $section->description() . "<br />" . "\n";
 		}
 
 		return $description;
@@ -84,6 +86,10 @@ class Section
 	public $instructor;
 	public $buildingAndRoom;
 	public $isOnline;
+
+	function Section(){
+
+	}
 
 	function description(){
 		$description = "Section: " . $this->section . "<br />";
