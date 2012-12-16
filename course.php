@@ -36,7 +36,7 @@ class Course
 	//
 
 	function Course(){
-		$sections = array();	
+		$this->sections = array();	
 	}
 
 	//
@@ -44,7 +44,7 @@ class Course
 	//
 
 	function addSection($section){
-		$sections[] = $section;
+		$this->sections[] = $section;
 	}
 
 	//
@@ -61,8 +61,6 @@ class Course
 		$description = $description . "Subject: " . $this->subject . "<br />"; 
 		
 		$numberOfSections = $this->sections->length;
-
-		var_dump($sections);
 
 		return $description;
 	}
