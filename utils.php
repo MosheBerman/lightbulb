@@ -36,12 +36,14 @@
 
 		$course = new Course;
 
-		$course->name = valueForElementInList(0, $cells);
-		$course->description = valueForElementInList(1, $cells);
-		$course->credits = valueForElementInList(2, $cells);
-		$course->hours = valueForElementInList(3, $cells);
-		$course->division = valueForElementInList(4, $cells);
-		$course->subject = valueForElementInList(5, $cells);
+		$course->startDate = valueForElementInList(0, $cells);
+		$course->endDate = valueForElementInList(1, $cells);		
+		$course->name = valueForElementInList(2, $cells);
+		$course->description = valueForElementInList(3, $cells);
+		$course->credits = valueForElementInList(4, $cells);
+		$course->hours = valueForElementInList(5, $cells);
+		$course->division = valueForElementInList(6, $cells);
+		$course->subject = valueForElementInList(7, $cells);
 
 		return $course;
 
@@ -84,7 +86,12 @@
 		for ($i=0; $i < $numRows; $i++) { 
 
 			$section = sectionFromRow($rows->item($i));
-			$course->sections[] = $section;
+
+			if (is_null($course->sections)) {
+				$course->sections = array();
+			}
+
+			$course->addSection($section);
 		}
 
 		return $course;

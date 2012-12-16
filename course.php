@@ -36,7 +36,15 @@ class Course
 	//
 
 	function Course(){
-		$sections = array();
+		$sections = array();	
+	}
+
+	//
+	//
+	//
+
+	function addSection($section){
+		$sections[] = $section;
 	}
 
 	//
@@ -54,13 +62,7 @@ class Course
 		
 		$numberOfSections = $this->sections->length;
 
-		$description = $description . $numberOfSections . "Sections: <br />"; 
-
-		for($i = 0; $i < $numberOfSections; $i++) {
-			$section = $this->sections->item($i);
-			$description = $description . $section->description() . "<br />";
-		}
-
+		var_dump($sections);
 
 		return $description;
 	}
@@ -79,10 +81,6 @@ class Section
 	public $instructor;
 	public $buildingAndRoom;
 	public $isOnline;
-
-	function Section(){
-
-	}
 
 	function description(){
 		$description = "Section: " . $this->section . "<br />";
