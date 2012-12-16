@@ -36,12 +36,12 @@
 
 		$course = new Course;
 
-		$course->$name = valueForElementInList(0, $cells);
-		$course->$description = valueForElementInList(1, $cells);
-		$course->$credits = valueForElementInList(2, $cells);
-		$course->$hours = valueForElementInList(3, $cells);
-		$course->$division = valueForElementInList(4, $cells);
-		$course->$subject = valueForElementInList(5, $cells);
+		$course->name = valueForElementInList(0, $cells);
+		$course->description = valueForElementInList(1, $cells);
+		$course->credits = valueForElementInList(2, $cells);
+		$course->hours = valueForElementInList(3, $cells);
+		$course->division = valueForElementInList(4, $cells);
+		$course->subject = valueForElementInList(5, $cells);
 
 		return $course;
 
@@ -60,12 +60,12 @@
 
 		$section = new Section;
 
-		$section->$section = valueForElementInList(0, $cells);
-		$section->$code = valueForElementInList(1, $cells);
-		$section->$openSeats = valueForElementInList(2, $cells);		
-		$section->$dayAndTime = valueForElementInList(3, $cells);		
-		$section->$instructor = valueForElementInList(4, $cells);		
-		$section->$isOnline = valueForElementInList(5, $cells);		
+		$section->section = valueForElementInList(0, $cells);
+		$section->code = valueForElementInList(1, $cells);
+		$section->openSeats = valueForElementInList(2, $cells);		
+		$section->dayAndTime = valueForElementInList(3, $cells);		
+		$section->instructor = valueForElementInList(4, $cells);		
+		$section->isOnline = valueForElementInList(5, $cells);		
 
 		return $section;
 
@@ -85,7 +85,7 @@
 		for ($i=0; $i < $numRows; $i++) { 
 
 			$section = sectionFromRow($rows->item($i));
-			$course->$sections[] = $section;
+			$course->sections = $section;
 		}
 
 		return $course;
