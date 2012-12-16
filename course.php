@@ -18,28 +18,24 @@ class Course
 	
 	//	Course info
 
-	private $name;
-	private $description;
-	private $credits;
-	private $hours; 
-	private $division;
-	private $subject;
+	var $name;
+	var $description;
+	var $credits;
+	var $hours; 
+	var $division;
+	var $subject;
 
 	//	Meta
-	private $lastUpdated;
-
-	$sections;
+	var $lastUpdated;
+	var $sections;
 
 	//
 	//	Constructor
 	//
 
 	function Course(){
-
+		$sections = array();
 	}
-
-
-
 }
 
 /**
@@ -48,17 +44,16 @@ class Course
 
 class Section
 {
-	private $section;
-	private $code;
-	private $openSeats;
-	private $dayAndTime;
-	private $instructor;
-	private $buildingAndRoom;
-	private $isOnline;
+	var $section;
+	var $code;
+	var $openSeats;
+	var $dayAndTime;
+	var $instructor;
+	var $buildingAndRoom;
+	var $isOnline;
 
-	function __construct(argument)
-	{
-		# code...
+	function Section(){
+
 	}
 }
 
