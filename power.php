@@ -108,7 +108,7 @@
 	//	Get all of the tables in the page
 	//
 
-	$tables = $dom->getElementsByTagName('table'); 
+	$tables = $dom->getElementsByTagName('table');
 
 	//
 	//	Create a buffer for the courses
@@ -131,13 +131,21 @@
 		//	We've found a course table, parse it.
 		//
 
-		if (elementIsACourseSectionTable($courseTable)) {
+		if (elementIsACourseSectionTable($sectionTable)) {
 
 			$course = courseFromTable($courseTable);
 			$course = addSectionsToCourseUsingTable($course, $sectionTable);			
 
 			$courses[] = $course;
 		}
+	}
+
+	//
+	//	Print out each course
+	//
+
+	foreach ($courses as $course) {
+		echo $course->description();
 	}
 
 ?>

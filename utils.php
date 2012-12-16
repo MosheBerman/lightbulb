@@ -31,7 +31,7 @@
 
 	function courseFromTable(DOMElement $table){
 
-		$secondRow = $table->getElementsByTagName('tbody')->item(0)->getElementsByTagName('tr')->item(1);
+		$secondRow = $table->getElementsByTagName('tr')->item(1);	
 		$cells = $secondRow->getElementsByTagName('td');
 
 		$course = new Course;
@@ -55,8 +55,7 @@
 
 	function sectionFromRow(DOMElement $row){
 
-		$secondRow = $table->getElementsByTagName('tbody')->item(0)->getElementsByTagName('tr')->item(1);
-		$cells = $secondRow->getElementsByTagName('td');
+		$cells = $row->getElementsByTagName('td');
 
 		$section = new Section;
 
@@ -85,7 +84,7 @@
 		for ($i=0; $i < $numRows; $i++) { 
 
 			$section = sectionFromRow($rows->item($i));
-			$course->sections = $section;
+			$course->sections[] = $section;
 		}
 
 		return $course;
@@ -96,8 +95,9 @@
 	//	with a 
 	//
 
-	function valueForCell($index, $list){
-		return $list->item($index)->nodeValue;
+	function valueForElementInList($index, $list){
+		$value =  $list->item($index)->nodeValue;
+		return $value;
 	}
 
 ?>
