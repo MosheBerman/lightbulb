@@ -9,6 +9,17 @@
 
 */
 
+	//
+	//	Include some files
+	//
+
+	include('./course.php');
+	include('./utils.php');
+
+	//
+	//	Set up a cURL handle and some POST headers
+	//
+
 	$curl_handle = curl_init();
 
 	$CUNY_URL = "http://student.cuny.edu/cgi-bin/SectionMeeting/SectMeetEval.pl?DB=ORACLE_A&STYLE=NEW&COLLEGECODE=05";
@@ -62,7 +73,7 @@
 	$response = str_replace('BR', 'br / ', $response);
 	$response = str_replace('TABLE', 'table', $response);	
 	$response = str_replace('BORDER=0', 'border="0"', $response);
-	$response = str_replace(' CELLPADDING=3 CELLSPACING=2', ' cellpadding="3" cellspacing="2"', $response);
+	$response = str_replace('CELLPADDING=3 CELLSPACING=2', 'cellpadding="3" cellspacing="2"', $response);
 	$response = str_replace('FONT', 'span', $response);
 	$response = str_replace('HTML', 'html', $response);
 	$response = str_replace('HEAD', 'head', $response);	
@@ -93,6 +104,40 @@
 	$dom->loadHTML($html);
 	libxml_use_internal_errors(false);
 
+	//
+	//	Get all of the tables in the page
+	//
 
+	$tables = $dom->getElementsByTagName('table'); 
+
+	//
+	//	Create a buffer for the courses
+	//
+
+	$courses = array();
+
+	//
+	//	Iterate
+	//
+
+	$numberOfTables = $tables->length;
+
+	for ($i=1; $i <$numberOfTables ; $i++) { 
+
+		$sectionTable = $tables->item($i);
+		$courseTable = $tables->item($i-1);
+
+		//
+		//	We've found a course table, parse it.
+		//
+
+		if (elementIsACourseSectionTable($courseTable)) {
+
+			$course = courseFromTable($courseTable);
+			$course = addSectionsToCourseUsingTable($course, $sectionTable);			
+
+			$courses[] = $course;
+		}
+	}
 
 ?>
