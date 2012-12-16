@@ -52,7 +52,8 @@
 	//
 
 	curl_setopt($curl_handle, CURLOPT_URL, $CUNY_URL);
-	curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT,2);
+	curl_setopt($curl_handle, CURLOPT_BUFFERSIZE, 5000000);
+	curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT,0);
 	curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($curl_handle, CURLOPT_POST, count($URL_PARAMS));
 	curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $URL_PARAMS);
