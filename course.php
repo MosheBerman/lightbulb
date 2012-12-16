@@ -44,7 +44,8 @@ class Course
 	//
 
 	function addSection($section){
-		$this->sections[] = $section;
+		array_push($this->sections, $section);
+		echo count($this->sections) . " sections in course " . $name . ". <br />\n";
 	}
 
 	//
@@ -54,13 +55,17 @@ class Course
 	function description(){
 
 		$description = " ------------- Course: ------------- <br />";
-		$description = $description . "Name: " . $this->name . "<br />"; 
-		$description = $description . "Credits: " . $this->credits . "<br />";
-		$description = $description . "Hours: " . $this->hours . "<br />"; 
-		$description = $description . "Division: " . $this->division . "<br />"; 
-		$description = $description . "Subject: " . $this->subject . "<br />"; 
+		$description .= "Name: " . $this->name . "<br />"; 
+		$description .= "Credits: " . $this->credits . "<br />";
+		$description .= "Hours: " . $this->hours . "<br />"; 
+		$description .= "Division: " . $this->division . "<br />"; 
+		$description .= "Subject: " . $this->subject . "<br />"; 
 		
 		$numberOfSections = $this->sections->length;
+
+		foreach ($this->sections as $section) {
+			$description .= $section->description() . "<br />";
+		}
 
 		return $description;
 	}
@@ -82,12 +87,12 @@ class Section
 
 	function description(){
 		$description = "Section: " . $this->section . "<br />";
-		$description = $description . "Code: " . $this->code . "<br />";
-		$description = $description . "Seats: " . $this->openSeats . "<br />"; 		
-		$description = $description . "Day and Time: " . $this->dayAndTime . "<br />"; 		
-		$description = $description . "Instructor: " . $this->instructor . "<br />"; 		
-		$description = $description . "Where: " . $this->buildingAndRoom . "<br />"; 				
-		$description = $description . "Online: " . $this->isOnline . "<br />"; 
+		$description .= "Code: " . $this->code . "<br />";
+		$description .= "Seats: " . $this->openSeats . "<br />"; 		
+		$description .= "Day and Time: " . $this->dayAndTime . "<br />"; 		
+		$description .= "Instructor: " . $this->instructor . "<br />"; 		
+		$description .= "Where: " . $this->buildingAndRoom . "<br />"; 				
+		$description .= "Online: " . $this->isOnline . "<br />"; 
 
 		return $description;				
 	}
