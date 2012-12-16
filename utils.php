@@ -72,7 +72,7 @@
 		//	Skip header rows
 		//
 
-		if ($cells->item(0)->nodeValue == "Section") {
+		if (valueForElementInList(0, $cells) == "Section" || valueForElementInList(0, $cells) == "") {
 			return NULL;
 		}
 
@@ -85,7 +85,8 @@
 		$section->dayAndTime = valueForElementInList(3, $cells);		
 		$section->instructor = valueForElementInList(4, $cells);		
 		$section->buildingAndRoom = valueForElementInList(5, $cells);
-		$section->isOnline = valueForElementInList(6, $cells);		
+		$section->isOnline = valueForElementInList(6, $cells);	
+
 		return $section;
 
 	}
@@ -130,6 +131,7 @@
 
 	function valueForElementInList($index, $list){
 		$value =  $list->item($index)->nodeValue;
+		$value = trim($value);
 		return $value;
 	}
 

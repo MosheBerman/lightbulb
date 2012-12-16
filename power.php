@@ -110,22 +110,37 @@
 	$html = $response;//@mb_convert_encoding($response, 'HTML-ENTITIES', 'utf-8'); 
 
 	//
+	//	Prepare some config for tidy
+	//
+		$config = array(
+		           'indent'         => true,
+		           'output-xhtml'   => true,
+		           'wrap'           => 200);
+
+	//
+	// Tidy up the HTML
+	//
+
+	$tidy = new tidy;
+	$tidy->parseString($html, $config, 'utf8');
+	$tidy->cleanRepair();
+
+	$html = $tidy;
+
+
+	//
 	// Load the HTML into a DOMDocument
 	//
 
-	$dom = new DOMDocument;
+	$dom = new DOMDocument();
 
- 	libxml_use_internal_errors(true);
 	$dom->loadHTML($html);
-	libxml_use_internal_errors(false);
 
 	//
 	//	Get all of the tables in the page
 	//
 
 	$tables = $dom->getElementsByTagName('table');
-
-	echo "There are " . $tables->length . " tables. \n\n\n\n\n";
 
 	//
 	//	Create a buffer for the courses
@@ -163,7 +178,5 @@
 
 	foreach ($courses as $course) {
 		echo $course->description();
-	}
-
-	
+	}	
 ?>
