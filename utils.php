@@ -59,6 +59,24 @@
 
 		$cells = $row->getElementsByTagName('td');
 
+		//
+		//	Skip any row with a single cell
+		//
+
+		if ($cells->length == 1) {
+			# code...
+			return NULL;
+		}
+
+		//
+		//	Skip header rows
+		//
+
+		if ($cells->item(0)->nodeValue == "Section") {
+			return NULL;
+		}
+
+
 		$section = new Section;
 
 		$section->section = valueForElementInList(0, $cells);
@@ -86,8 +104,16 @@
 
 			$section = sectionFromRow($rows->item($i));
 
+			//	Make sure we have an array to put sections into	
+
 			if (is_null($course->sections)) {
 				$course->sections = array();
+			}
+
+			//	Skip "meta" rows, since they're not really sections
+
+			if (is_null($section)) {
+				continue;
 			}
 
 			$course->addSection($section);

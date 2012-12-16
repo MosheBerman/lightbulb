@@ -153,9 +153,7 @@
 
 			$courses[] = $course;
 		}
-	}
-
-	
+	}	
 
 	//
 	//	Print out each course
@@ -163,7 +161,6 @@
 
 	foreach ($courses as $course) {
 		echo $course->description();
-		echo "\n";
 	}
 
 	

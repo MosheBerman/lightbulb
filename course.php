@@ -54,19 +54,19 @@ class Course
 	function description(){
 
 		$description = " ------------- Course: ------------- <br />" . "\n";
-		$description .= "Name: " . $this->name . "<br />" ."\n"; 
-		$description .= "Credits: " . $this->credits . "<br />" . "\n";
-		$description .= "Hours: " . $this->hours . "<br />" . "\n"; 
-		$description .= "Division: " . $this->division . "<br />" . "\n"; 
-		$description .= "Subject: " . $this->subject . "<br />" . "\n"; 
+		$description .= "Name: " . $this->name . "\n"; 
+		$description .= "Credits: " . $this->credits . "\n";
+		$description .= "Hours: " . $this->hours . "\n"; 
+		$description .= "Division: " . $this->division  . "\n"; 
+		$description .= "Subject: " . $this->subject . "\n"; 
 	
 		$numberOfSections = count($this->sections);
 		
 		$description .= "Sections: " . $numberOfSections . "<br />" . "\n"; 		
 
 		foreach ($this->sections as $section) {
-			$description .= " --- Section: ---" .  "\n";
-			$description .= $section->description() . "<br />" . "\n";
+			$description .= "\n";
+			$description .= $section->description()  . "\n";
 		}
 
 		return $description;
@@ -92,13 +92,13 @@ class Section
 	}
 
 	function description(){
-		$description = "Section: " . $this->section . "<br />";
-		$description .= "Code: " . $this->code . "<br />";
-		$description .= "Seats: " . $this->openSeats . "<br />"; 		
-		$description .= "Day and Time: " . $this->dayAndTime . "<br />"; 		
-		$description .= "Instructor: " . $this->instructor . "<br />"; 		
-		$description .= "Where: " . $this->buildingAndRoom . "<br />"; 				
-		$description .= "Online: " . $this->isOnline . "<br />"; 
+		$description = "Section: " . $this->section . "\n";
+		$description .= "Code: " . $this->code . "\n";
+		$description .= "Seats: " . $this->openSeats . "\n"; 		
+		$description .= "Day and Time: " . $this->dayAndTime . "\n"; 		
+		$description .= "Instructor: " . $this->instructor . "\n"; 		
+		$description .= "Where: " . $this->buildingAndRoom . "\n"; 				
+		$description .= "Online: " . $this->isOnline . "\n"; 
 
 		return $description;				
 	}
