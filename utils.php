@@ -84,7 +84,8 @@
 		$section->openSeats = valueForElementInList(2, $cells);		
 		$section->dayAndTime = valueForElementInList(3, $cells);		
 		$section->instructor = valueForElementInList(4, $cells);		
-		$section->isOnline = valueForElementInList(5, $cells);		
+		$section->buildingAndRoom = valueForElementInList(5, $cells);
+		$section->isOnline = valueForElementInList(6, $cells);		
 		return $section;
 
 	}
