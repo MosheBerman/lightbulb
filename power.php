@@ -1,8 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	</head>
-	<body>
 <?php
 
 /*
@@ -58,24 +53,46 @@
 	$response = curl_exec($curl_handle);
 
 	//
+	//	Clean up malformed HTML
+	//
+
+	$response = str_replace('id="time"', 'class="time"', $response);
+	$response = str_replace('COLSPAN=8 ALIGN=LEFT VALIGN=TOP', '', $response);
+	$response = str_replace('TD', 'td', $response);
+	$response = str_replace('BR', 'br / ', $response);
+	$response = str_replace('TABLE', 'table', $response);	
+	$response = str_replace('BORDER=0', 'border="0"', $response);
+	$response = str_replace(' CELLPADDING=3 CELLSPACING=2', ' cellpadding="3" cellspacing="2"', $response);
+	$response = str_replace('FONT', 'span', $response);
+	$response = str_replace('HTML', 'html', $response);
+	$response = str_replace('HEAD', 'head', $response);	
+	$response = str_replace('BODY', 'body', $response);	
+	$response = str_replace('INPUT', 'input', $response);	
+	$response = str_replace('NAME', 'name', $response);	
+	$response = str_replace('TYPE', 'type', $response);	
+	$response = str_replace('VALUE', 'value', $response);	
+	$response = str_replace('A HREF', 'a href', $response);	
+	$response = str_replace('IMG SRC', 'img src', $response);	
+	$response = str_replace('FORM', 'form', $response);	
+	$response = str_replace('TITLE', 'title', $response);
+	$response = str_replace('HIDDEN', 'hidden', $response);
+
+	//
 	//	Convert the HTML to UTF-8 for the parser
 	//
 
 	$html = @mb_convert_encoding($response, 'HTML-ENTITIES', 'utf-8'); 
 
 	//
-	//	Parse out the HTML
+	// Load the HTML into a DOMDocument
 	//
 
 	$dom = new DOMDocument;
 
+	libxml_use_internal_errors(true);
 	$dom->loadHTML($html);
+	libxml_use_internal_errors(false);
 
-	//
-	//	Print out the results
-	//
 
-	echo $dom ? $dom : "Couldn't read database";
+
 ?>
-</body>
-</html>
