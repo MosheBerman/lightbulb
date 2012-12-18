@@ -16,7 +16,7 @@
 	//	a course section table.
 	//
 
-	function elementIsACourseSectionTable(DOMElement $element){
+	function elementIsACourseSectionTable(DOMNode $element){
 			
 			$tableHasClass = $element->hasAttribute('class');
 			$tableIsCourseTable = $element->getAttribute("class") == "coursetable";	
@@ -29,7 +29,7 @@
 	//	instance of the Course class.
 	//
 
-	function courseFromTable(DOMElement $table){
+	function courseFromTable(DOMNode $table){
 
 		$secondRow = $table->getElementsByTagName('tr')->item(1);	
 		$cells = $secondRow->getElementsByTagName('td');
@@ -55,7 +55,7 @@
 	//	instance of the Section class.
 	//
 
-	function sectionFromRow(DOMElement $row){
+	function sectionFromRow(DOMNode $row){
 
 		$cells = $row->getElementsByTagName('td');
 
@@ -64,7 +64,6 @@
 		//
 
 		if ($cells->length == 1) {
-			# code...
 			return NULL;
 		}
 
@@ -97,7 +96,7 @@
 	//	give course object.
 	//
 
-	function addSectionsToCourseUsingTable(Course $course, DOMElement $table){
+	function addSectionsToCourseUsingTable(Course $course, DOMNode $table){
 
 		$rows = $table->getElementsByTagName('tr');
 		$numRows = $rows->length;

@@ -10,6 +10,12 @@
 */
 
 	//
+	//	Tell PHP to stop mamanging my time.
+	//
+
+	set_time_limit(0);
+
+	//
 	//	Include some files
 	//
 
@@ -34,7 +40,7 @@
 	  'DUD'  => "1",
 	  'COMPLETE' => "1",
 	  'STYLE' => "NEW",
-      'DB' => "ORACLE_A",
+      	  'DB' => "ORACLE_A",
 	  'DBSTATUS' => "ORACLE_A* : from database, A_DateTime is '2012/12/15 18:30:00', B_DateTime is '2012/12/15 17:00:00'",
 	  'ASOF' => "<FONT class='orange'>UPDATED</FONT> <FONT class='gray'>12/15/2012,  6:30:00 PM</FONT>'",
 	  'DBSTATORIG' => "ORACLE_A* : from database, A_DateTime is '2012/12/15 18:30:00', B_DateTime is '2012/12/15 17:00:00'", 
@@ -61,8 +67,12 @@
 	//	Execute the request
 	//
 
+	$perf[] = microtime(true) . " - Before cURL" ;
+
 	$response = curl_exec($curl_handle);
 	// $response = file_get_contents('./source.html');
+
+	$perf[] =  microtime(true) . " - After cURL";
 
 	//
 	//	Clean up malformed HTML
@@ -103,11 +113,13 @@
 	//Hack character encoding meta tag in there...
 	$response = str_replace('</title>', '</title><meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" >', $response);
 
+	$perf[] =  microtime(true) . " - After Cleanup";
+
 	//
 	//	Convert the HTML to UTF-8 for the parser
 	//
 
-	$html = $response;//@mb_convert_encoding($response, 'HTML-ENTITIES', 'utf-8'); 
+	$html = $response; 
 
 	//
 	//	Prepare some config for tidy
@@ -127,6 +139,7 @@
 
 	$html = $tidy;
 
+	$perf[] =  microtime(true) . " - After Tidy, before DOM load." ;
 
 	//
 	// Load the HTML into a DOMDocument
@@ -136,11 +149,17 @@
 
 	$dom->loadHTML($html);
 
+
+	$perf[] =  microtime(true). " - After DOM - before pulling tables.";
+
 	//
 	//	Get all of the tables in the page
 	//
 
 	$tables = $dom->getElementsByTagName('table');
+
+
+	$perf[] =  microtime(true) - " After pulling tables.";
 
 	//
 	//	Create a buffer for the courses
@@ -154,10 +173,20 @@
 
 	$numberOfTables = $tables->length;
 
-	for ($i=1; $i <$numberOfTables ; $i++) { 
 
-		$sectionTable = $tables->item($i);
-		$courseTable = $tables->item($i-1);
+	$perf[] = microtime(true) . " - Before loop...";
+
+	$parsetime = microtime(true);
+
+	$courseTable = $tables->item(1);
+	$sectionTable = $courseTable->nextSibling;
+
+	while($sectionTable!=NULL) { 
+
+		$courseTable = $sectionTable;
+		$sectionTable = $courseTable->nextSibling;	
+
+		if($sectionTable == NULL){ break; }
 
 		//
 		//	We've found a course table, parse it.
@@ -172,11 +201,28 @@
 		}
 	}	
 
+	$parsetime = microtime(true) - $parsetime;
+	
+	$perf[] = microtime(true) . " - After Parse ";
+
 	//
 	//	Print out each course
 	//
 
+	$perf[] = microtime(true) . " Before printout.";
+
 	foreach ($courses as $course) {
 		echo $course->description();
 	}	
+	
+	$perf[] =  microtime(true) . " - After printout.";
+
+	echo "\n\nTimes:\n-----\n";
+	foreach ($perf as $log){
+		echo $log . "\n";
+	}
+
+	echo "Loop took " , $parsetime . " seconds. \n";
+	echo " Looped " . $numberOfTables . " records.\n";
+
 ?>
