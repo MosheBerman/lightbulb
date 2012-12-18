@@ -18,10 +18,7 @@
 
 	function elementIsACourseSectionTable(DOMNode $element){
 			
-			$tableHasClass = $element->hasAttribute('class');
-			$tableIsCourseTable = $element->getAttribute("class") == "coursetable";	
-
-			return $tableHasClass && $tableIsCourseTable;
+			return $element->getAttribute("class") == "coursetable";	
 	}
 
 	//
@@ -129,8 +126,16 @@
 	//
 
 	function valueForElementInList($index, $list){
+			
+		// Pull out a value, stripping whitespace
+
 		$value =  $list->item($index)->nodeValue;
 		$value = trim($value);
+
+		//Pop off the first item
+
+
+		//	Return
 		return $value;
 	}
 
