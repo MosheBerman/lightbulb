@@ -9,6 +9,9 @@
 
 */
 
+
+	$totalTime = microtime(true);
+
 	//
 	//	Tell PHP to stop mamanging my time.
 	//
@@ -67,7 +70,7 @@
 	//	Announce cURL
 	//
 
-	echo "Running cURL... \n";
+	echo "Running cURL... <br />\n";
 
 	$time = microtime(true);
 
@@ -84,13 +87,13 @@
 
 	$time = microtime(true) - $time;
 
-	echo "cURL took " . $time . " seconds. \n\n";
+	echo "cURL took " . $time . " seconds. <br />\n<br />\n";
 
 	//
 	//	Announce cleanup
 	//
 
-	echo "Starting HTML cleanup... \n";
+	echo "Starting HTML cleanup... <br />\n";
 
 	$time = microtime(true);
 
@@ -135,13 +138,13 @@
 
 	$time = microtime(true) - $time;
 
-	echo "Cleanup took " . $time . " seconds. \n\n";		
+	echo "Cleanup took " . $time . " seconds. <br />\n<br />\n";		
 
 	//	
 	//	Announce Tidy
 	//
 
-	echo "Starting Tidy... \n";
+	echo "Starting Tidy... <br />\n";
 
 	$time = microtime(true);
 
@@ -169,13 +172,13 @@
 
 	$time = microtime(true) - $time;
 
-	echo "Tidy took " . $time . " seconds. \n\n";
+	echo "Tidy took " . $time . " seconds. <br />\n<br />\n";
 
 	//
 	//	Announce DOMDocument
 	//
 
-	echo "Starting to load HTML into DOMDocument... \n";
+	echo "Starting to load HTML into DOMDocument... <br />\n";
 	
 	$time = microtime(true);
 
@@ -193,16 +196,7 @@
 
 	$time = microtime(true) - $time;
 
-	echo "DOMDocument creation took " . $time . " seconds. \n\n";
-
-
-	//
-	//	Announce Table parse
-	//
-
-	echo "Finding table elements... \n";
-	
-	$time = microtime(true) ;
+	echo "DOMDocument creation took " . $time . " seconds. <br />\n<br />\n";
 
 	//
 	//	Get all of the tables in the page
@@ -211,18 +205,10 @@
 	$tables = $dom->getElementsByTagName('table');
 
 	//
-	//	Log table parsing
-	//
-
-	$time = microtime(true)  - $time;
-
-	echo "Table parsing took " . $time . " seconds. \n\n";	
-
-	//
 	//	Announce iteration parse
 	//
 
-	echo "Iterating tables and creating objects... \n";
+	echo "Loading objects... <br />\n";
 	
 	$time = microtime(true) ;
 
@@ -284,19 +270,21 @@
 
 	$time = microtime(true) - $time;
 
-	echo "Loading data into objects took " . $time . " seconds. \n\n";	
+	echo "Loading objects took " . $time . " seconds. \n<br />\n";	
 
 	//
 	//	Print out each course
 	//
 
-	echo "Records:\n-----\n";
-	echo "Processed " . $numberOfTables . " tables.\n";
-	echo "There are " . count($courses) . " courses.\n\n";
+	echo "Records:\n<br/>-----<br />\n";
+	echo "Processed " . $numberOfTables . " tables.<br />\n";
+	echo "There are " . count($courses) . " courses. <br />\n<br />\n";
 
 	foreach ($courses as $course) {
-		 echo $course->description();
-	}
+		 //echo $course->description();
+	}		
 
-	echo "\n\n\n";		
+	$totalTime = microtime(true) - $totalTime;
+
+	echo "Total time: ". $totalTime;
 ?>
