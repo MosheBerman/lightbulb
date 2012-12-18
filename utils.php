@@ -11,6 +11,22 @@
 
 	include_once('./course.php');
 
+	//
+	//
+	//
+
+	function elementIsCourseHeaderTable(DOMNode $element){
+
+		if (is_null($element)) {
+			return false;
+		}
+
+		$firstCell = $element->getElementsByTagName('td')->item(0);
+		$isGrayClass = $firstCell->getAttribute('class') == "graybox";
+
+		return $isGrayClass;
+	}
+
 	//	
 	//	Tell us if a given element is
 	//	a course section table.
@@ -18,7 +34,10 @@
 
 	function elementIsACourseSectionTable(DOMNode $element){
 			
-			return $element->getAttribute("class") == "coursetable";	
+			$tableHasClass = $element->hasAttribute('class');
+			$tableIsCourseTable = $element->getAttribute("class") == "coursetable";	
+
+			return $tableHasClass && $tableIsCourseTable;
 	}
 
 	//
@@ -131,11 +150,6 @@
 
 		$value =  $list->item($index)->nodeValue;
 		$value = trim($value);
-
-		//Pop off the first item
-
-
-		//	Return
 		return $value;
 	}
 
