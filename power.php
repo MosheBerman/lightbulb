@@ -178,15 +178,14 @@
 
 	$parsetime = microtime(true);
 
-	$courseTable = $tables->item(1);
-	$sectionTable = $courseTable->nextSibling;
+	while ($tables->length > 0) {
 
-	while($sectionTable!=NULL) { 
+		$courseTable = $tables->item(0);
+		$sectionTable = $tables->item(1);
 
-		$courseTable = $sectionTable;
-		$sectionTable = $courseTable->nextSibling;	
-
-		if($sectionTable == NULL){ break; }
+		if ($sectionTable == NULL) {
+			break;
+		}
 
 		//
 		//	We've found a course table, parse it.
@@ -198,8 +197,11 @@
 			$course = addSectionsToCourseUsingTable($course, $sectionTable);			
 
 			$courses[] = $course;
-		}
-	}	
+		}		
+
+		$first = $tables->item(0);
+		$first->parentNode->removeChild($first);		
+	}
 
 	$parsetime = microtime(true) - $parsetime;
 	
