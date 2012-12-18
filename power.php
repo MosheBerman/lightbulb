@@ -178,26 +178,46 @@
 
 	$parsetime = microtime(true);
 
+	$lastTable;
+
 	while ($tables->length > 0) {
+		
+		$lastTable = $table;
+		$table = $tables->item(0);
 
-		$courseTable = $tables->item(0);
-		$sectionTable = $tables->item(1);
-
-		if ($sectionTable == NULL) {
+		if ($table === NULL) {
 			break;
 		}
 
 		//
-		//	We've found a course table, parse it.
+		//	We've found a section table, parse it.
+		//
+		
+		if (elementIsACourseSectionTable($table)) {
+
+			$course = addSectionsToCourseUsingTable($course, $table);			
+		}
+
+		//
+		//	Skip the last table if it's not a course section
 		//
 
-		if (elementIsACourseSectionTable($sectionTable)) {
+		else if ($tables->length == 1) {
+			//do nothing here
+		}
 
-			$course = courseFromTable($courseTable);
-			$course = addSectionsToCourseUsingTable($course, $sectionTable);			
+		//
+		//	Else assume a course section, and do something with it
+		//
 
+		else{
+			$course = courseFromTable($table);
 			$courses[] = $course;
-		}		
+		}
+
+		//
+		//	Remove the first item from the list
+		//
 
 		$first = $tables->item(0);
 		$first->parentNode->removeChild($first);		
@@ -225,6 +245,6 @@
 	}
 
 	echo "Loop took " , $parsetime . " seconds. \n";
-	echo " Looped " . $numberOfTables . " records.\n";
-
+	echo "Looped " . $numberOfTables . " records.\n";
+	echo "There are " . count($courses) . " courses.\n";
 ?>
