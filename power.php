@@ -240,6 +240,9 @@
 	$courses = array();
 	$sections = array();
 	
+	$closeSections = 0;
+	$openSections = 0;
+	
 	//
 	//	Iterate
 	//
@@ -259,8 +262,23 @@
 
 		if (elementIsACourseSectionTable($table)) {
 
+			//
+			//
+			//
+			
 			$sections = addSectionsToCourseUsingTable($course, $table, $sections);
-			$numSections++;			
+			
+			//
+			//	Count the number of opened and
+			//	closed sections.
+			//
+			
+			if(end($sections)->openSeats === intval(0)){
+				$closedSections ++;
+			}		
+			else{
+				$openSections ++;
+			}
 		}
 
 		//
@@ -270,7 +288,6 @@
 		else if(elementIsCourseHeaderTable($table)){
 			$course = courseFromTable($table);
 			$courses[] = $course;
-			$numCourses++;
 		}
 
 		//
@@ -299,8 +316,8 @@
 	//	Print out each course
 	//
 
-	echo "Records:\n-----\n";
-	echo "There are " . count($courses) . " courses, and " . count($sections) . " sections.\n";	
+	echo "Records:\n----------\n";
+	echo "There are " . count($courses) . " courses, and " . count($sections) . " sections. \n" . $closedSections ." of them are closed. " . $openSections . " are still available.\n";	
 
 	$totalTime = microtime(true) - $totalTime;
 
