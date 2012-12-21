@@ -9,7 +9,7 @@
 
 */
 
-	include_once('./course.php');
+	require_once('course.php');
 
 	//
 	//

@@ -13,7 +13,7 @@
 	$totalTime = microtime(true);
 
 	//
-	//	Tell PHP to stop mamanging my time.
+	//	Tell PHP to stop managing my time.
 	//
 
 	set_time_limit(0);
@@ -22,8 +22,8 @@
 	//	Include some files
 	//
 
-	include('./course.php');
-	include('./utils.php');
+	include('course.php');
+	include('utils.php');
 
 	//
 	//	Set up a cURL handle and some POST headers
@@ -70,7 +70,8 @@
 	//	Announce cURL
 	//
 
-	echo "Running cURL... <br />\n";
+	echo "Running cURL... 
+\n";
 
 	$time = microtime(true);
 
@@ -87,13 +88,15 @@
 
 	$time = microtime(true) - $time;
 
-	echo "cURL took " . $time . " seconds. <br />\n<br />\n";
+	echo "cURL took " . $time . " seconds. 
+\n\n";
 
 	//
 	//	Announce cleanup
 	//
 
-	echo "Starting HTML cleanup... <br />\n";
+	echo "Starting HTML cleanup... 
+\n";
 
 	$time = microtime(true);
 
@@ -138,13 +141,15 @@
 
 	$time = microtime(true) - $time;
 
-	echo "Cleanup took " . $time . " seconds. <br />\n<br />\n";		
+	echo "Cleanup took " . $time . " seconds. 
+\n\n";		
 
 	//	
 	//	Announce Tidy
 	//
 
-	echo "Starting Tidy... <br />\n";
+	echo "Starting Tidy... 
+\n";
 
 	$time = microtime(true);
 
@@ -172,13 +177,16 @@
 
 	$time = microtime(true) - $time;
 
-	echo "Tidy took " . $time . " seconds. <br />\n<br />\n";
+	echo "Tidy took " . $time . " seconds. 
+\n
+\n";
 
 	//
 	//	Announce DOMDocument
 	//
 
-	echo "Starting to load HTML into DOMDocument... <br />\n";
+	echo "Starting to load HTML into DOMDocument... 
+\n";
 	
 	$time = microtime(true);
 
@@ -196,7 +204,9 @@
 
 	$time = microtime(true) - $time;
 
-	echo "DOMDocument creation took " . $time . " seconds. <br />\n<br />\n";
+	echo "DOMDocument creation took " . $time . " seconds. 
+\n
+\n";
 
 	//
 	//	Get all of the tables in the page
@@ -208,7 +218,8 @@
 	//	Announce iteration parse
 	//
 
-	echo "Loading objects... <br />\n";
+	echo "Loading objects... 
+\n";
 	
 	$time = microtime(true) ;
 
@@ -218,11 +229,23 @@
 
 	$courses = array();
 
-	$numberOfTables = $tables->length;
-
-	$count = $tables->length;
+	//
+	//	Get the first item
+	//	
 
 	$table = $tables->item(0);
+
+	//
+	//	Prepare counters
+	//
+
+	$numCourses = 0;
+	$numSections = 0;
+
+	//
+	//	Iterate
+	//
+
 
 	while ($table != NULL) {
 		
@@ -238,7 +261,8 @@
 
 		if (elementIsACourseSectionTable($table)) {
 
-			$course = addSectionsToCourseUsingTable($course, $table);			
+			$course = addSectionsToCourseUsingTable($course, $table);
+			$numSections++;			
 		}
 
 		//
@@ -248,6 +272,7 @@
 		else if(elementIsCourseHeaderTable($table)){
 			$course = courseFromTable($table);
 			$courses[] = $course;
+			$numCourses++;
 		}
 
 		//
@@ -270,15 +295,18 @@
 
 	$time = microtime(true) - $time;
 
-	echo "Loading objects took " . $time . " seconds. \n<br />\n";	
+	echo "Loading objects took " . $time . " seconds. 
+\n
+\n";	
 
 	//
 	//	Print out each course
 	//
 
-	echo "Records:\n<br/>-----<br />\n";
-	echo "Processed " . $numberOfTables . " tables.<br />\n";
-	echo "There are " . count($courses) . " courses. <br />\n<br />\n";
+	echo "Records:\n-----
+\n";
+	echo "There are " . $numCourses . " courses, and " . $numSections . " sections. \n
+\n";
 
 	foreach ($courses as $course) {
 		 //echo $course->description();
