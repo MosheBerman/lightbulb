@@ -96,7 +96,7 @@
 
 		$section->section = valueForElementInList(0, $cells);
 		$section->code = valueForElementInList(1, $cells);
-		$section->openSeats = openSeatsForCell($cells)		
+		$section->openSeats = openSeatsForCell($cells);		
 		$section->dayAndTime = valueForElementInList(3, $cells);		
 		$section->instructor = valueForElementInList(4, $cells);		
 		$section->buildingAndRoom = valueForElementInList(5, $cells);
