@@ -97,6 +97,7 @@
 		$section->section = valueForElementInList(0, $cells);
 		$section->code = valueForElementInList(1, $cells);
 		$section->openSeats = valueForElementInList(2, $cells);		
+		$section->openSeats = intval(str_replace("**)", "", str_replace("(**", "", $section->openSeats)));
 		$section->dayAndTime = valueForElementInList(3, $cells);		
 		$section->instructor = valueForElementInList(4, $cells);		
 		$section->buildingAndRoom = valueForElementInList(5, $cells);
@@ -112,7 +113,7 @@
 	//	give course object.
 	//
 
-	function addSectionsToCourseUsingTable(Course $course, DOMNode $table){
+	function addSectionsToCourseUsingTable(Course $course, DOMNode $table, $sections){
 
 		$rows = $table->getElementsByTagName('tr');
 		$numRows = $rows->length;
@@ -134,9 +135,10 @@
 			}
 
 			$course->addSection($section);
+			$sections[] = $section;
 		}
 
-		return $course;
+		return $sections;
 	}
 
 	//

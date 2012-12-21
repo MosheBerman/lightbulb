@@ -70,8 +70,7 @@
 	//	Announce cURL
 	//
 
-	echo "Running cURL... 
-\n";
+	echo "Running cURL... \n";
 
 	$time = microtime(true);
 
@@ -88,15 +87,13 @@
 
 	$time = microtime(true) - $time;
 
-	echo "cURL took " . $time . " seconds. 
-\n\n";
+	echo "cURL took " . $time . " seconds. \n";
 
 	//
 	//	Announce cleanup
 	//
 
-	echo "Starting HTML cleanup... 
-\n";
+	echo "Starting HTML cleanup... \n";
 
 	$time = microtime(true);
 
@@ -141,15 +138,13 @@
 
 	$time = microtime(true) - $time;
 
-	echo "Cleanup took " . $time . " seconds. 
-\n\n";		
+	echo "Cleanup took " . $time . " seconds. \n";		
 
 	//	
 	//	Announce Tidy
 	//
 
-	echo "Starting Tidy... 
-\n";
+	echo "Starting Tidy... ";
 
 	$time = microtime(true);
 
@@ -177,16 +172,13 @@
 
 	$time = microtime(true) - $time;
 
-	echo "Tidy took " . $time . " seconds. 
-\n
-\n";
+	echo "Tidy took " . $time . " seconds. \n";
 
 	//
 	//	Announce DOMDocument
 	//
 
-	echo "Starting to load HTML into DOMDocument... 
-\n";
+	echo "Starting to load HTML into DOMDocument... \n";
 	
 	$time = microtime(true);
 
@@ -204,9 +196,7 @@
 
 	$time = microtime(true) - $time;
 
-	echo "DOMDocument creation took " . $time . " seconds. 
-\n
-\n";
+	echo "DOMDocument creation took " . $time . " seconds. \n";
 
 	//
 	//	Get all of the tables in the page
@@ -218,8 +208,7 @@
 	//	Announce iteration parse
 	//
 
-	echo "Loading objects... 
-\n";
+	echo "Loading objects...\n";
 	
 	$time = microtime(true) ;
 
@@ -243,6 +232,15 @@
 	$numSections = 0;
 
 	//
+	//	Hang on to the courses and 
+	//	sections in a pair of global
+	// 	arrays.
+	//
+	
+	$courses = array();
+	$sections = array();
+	
+	//
 	//	Iterate
 	//
 
@@ -261,7 +259,7 @@
 
 		if (elementIsACourseSectionTable($table)) {
 
-			$course = addSectionsToCourseUsingTable($course, $table);
+			$sections = addSectionsToCourseUsingTable($course, $table, $sections);
 			$numSections++;			
 		}
 
@@ -295,24 +293,34 @@
 
 	$time = microtime(true) - $time;
 
-	echo "Loading objects took " . $time . " seconds. 
-\n
-\n";	
+	echo "Loading objects took " . $time . " seconds.\n";	
 
 	//
 	//	Print out each course
 	//
 
-	echo "Records:\n-----
-\n";
-	echo "There are " . $numCourses . " courses, and " . $numSections . " sections. \n
-\n";
-
-	foreach ($courses as $course) {
-		 //echo $course->description();
-	}		
+	echo "Records:\n-----\n";
+	echo "There are " . count($courses) . " courses, and " . count($sections) . " sections.\n";	
 
 	$totalTime = microtime(true) - $totalTime;
 
-	echo "Total time: ". $totalTime;
+	//
+	//	TODO: Pull records from the database here.
+	//
+
+	$storedCourses;
+
+	//
+	//	TODO: Compare the loaded to the stored;
+	//
+	
+	//
+	//	TODO: Send out alerts to users
+	//
+	
+	//
+	//	
+	//
+	
+	echo "Total time: ". $totalTime . " seconds.\n";
 ?>
