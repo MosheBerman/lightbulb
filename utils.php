@@ -168,7 +168,7 @@
 		//
 		
 		if(strpos($seats,"(") === false){
-			return intval($seats);
+			$seats = intval($seats);
 		}
 		
 		//
@@ -177,8 +177,8 @@
 		//	seats.
 		//
 		
-		else if(strpos($seats, "(" == 0)){
-			return intval(trim(str_replace("**)", "", str_replace("(**", "", $seats))));
+		else if(strpos($seats, "(") === intval(0)){
+			$seats = intval(trim(str_replace("**)", " ", str_replace("(**", " ", $seats))));
 		}
 		
 		//
@@ -187,7 +187,9 @@
 		//
 		
 		else{
-			return intval(0);
+			$seats = 0;
 		}
+		
+		return $seats;
 	}
 ?>

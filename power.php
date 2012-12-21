@@ -240,7 +240,7 @@
 	$courses = array();
 	$sections = array();
 	
-	$closeSections = 0;
+	$closedSections = 0;
 	$openSections = 0;
 	
 	//
@@ -267,18 +267,6 @@
 			//
 			
 			$sections = addSectionsToCourseUsingTable($course, $table, $sections);
-			
-			//
-			//	Count the number of opened and
-			//	closed sections.
-			//
-			
-			if(end($sections)->openSeats === intval(0)){
-				$closedSections ++;
-			}		
-			else{
-				$openSections ++;
-			}
 		}
 
 		//
@@ -312,6 +300,19 @@
 
 	echo "Loading objects took " . $time . " seconds.\n";	
 
+	//
+	//	Count open and closed sections
+	//
+	
+	foreach ($sections as $section){
+		if(intval($section->openSeats) === intval(0)){
+			$closedSections++;
+		}
+		else{
+			$openSections++;
+		}
+	}
+	
 	//
 	//	Print out each course
 	//
