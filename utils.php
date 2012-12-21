@@ -96,8 +96,7 @@
 
 		$section->section = valueForElementInList(0, $cells);
 		$section->code = valueForElementInList(1, $cells);
-		$section->openSeats = valueForElementInList(2, $cells);		
-		$section->openSeats = intval(str_replace("**)", "", str_replace("(**", "", $section->openSeats)));
+		$section->openSeats = openSeatsForCell($cells)		
 		$section->dayAndTime = valueForElementInList(3, $cells);		
 		$section->instructor = valueForElementInList(4, $cells);		
 		$section->buildingAndRoom = valueForElementInList(5, $cells);
@@ -143,7 +142,7 @@
 
 	//
 	//	Returns the text from a cell
-	//	with a 
+	//	with a list of cells
 	//
 
 	function valueForElementInList($index, $list){
@@ -155,4 +154,40 @@
 		return $value;
 	}
 
+	//
+	//	Counts the number of open seats in a class
+	//
+	
+	function openSeatsForCell($cells){
+
+		$seats = valueForElementInList(2, $cells);
+		
+		//
+		//	If there's no parens in the string,
+		//	return the numbers.
+		//
+		
+		if(strpos($seats,"(") === false){
+			return intval($seats);
+		}
+		
+		//
+		//	If the first char is an open paren
+		//	then we have a positive number of
+		//	seats.
+		//
+		
+		else if(strpos($seats, "(" == 0)){
+			return intval(trim(str_replace("**)", "", str_replace("(**", "", $seats))));
+		}
+		
+		//
+		//	Else, the section closed,
+		//	return zero. 
+		//
+		
+		else{
+			return intval(0);
+		}
+	}
 ?>
