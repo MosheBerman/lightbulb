@@ -1,0 +1,38 @@
+<?php
+
+/*
+
+	timer.php
+
+	This file contains some convenience 
+	methods for logging and calculating time
+	that various operations take.
+
+*/
+
+namespace lightbulb{
+	class Timer{
+	
+		private $timeInSeconds;
+		private $operationName;
+	
+		function Time(){
+			$this->timeInSeconds = 0;
+		}
+	
+		function start($operation){
+			$this->operationName = $operation;
+			$this->timeInSeconds = microtime(true);
+		
+			echo "Starting " . $this->operationName . "...\n";
+		}
+	
+		function stop(){
+			$this->timeInSeconds = microtime(true) - $this->timeInSeconds;
+			echo $this->operationName . " took " . $this->timeInSeconds . " seconds.\n";
+		}
+	}	
+}
+
+
+?>
