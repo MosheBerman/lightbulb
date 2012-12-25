@@ -4,7 +4,7 @@
 
 course.php
 
-This file defines a course class for storing class information.8
+This file defines a course class for storing class information.
 
 */
 

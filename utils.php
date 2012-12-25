@@ -224,4 +224,29 @@
 		return preg_replace('/\s+/', ' ', trim($string));
 	}
 	
+	//
+	//
+	//
+	
+	function installSectionsIntoCourses($storedSections, &$storedCourses){
+		
+		foreach($storedSections as $section){
+			$course = courseForID($section->courseID, $storedCourses);
+			$course->addSection($section);	
+		}
+	}
+	
+	//
+	//	Get a course for a given ID
+	//
+	
+	function courseForID($id, $courses){
+		foreach($courses as $course){
+			if($course->id == $id){
+				return $course;
+			}
+		}
+		return null;
+	}
+	
 ?>

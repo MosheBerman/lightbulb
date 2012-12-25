@@ -359,13 +359,6 @@
 		
 		$storedSections = $sectionQuery->fetchAll();
 		$storedCourses = $courseQuery->fetchAll();
-
-		//
-		//	Verify that it worked
-		//	TODO: Remove for production
-		//
-		
-		//showCourses($storedCourses);
 		
 		//
 		//	Check if the database is empty
@@ -376,7 +369,15 @@
 		}
 		else{
 			$isDatabaseEmpty = false;
+			
+			installSectionsIntoCourses($storedSections, &$storedCourses); 
 		}
+		
+		//
+		//	Verify that it worked
+		//
+		
+		// 	showCourses($storedCourses);		
 
 	}
 	
@@ -400,20 +401,12 @@
 	$timer->start("Checking changes");
 	
 	//
-	//	TODO: 	Compare the loaded to the stored;
-	//			Track the desired sections in a
-	//			separate data object.
+	//	Compare the loaded to the stored;
+	//	Track the desired sections in a
+	//	separate data object.
 	//
 	
-	$courseSectionsThatHaveOpened = array();
-	$courseSectionsThatHaveClosed = array();
-	$courseSectionsThatHaveProfessors = array();
-	
-	$newCourses = array();
-	$newCourseSections = array();
-	
-	$courseSectionsThatHaveBeenCancelled = array();
-	$coursesThatHaveBeenCancelled = array();
+	$differ = new lightbulb\Differ();	
 	
 	if($isDatabaseEmpty == false){	
 		
