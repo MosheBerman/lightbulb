@@ -11,8 +11,10 @@
 
 	require_once('course.php');
 
+	/* Table validation methods */ 
+	
 	//
-	//
+	//	Tells us if a given element is a course header.
 	//
 
 	function elementIsCourseHeaderTable(DOMNode $element){
@@ -28,8 +30,7 @@
 	}
 
 	//	
-	//	Tell us if a given element is
-	//	a course section table.
+	//	Tell us if a given element is a course section table.
 	//
 
 	function elementIsACourseSectionTable(DOMNode $element){
@@ -40,6 +41,8 @@
 			return $tableHasClass && $tableIsCourseTable;
 	}
 
+	/* Conversion from HTML to Course/Section objects */
+	
 	//
 	//	Takes a table and parses it into an 
 	//	instance of the Course class.
@@ -97,7 +100,12 @@
 		$section->section = valueForElementInList(0, $cells);
 		$section->code = valueForElementInList(1, $cells);
 		$section->openSeats = openSeatsForCell($cells);		
-		$section->dayAndTime = valueForElementInList(3, $cells);		
+		$section->dayAndTime = valueForElementInList(3, $cells);
+		
+		if($section->dayAndTime == "** Hours to be announced **"){
+			$section->dayAndTime = "TBA";
+		}
+				
 		$section->instructor = valueForElementInList(4, $cells);		
 		$section->buildingAndRoom = valueForElementInList(5, $cells);
 		$section->isOnline = valueForElementInList(6, $cells);	
@@ -106,6 +114,8 @@
 
 	}
 
+	/* Conversion helpers */
+	
 	//
 	//	Take a table containing course sections
 	//	and parse it put the results into a
@@ -192,4 +202,18 @@
 		
 		return $seats;
 	}
+	
+	/* Printout methods */
+	
+	//
+	//	Prints out the courses in a given array	
+	//
+	
+	function showCourses(Array $courses){
+		foreach($courses as $course){
+			echo $course->description();
+		}
+	}
+	
+	
 ?>

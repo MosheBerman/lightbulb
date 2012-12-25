@@ -4,8 +4,10 @@
 
 	power.php
 
-	This file is the component that reads data from CUNY's website
-	and saves it to a sqlite database.
+	This file is the core of the lightbulb system.
+	It scrapes course data and sends out emails to
+	interested parties. When run at regular intervals,
+	it makes for an interesting alert system.
 
 */
 
@@ -24,6 +26,7 @@
 
 	include('course.php');
 	include('utils.php');
+	include('mail.php');
 
 	//
 	//	Set up a cURL handle and some POST headers
@@ -237,8 +240,8 @@
 	// 	arrays.
 	//
 	
-	$courses = array();
-	$sections = array();
+	$scrapedCourses = array();
+	$scrapedSections = array();
 	
 	$closedSections = 0;
 	$openSections = 0;
@@ -263,10 +266,11 @@
 		if (elementIsACourseSectionTable($table)) {
 
 			//
-			//
+			// 	Add section to the sections. Note that we pass
+			//	the array by reference.
 			//
 			
-			$sections = addSectionsToCourseUsingTable($course, $table, $sections);
+			addSectionsToCourseUsingTable($course, $table, &$scrapedSections);
 		}
 
 		//
@@ -275,7 +279,7 @@
 
 		else if(elementIsCourseHeaderTable($table)){
 			$course = courseFromTable($table);
-			$courses[] = $course;
+			$scrapedCourses[] = $course;
 		}
 
 		//
@@ -304,7 +308,7 @@
 	//	Count open and closed sections
 	//
 	
-	foreach ($sections as $section){
+	foreach ($scrapedSections as $section){
 		if(intval($section->openSeats) === intval(0)){
 			$closedSections++;
 		}
@@ -314,31 +318,162 @@
 	}
 	
 	//
-	//	Print out each course
+	//	Print out scrape results.
 	//
 
 	echo "Records:\n----------\n";
-	echo "There are " . count($courses) . " courses, and " . count($sections) . " sections. \n" . $closedSections ." of them are closed. " . $openSections . " are still available.\n";	
+	echo "There are " . count($scrapedCourses) . " courses, and " . count($scrapedSections) . " sections. \n" . $closedSections ." of them are closed. " . $openSections . " are still available.\n\n";	
 
-	$totalTime = microtime(true) - $totalTime;
-
-	//
-	//	TODO: Pull records from the database here.
-	//
-
-	$storedCourses;
+	//showCourses($scrapedCourses);
 
 	//
-	//	TODO: Compare the loaded to the stored;
+	//	Pull records from the database here.
 	//
+		
+	echo "Loading from database...\n";
+	$time = microtime(true);
+	
+	// A flag denoting if we should bother comparing and alerting 
+	$isDatabaseEmpty = false;
+
+	//
+	// The connection
+	//
+
+	try{
+		@$db = new PDO('mysql:host=127.0.0.1;dbname=fluorescent;charset=utf8', '***REDACTED***', '***REDACTED***');
+	
+		//
+		//	Prepare the PDO statements
+		//
+		
+		$sectionQuery = $db->query('SELECT * FROM Sections');
+		$courseQuery = $db->query('SELECT * FROM Courses');
+		
+		//	List the parameters for the database
+		$sectionProperties = array('section', 'code', 'openSeats', 'dayAndTime', 'instructor', 'buildingAndRoom', 'isOnline');
+		$courseProperties = array('startDate', 'endDate', 'name', 'description', 'credits', 'hours', 'division', 'subject', 'lastUpdated', 'sections');
+		
+		//
+		//	We want to fetch into objects, so let's hook that up.
+		//
+		
+		$sectionQuery->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Section', $sectionProperties);
+		
+		$courseQuery->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Course', $courseProperties);
+		
+		//
+		//	Perform the Query
+		//
+		
+		$storedSections = $sectionQuery->fetchAll();
+		$storedCourses = $courseQuery->fetchAll();
+
+		//
+		//	Verify that it worked
+		//	TODO: Remove for production
+		//
+		
+		showCourses($storedCourses);
+		
+		//
+		//	Check if the database is empty
+		//
+		
+		if(count($storedSections) == 0 && count($storedCourses) == 0){
+			$isDatabaseEmpty = true;
+		}
+		else{
+			$isDatabaseEmpty = false;
+		}
+
+	}
 	
 	//
-	//	TODO: Send out alerts to users
+	//	If we can't load up the data, die.
 	//
 	
+	catch(PDOException $e){
+		die("Failed to connect to database to retrieve stored courses. \nInfo:" . $e . "\n");
+	}
+
+	
 	//
-	//	
+	//	Log out database time...
 	//
 	
+	$time = microtime(true) - $time;
+	echo "Loading database took" . $time . " seconds.\n";
+	
+	//
+	//	TODO: 	Compare the loaded to the stored;
+	//			Track the desired sections in a
+	//			separate data object.
+	//
+	
+	$courseSectionsThatHaveOpened = array();
+	$courseSectionsThatHaveClosed = array();
+	$courseSectionsThatHaveProfessors = array();
+	
+	$newCourses = array();
+	$newCourseSections = array();
+	
+	$courseSectionsThatHaveBeenCancelled = array();
+	$coursesThatHaveBeenCancelled = array();
+	
+	if($isDatabaseEmpty == false){
+	
+		
+	
+	}
+	
+	//
+	//	TODO: 	Store the new data in the database.
+	//
+	
+	//Empty old database
+	$deleteCoursesStatement = $db->prepare("DELETE * from Courses");
+	$deleteSectionsStatement = $db->prepare("DELETE * from Sections");
+	
+	$deleteCourseStatement->execute();
+	$deleteSectionsStatement->execute();
+		
+	//	Repopulate
+	foreach($scrapedCourses as $course){
+		
+		$sql = $course->SQLStatement();
+		$sql = $db->prepare($sql);
+		
+		$sql->execute();
+		
+		$lastID = $db->lastInsertID();
+		
+		foreach($course->sections as $section){
+			
+			$sql = $section->SQLStatement($lastID);
+			$sql = $db->prepare($sql);
+		
+			$sql->execute();
+		}
+	}
+	
+	//
+	//	Send out alerts to users
+	//
+	
+	if($isDatabaseEmpty == false){
+		
+		//
+		//	TODO: 	Pull out users that want alerts
+		//			and send appropriate alerts. 
+		//
+	
+	}
+
+	//
+	//	Finally print total time
+	//
+	
+	$totalTime = microtime(true) - $totalTime;	
 	echo "Total time: ". $totalTime . " seconds.\n";
 ?>

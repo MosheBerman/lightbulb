@@ -4,10 +4,9 @@
 
 course.php
 
-This file defines a course class for storing class information.
+This file defines a course class for storing class information.8
 
 */
-
 
 /**
 * 
@@ -18,6 +17,7 @@ class Course
 	
 	//	Course info
 
+	public $id;
 	public $startDate;
 	public $endDate;
 	public $name;
@@ -35,7 +35,7 @@ class Course
 	//	Constructor
 	//
 	
-	function Course($startDate = "", $endDate = "" , $name = "", $description = "", $credits = "", $hours ="", $division = "", $subject = "", $lastUpdated = "", $sections = array()){
+	function Course($id = '', $startDate = '', $endDate = '' , $name = '', $description = '', $credits = '', $hours = '', $division = '', $subject = '', $lastUpdated = '', $sections = array()){
 		$this->startDate = $startDate;
 		$this->endDate = $endDate;
 		$this->name = $name;
@@ -44,7 +44,7 @@ class Course
 		$this->hours = $hours;
 		$this->division = $division;
 		$this->subject = $subject;
-		$this->lastUpdate = thisUpdate;
+		$this->lastUpdate = $lastUpdated;
 		$this->sections = array();
 	}
 
@@ -57,7 +57,7 @@ class Course
 	}
 
 	//
-	//
+	//	Returns a user visible description of the object
 	//
 
 	function description(){
@@ -80,6 +80,28 @@ class Course
 
 		return $description;
 	}
+	
+	//
+	//	This method returns an SQL statement for itself to be 
+	//	entered into the database.
+	//
+	
+	function SQLStatement(){
+	
+		$query = "INSERT INTO Courses (startDate, endDate, name, description, credits, hours, division)" .
+		" VALUES('" . $this->startDate . "', '".$this->endDate."', '".$this->name."', '".$this->description."', '".$this->credits."', '".$this->hours."', '".$this->divisionAsBool()."')";
+		
+		return $query;
+	}
+	
+	//
+	//	Converts the division to a zero or one,
+	//	zero being Undergrad, one being grad.
+	//
+	
+	function divisionAsBool(){
+		return intval($this->division != "Undergraduate");
+	}
 }
 
 /**
@@ -88,6 +110,8 @@ class Course
 
 class Section
 {
+	public $id;
+	public $courseID;
 	public $section;
 	public $code;
 	public $openSeats;
@@ -96,7 +120,9 @@ class Section
 	public $buildingAndRoom;
 	public $isOnline;
 
-	function Section($section = '', $code = '', $openSeats = 0, $dayAndTime = '', $instructor = '', $buildingAndRoom = '', $isOnline = ''){
+	function Section($id = '', $courseID = '', $section = '', $code = '', $openSeats = 0, $dayAndTime = '', $instructor = '', $buildingAndRoom = '', $isOnline = ''){
+		$this->id = $id;
+		$this->courseID = $courseID;
 		$this->section = $section;
 		$this->code = $code;
 		$this->openSeats = $openSeats;
@@ -111,11 +137,32 @@ class Section
 		$description .= "Code: " . $this->code . "\n";
 		$description .= "Seats: " . $this->openSeats . "\n"; 		
 		$description .= "Day and Time: " . $this->dayAndTime . "\n"; 		
-		$description .= "Instructor: " . $this->instructor . "\n"; 		
+		$description .= "Instructor: " . $this->instructor . "\n";
 		$description .= "Where: " . $this->buildingAndRoom . "\n"; 				
 		$description .= "Online: " . $this->isOnline . "\n"; 
 
 		return $description;				
+	}
+	
+	//
+	//	This method returns an SQL statement for itself to be
+	//	entered into the database.
+	//
+	
+	function SQLStatement($courseID){
+	
+		$query = "INSERT INTO Courses (courseID, section, code, openSeats, dayAndTime, buildingAndRoom, isOnline)" .
+		" VALUES('".$courseID."', '".$this->section."', '".$this->code."', '".$this->openSeats."', '".$this->dayAndTime."', '".$this->buildingAndRoom."', '".$this->isOnlineAsBool()."')";
+		
+		return $query;
+	}
+	
+	//
+	//	Returns isOnline as a boolean
+	//
+	
+	function isOnlineAsBool(){
+		return (bool)($this->isOnline == "Yes");
 	}
 }
 
