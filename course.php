@@ -88,8 +88,8 @@ class Course
 	
 	function SQLStatement(){
 	
-		$query = "INSERT INTO Courses (startDate, endDate, name, description, credits, hours, division)" .
-		" VALUES('" . $this->startDate . "', '".$this->endDate."', '".$this->name."', '".$this->description."', '".$this->credits."', '".$this->hours."', '".$this->divisionAsBool()."')";
+		$query = "INSERT INTO Courses (startDate, endDate, name, description, credits, hours, subject, division)" .
+		" VALUES('" . $this->startDate . "', '".$this->endDate."', '".$this->name."', '".$this->description."', '".$this->credits."', '".$this->hours."', '" . $this->subject . "', '".$this->divisionAsBool()."')";
 		
 		return $query;
 	}
@@ -151,7 +151,7 @@ class Section
 	
 	function SQLStatement($courseID){
 	
-		$query = "INSERT INTO Courses (courseID, section, code, openSeats, dayAndTime, buildingAndRoom, isOnline)" .
+		$query = "INSERT INTO Sections (courseID, section, code, openSeats, dayAndTime, buildingAndRoom, isOnline)" .
 		" VALUES('".$courseID."', '".$this->section."', '".$this->code."', '".$this->openSeats."', '".$this->dayAndTime."', '".$this->buildingAndRoom."', '".$this->isOnlineAsBool()."')";
 		
 		return $query;
@@ -162,7 +162,7 @@ class Section
 	//
 	
 	function isOnlineAsBool(){
-		return (bool)($this->isOnline == "Yes");
+		return intval(($this->isOnline == "Yes"));
 	}
 }
 

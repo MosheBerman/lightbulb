@@ -11,7 +11,6 @@
 
 */
 
-
 	$totalTime = microtime(true);
 
 	//
@@ -27,7 +26,17 @@
 	include('course.php');
 	include('utils.php');
 	include('mail.php');
+	include('timer.php');
 
+	//
+	//	Setup timer for tracking operation times.
+	//
+	
+	$globalTimer = new lightbulb\Timer();
+	$timer = new lightbulb\Timer();
+	
+	$globalTimer->start("Lightulb 1.0");
+	
 	//
 	//	Set up a cURL handle and some POST headers
 	//
@@ -73,10 +82,8 @@
 	//	Announce cURL
 	//
 
-	echo "Running cURL... \n";
-
-	$time = microtime(true);
-
+	$timer->start("cURL request");
+	
 	//
 	//	Execute the request.
 	//
@@ -88,17 +95,13 @@
 	//	Log cURL time.
 	//
 
-	$time = microtime(true) - $time;
-
-	echo "cURL took " . $time . " seconds. \n";
+	$timer->stop();
 
 	//
 	//	Announce cleanup
 	//
 
-	echo "Starting HTML cleanup... \n";
-
-	$time = microtime(true);
+	$timer->start("HTML Cleanup");
 
 	//	General cleanup 
 
@@ -139,17 +142,13 @@
 	//	Log cleanup time.
 	//
 
-	$time = microtime(true) - $time;
-
-	echo "Cleanup took " . $time . " seconds. \n";		
+	$timer->stop();
 
 	//	
 	//	Announce Tidy
 	//
 
-	echo "Starting Tidy... ";
-
-	$time = microtime(true);
+	$timer->start("Tidy");
 
 	//
 	//	Prepare some config for tidy
@@ -173,17 +172,13 @@
 	//	Log Tidy time
 	//
 
-	$time = microtime(true) - $time;
-
-	echo "Tidy took " . $time . " seconds. \n";
+	$timer->stop();
 
 	//
 	//	Announce DOMDocument
 	//
 
-	echo "Starting to load HTML into DOMDocument... \n";
-	
-	$time = microtime(true);
+	$timer->start("Load HTML document");
 
 	//
 	// Load the HTML into a DOMDocument
@@ -197,9 +192,7 @@
 	//	Log DOMDocument
 	//
 
-	$time = microtime(true) - $time;
-
-	echo "DOMDocument creation took " . $time . " seconds. \n";
+	$timer->stop();
 
 	//
 	//	Get all of the tables in the page
@@ -211,9 +204,7 @@
 	//	Announce iteration parse
 	//
 
-	echo "Loading objects...\n";
-	
-	$time = microtime(true) ;
+	$timer->start("Object load");
 
 	//
 	//	Create a buffer for the courses
@@ -300,9 +291,7 @@
 	//	Log table parsing
 	//
 
-	$time = microtime(true) - $time;
-
-	echo "Loading objects took " . $time . " seconds.\n";	
+	$timer->stop();
 
 	//
 	//	Count open and closed sections
@@ -330,8 +319,7 @@
 	//	Pull records from the database here.
 	//
 		
-	echo "Loading from database...\n";
-	$time = microtime(true);
+	$timer->start("Database load");
 	
 	// A flag denoting if we should bother comparing and alerting 
 	$isDatabaseEmpty = false;
@@ -374,7 +362,7 @@
 		//	TODO: Remove for production
 		//
 		
-		showCourses($storedCourses);
+		//showCourses($storedCourses);
 		
 		//
 		//	Check if the database is empty
@@ -402,8 +390,7 @@
 	//	Log out database time...
 	//
 	
-	$time = microtime(true) - $time;
-	echo "Loading database took" . $time . " seconds.\n";
+	$timer->stop();
 	
 	//
 	//	TODO: 	Compare the loaded to the stored;
@@ -432,10 +419,10 @@
 	//
 	
 	//Empty old database
-	$deleteCoursesStatement = $db->prepare("DELETE * from Courses");
-	$deleteSectionsStatement = $db->prepare("DELETE * from Sections");
+	$deleteCoursesStatement = $db->prepare("TRUNCATE Courses");
+	$deleteSectionsStatement = $db->prepare("TRUNCATE Sections");
 	
-	$deleteCourseStatement->execute();
+	$deleteCoursesStatement->execute();
 	$deleteSectionsStatement->execute();
 		
 	//	Repopulate
@@ -447,7 +434,7 @@
 		$sql->execute();
 		
 		$lastID = $db->lastInsertID();
-		
+					
 		foreach($course->sections as $section){
 			
 			$sql = $section->SQLStatement($lastID);
@@ -474,6 +461,5 @@
 	//	Finally print total time
 	//
 	
-	$totalTime = microtime(true) - $totalTime;	
-	echo "Total time: ". $totalTime . " seconds.\n";
+	$globalTimer->stop();
 ?>
