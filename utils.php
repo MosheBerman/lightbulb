@@ -160,7 +160,8 @@
 		// Pull out a value, stripping whitespace
 
 		$value =  $list->item($index)->nodeValue;
-		$value = trim($value);
+		$value = removeNewlines(trim($value));
+		$value = str_replace("'", "", $value);
 		return $value;
 	}
 
@@ -215,5 +216,12 @@
 		}
 	}
 	
+	//
+	//	Returns the string with no newlines
+	//
+	
+	function removeNewlines($string){
+		return preg_replace('/\s+/', ' ', trim($string));
+	}
 	
 ?>

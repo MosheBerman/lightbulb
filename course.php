@@ -88,8 +88,8 @@ class Course
 	
 	function SQLStatement(){
 	
-		$query = "INSERT INTO Courses (startDate, endDate, name, description, credits, hours, subject, division)" .
-		" VALUES('" . $this->startDate . "', '".$this->endDate."', '".$this->name."', '".$this->description."', '".$this->credits."', '".$this->hours."', '" . $this->subject . "', '".$this->divisionAsBool()."')";
+		$query = "INSERT INTO Courses (startDate, endDate, name, description, credits, hours, subject, division, lastUpdated)" .
+		" VALUES('" . $this->startDate . "', '".$this->endDate."', '".$this->name."', '".$this->description."', '".$this->credits."', '".$this->hours."', '" . $this->subject . "', '".$this->divisionAsBool()."', NOW())";
 		
 		return $query;
 	}

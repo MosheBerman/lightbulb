@@ -329,7 +329,10 @@
 	//
 
 	try{
+
 		@$db = new PDO('mysql:host=127.0.0.1;dbname=fluorescent;charset=utf8', '***REDACTED***', '***REDACTED***');
+		
+		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	
 		//
 		//	Prepare the PDO statements
@@ -393,6 +396,10 @@
 	$timer->stop();
 	
 	//
+	//
+	$timer->start("Checking changes");
+	
+	//
 	//	TODO: 	Compare the loaded to the stored;
 	//			Track the desired sections in a
 	//			separate data object.
@@ -408,14 +415,20 @@
 	$courseSectionsThatHaveBeenCancelled = array();
 	$coursesThatHaveBeenCancelled = array();
 	
-	if($isDatabaseEmpty == false){
-	
+	if($isDatabaseEmpty == false){	
 		
-	
 	}
 	
 	//
-	//	TODO: 	Store the new data in the database.
+	//
+	//
+	
+	$timer->stop();
+	
+	$timer->start("Refreshing Database");
+	
+	//
+	//	Store the new data in the database.
 	//
 	
 	//Empty old database
@@ -429,20 +442,40 @@
 	foreach($scrapedCourses as $course){
 		
 		$sql = $course->SQLStatement();
-		$sql = $db->prepare($sql);
+		$preparedStatement = $db->prepare($sql);
 		
-		$sql->execute();
+		try{
+			$preparedStatement->execute();
+		}
+		catch(PDOException $e){
+				echo "Failed to insert course: " . $course->description();
+				echo "\n";			
+		}
 		
 		$lastID = $db->lastInsertID();
 					
 		foreach($course->sections as $section){
 			
 			$sql = $section->SQLStatement($lastID);
-			$sql = $db->prepare($sql);
+			$preparedStatement = $db->prepare($sql);
 		
-			$sql->execute();
+			try{
+				$preparedStatement->execute();
+			}
+			catch(PDOException $e){
+				echo "Failed to insert section : " . $section->description();
+				echo "\n";
+			}
 		}
 	}
+	
+	//
+	//
+	//
+	
+	$timer->stop();
+	
+	$timer->start("Alerting Users");
 	
 	//
 	//	Send out alerts to users
@@ -457,6 +490,8 @@
 	
 	}
 
+	$timer->stop();
+	
 	//
 	//	Finally print total time
 	//
