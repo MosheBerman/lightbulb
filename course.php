@@ -34,13 +34,22 @@ class Course
 	//
 	//	Constructor
 	//
-
-	function Course(){
-		$this->sections = array();	
+	
+	function Course($startDate = "", $endDate = "" , $name = "", $description = "", $credits = "", $hours ="", $division = "", $subject = "", $lastUpdated = "", $sections = array()){
+		$this->startDate = $startDate;
+		$this->endDate = $endDate;
+		$this->name = $name;
+		$this->description = $description;
+		$this->credits = $credits;
+		$this->hours = $hours;
+		$this->division = $division;
+		$this->subject = $subject;
+		$this->lastUpdate = thisUpdate;
+		$this->sections = array();
 	}
 
 	//
-	//
+	//	Adds a section to the course
 	//
 
 	function addSection($section){
@@ -87,8 +96,14 @@ class Section
 	public $buildingAndRoom;
 	public $isOnline;
 
-	function Section(){
-
+	function Section($section = '', $code = '', $openSeats = 0, $dayAndTime = '', $instructor = '', $buildingAndRoom = '', $isOnline = ''){
+		$this->section = $section;
+		$this->code = $code;
+		$this->openSeats = $openSeats;
+		$this->instructor = $instructor;
+		$this->buildingAndRoom = $buildingAndRoom;
+		$this->isOnline = $isOnline;
+		
 	}
 
 	function description(){
