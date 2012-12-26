@@ -27,6 +27,7 @@
 	include('utils.php');
 	include('mail.php');
 	include('timer.php');
+	include('differ.php');
 
 	//
 	//	Setup timer for tracking operation times.
@@ -339,7 +340,7 @@
 		//
 		
 		$sectionQuery = $db->query('SELECT * FROM Sections');
-		$courseQuery = $db->query('SELECT * FROM Courses');
+		$courseQuery = $db->query('SELECT * FROM Courses ORDER BY name');
 		
 		//	List the parameters for the database
 		$sectionProperties = array('section', 'code', 'openSeats', 'dayAndTime', 'instructor', 'buildingAndRoom', 'isOnline');
@@ -410,6 +411,13 @@
 	
 	if($isDatabaseEmpty == false){	
 		
+		
+		showCoursesWithTitle("Opened Sections: ", $differ->courseSectionsThatHaveOpened);
+		showCoursesWithTitle("Closed Sections: ", $differ->courseSectionsThatHaveClosed);
+		showCoursesWithTitle("New Professors: ", $differ->courseSectionsThatHaveNewProfessors);
+		showCoursesWithTitle("Removed Professors: ", $differ->coursesThatNoLongerHaveProfessors);
+		showCoursesWithTitle("New Courses: ",$differ->newCourses);
+		showCoursesWithTitle("Cancelled: " , $differ->cancelledCourses);
 	}
 	
 	//

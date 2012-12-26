@@ -217,6 +217,21 @@
 	}
 	
 	//
+	//	prints a title then shows the courses
+	//
+	
+	function showCoursesWithTitle($title, $courses){
+	
+		if(is_null($courses)){
+			return;
+		}
+		
+		echo "------------\n" . $title . "\n------------\n";
+		showCourses($courses);
+		echo "\n";
+	}
+	
+	//
 	//	Returns the string with no newlines
 	//
 	

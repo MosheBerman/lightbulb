@@ -18,25 +18,265 @@ namespace lightbulb{
 		private $oldData;
 		private $newData;
 		
-		private $courseSectionsThatHaveOpened;
-		private $courseSectionsThatHaveClosed;
+		public $courseSectionsThatHaveOpened;
+		public $courseSectionsThatHaveClosed;
 	
-		private $courseSectionsThatHaveNewProfessors;
-		private $coursesThatNoLongerHaveProfessors;
+		public $courseSectionsThatHaveNewProfessors;
+		public $coursesThatNoLongerHaveProfessors;
 	
-		private $newCourses;
-		private $cancelledCourses;
+		public $newCourses;
+		public $cancelledCourses;
 		
-		private $newCourseSections;
-		private $cancelledCourseSections;
+		public $newCourseSections;
+		public $cancelledCourseSections;
 		
 		private $sectionsThatHaveNewRooms;
 		
-		function Differ(){
+		//
+		//	Constructor
+		//
 		
+		function Differ($_oldData = array(), $_newData = array()){
+			if(count($_oldData) == 0){
+				return null;
+			}		
+			
+			$this->oldData = $_oldData;
+			$this->newData = $_newData;
+			
+			//
+			//	Set up the other arrays
+			//
+			
+			$this->courseSectionsThatHaveOpened = array();
+			$this->courseSectionsThatHaveClosed = array();
+			
+			$this->$courseSectionsThatHaveNewProfessors = array();
+			$this->$coursesThatNoLongerHaveProfessors = array();
+			
+			$this->$newCourses = array();
+			$this->cancelledCourses = array();
+			
+			$this->newCourseSections = array();
+			$this->$cancelledCourseSections = array();
+			
+			$this->sectionsThatHaveNewRooms = array();
+			
+			//
+			//	Now run the functions
+			//
+			
+			$this->findSectionChanges();
+			$this->findCourseChanges();
 		}
 		
+		//
+		//	Compares the sections that have 
+		//
 		
+		function findSectionChanges(){
+			
+			//
+			//	Outer two loops iterates the courses
+			//
+			//	Inner two loop iterates the sections
+			//
+		
+			foreach($this->newData as $new){
+				foreach($this->oldData as $old){
+					
+					foreach($new->sections as $newSection){
+						foreach($old->sections as $oldSection){
+							
+							//
+							//	If we have the same section code, 
+							//	compare against the matching section 
+							//	for changes.
+							//
+							
+							if($oldSection->code == $newSection->code){
+								
+								//	Check for newly opened sections
+								if($oldSection->isClosed() && $newSection->isOpen()){
+									$this->courseSectionsThatHaveOpened[] = $newSection;
+								}
+								
+								// Check for newly closed sections
+								if($oldSection->isOpen() && $newSection->isClosed()){
+									$this->courseSectionsThatHaveClosed[] = $newSection;
+								}
+								
+								//	Check for room changes
+								if($oldSection->buildingAndRoom != $newSection->buildingAndRoom){
+									$this->sectionsThatHaveNewRooms[] = $newSections;
+								}
+								
+								//	Check for unlisted professors
+								if($oldSection->hasProfessor() && !$newSection->hasProfessor()){
+									$this->sectionsThatNoLongerHaveProfessors[] = $newSection;
+								}
+								
+								//	Check for newly listed professors
+								if(!$oldSection->hasProfessor() && $newSection->hasProfessor()){
+									$this->sectionsThatHaveNewProfessors[] = $newSection;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		
+		//
+		//	Finds changes in the courses
+		//
+		
+		function findCourseChanges(){
+		
+			//
+			//	First scan existing data...
+			//
+			
+			foreach($this->oldData as $oldCourse){
+				
+				//	Find the matching new course
+				$newCourse = courseFromSetMatchingCourse($this->newData, $oldCourse);
+				
+				//	If the new course is null, it's been cancelled
+				if($newCourse == null){
+					$this->cancelledCourses[] = $oldCourse;
+				}
+				
+				else if($newCourse != null){
+					
+					$numOfSectionsForOldCourse = count($oldCourse->sections);
+					$numOfSectionsForNewCourse = count($newCourse->sections);
+					
+					//	If the number of sections aren't matching, 
+					//	we should see which ones have changed.
+					if($numOfSectionsForOldCourse != $numOfSectionsForNewCourse){
+
+						//
+						//	Check for section creation/cancellation
+						//
+			
+						$addedSections = sectionsAddedToCourse($oldCourse, $newCourse);
+						$removedSections = sectionsRemovedFromCourse($oldCourse, $newCourse);
+			
+						$this->newCourseSections = array_merge($this->newCourseSections, $addedSections);
+						$this->cancelledCourseSections = array_merge($this->cancelledCourseSections, $removedSections);
+													
+					}
+				}
+				
+			
+			}
+			
+			//
+			//	Check for new courses
+			//
+	
+			foreach($this->newData as $newCourse){
+				if(courseFromSetMatchingCourse($this->oldData, $newCourse) == null){
+					$this->newCourses[] = $newCourse;
+				}
+			}
+
+		}
+		
+		//
+		//	Find a course from a set matching a given course.
+		//	Matches are determined by name.
+		//
+		
+		function courseFromSetMatchingCourse($courses, $courseToMatch){
+			foreach($courses as $course){
+				if($course->name == $courseToMatch->name){
+					return $course;
+				}
+			}
+			return null;
+		}
+		
+		//
+		//	Track sections that were removed
+		//
+		
+		function sectionsRemovedFromCourse($oldCourse, $newCourse){
+		
+			//Ensure we have two valid courses
+			if(is_null($newCourse) || is_null($oldCourse)){
+				return array();
+			}
+		
+			// Track the removed sections
+			$removedSections = array();
+			
+			//	for each old section
+			foreach($oldCourse->sections as $oldSection){
+				
+				//	Assume the section was removed
+				$sectionWasRemoved = true;
+				
+				//	Look for a matching section,
+				//	if we find it, the section wasn't 
+				//	removed. Otherwise, it was.
+				foreach($newCourse->sections as $newSection){
+					if($oldSection->code == $newSection->code){
+						$sectionWasRemoved = false;
+					}
+				}
+				
+				//	If a section was removed, we want 
+				//	to know about it.
+				
+				if($sectionWasRemoved == true){
+					$removedSections[] = $oldSection;
+				}
+				
+			}
+			
+			return $removedSections;
+		}
+		
+		//
+		//	Track sections that were added
+		//
+		
+		function sectionsAddedToCourse($oldCourse, $newCourse){
+			
+			//Ensure we have two valid courses
+			if(is_null($newCourse) || is_null($oldCourse)){
+				return array();
+			}
+		
+			// Track the removed sections
+			$addedSections = array();
+			
+			//	for each old section
+			foreach($newCourse->sections as $newSection){
+				
+				//	Assume the section was removed
+				$sectionWasAdded = true;
+				
+				//	Look for a matching section,
+				//	if we find it, the section wasn't 
+				//	added. Otherwise, it was.
+				foreach($oldCourse->sections as $oldSection){
+					if($oldSection->code == $newSection->code){
+						$sectionWasAdded = false;
+					}
+				}
+				
+				//	If a section was added, we want 
+				//	to know about it.
+				
+				if($sectionWasAdded == true){
+					$addedSections[] = $newSection;
+				}
+			}		
+		}
 		
 	}
 }

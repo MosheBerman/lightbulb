@@ -63,11 +63,11 @@ class Course
 	function description(){
 
 		$description = " ------------- Course: -------------" . "\n";
-		$description .= "Name: " . $this->name . "\n"; 
-		$description .= "Credits: " . $this->credits . "\n";
-		$description .= "Hours: " . $this->hours . "\n"; 
-		$description .= "Division: " . $this->division  . "\n"; 
-		$description .= "Subject: " . $this->subject . "\n"; 
+		$description .= "" . $this->name . ": "; 
+		$description .= " " . $this->credits . " credits,";
+		$description .= " " . $this->hours . " hours,"; 
+		$description .= " " . $this->division  . ","; 
+		$description .= " " . $this->subject . "\n"; 
 	
 		$numberOfSections = count($this->sections);
 		
@@ -133,12 +133,12 @@ class Section
 	}
 
 	function description(){
-		$description = "Section: " . $this->section . "\n";
-		$description .= "Code: " . $this->code . "\n";
-		$description .= "Seats: " . $this->openSeats . "\n"; 		
-		$description .= "Day and Time: " . $this->dayAndTime . "\n"; 		
-		$description .= "Instructor: " . $this->instructor . "\n";
-		$description .= "Where: " . $this->buildingAndRoom . "\n"; 				
+		$description = "Section: " . $this->section . ", ";
+		$description .= "Code: " . $this->code . ", ";
+		$description .= " " . $this->openSeats . " open seats, "; 		
+		$description .= " " . $this->dayAndTime . ", "; 		
+		$description .= "Instructor: " . $this->instructor . ", ";
+		$description .= " in " . $this->buildingAndRoom . ", "; 				
 		$description .= "Online: " . $this->isOnline . "\n"; 
 
 		return $description;				
@@ -151,8 +151,8 @@ class Section
 	
 	function SQLStatement($courseID){
 	
-		$query = "INSERT INTO Sections (courseID, section, code, openSeats, dayAndTime, buildingAndRoom, isOnline)" .
-		" VALUES('".$courseID."', '".$this->section."', '".$this->code."', '".$this->openSeats."', '".$this->dayAndTime."', '".$this->buildingAndRoom."', '".$this->isOnlineAsBool()."')";
+		$query = "INSERT INTO Sections (courseID, section, code, openSeats, dayAndTime, buildingAndRoom, isOnline, instructor)" .
+		" VALUES('".$courseID."', '".$this->section."', '".$this->code."', '".$this->openSeats."', '".$this->dayAndTime."', '".$this->buildingAndRoom."', '".$this->isOnlineAsBool()."', '" . $this->instructor . "')";
 		
 		return $query;
 	}
@@ -163,6 +163,30 @@ class Section
 	
 	function isOnlineAsBool(){
 		return intval(($this->isOnline == "Yes"));
+	}
+	
+	//
+	//	Returns true if there are no seats
+	//
+	
+	function isClosed(){
+		return $this->openSeats == 0;
+	}
+	
+	//
+	//	Returns true if there are 1 or more seats
+	//
+	
+	function isOpen(){
+		return $this->openSeats > 0;
+	}
+	
+	//
+	//	Returns true if a professor is listed
+	//
+	
+	function hasProfessor(){
+		return $this->instructor != "Staff";
 	}
 }
 
