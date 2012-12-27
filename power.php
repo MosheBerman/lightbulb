@@ -21,13 +21,7 @@
 	//	Include some files
 	//
 
-	include('course.php');
-	include('differ.php');
-	include('mail.php');
-	include('serializer.php');
-	include('timer.php');
-	include('utils.php');
-	include('scraper.php');
+	require_once('system.php');
 	
 	//
 	//	Setup timers for tracking operation times.
