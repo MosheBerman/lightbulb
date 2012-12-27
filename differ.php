@@ -10,7 +10,7 @@ differ.php
 
 
 */
-namespace lightbulb{
+namespace Lightbulb{
 	class Differ{
 		
 		private $oldData;

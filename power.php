@@ -73,8 +73,10 @@
 	// The connection
 	//
 
-	$CONNECTION_STRING = 'mysql:host=127.0.0.1;dbname=fluorescent;charset=utf8', '***REDACTED***', '***REDACTED***';
-	$serializer = new Lightbulb\Serializer($CONNECTION_STRING);	
+	$CONNECTION_STRING = 'mysql:host=127.0.0.1;dbname=fluorescent;charset=utf8';
+	$username = '***REDACTED***';
+	$password = '***REDACTED***';
+	$serializer = new Lightbulb\Serializer($CONNECTION_STRING, $username, $password);	
 
 	$failed = $serializer->hasFailed();
 	

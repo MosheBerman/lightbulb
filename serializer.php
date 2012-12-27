@@ -18,6 +18,8 @@ namespace Lightbulb{
 		
 		private $connection; 			// PDO object
 		private $connectionString;		// String
+		private $username;
+		private $password;
 
 		private $isDatabaseEmpty;
 
@@ -26,7 +28,7 @@ namespace Lightbulb{
 
 		private $failed;
 
-		function __construct($_connectionString = null)
+		function __construct($_connectionString = null, $_username = null, $_password = null)
 		{
 
 			//
@@ -34,9 +36,12 @@ namespace Lightbulb{
 			//	connect and try to deserialize.
 			//
 
-			if (!is_null($_connectionString)) {
+			if (!is_null($_connectionString) && !is_null($_username)) {
 
 				$this->setConnectionString($_connectionString);
+				$this->username = $_username;
+				$this->password = $_password;
+				
 				$this->failed = !$this->connect();	
 
 				if(!$this->failed){
