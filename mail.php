@@ -24,7 +24,11 @@ namespace Lightbulb{
 		/* Send message */
 
 		function sendMessage($message){
+			$headers = 'From: ' . $this->getFrom() . '\n';
+			$headers .= 'Reply-To: ' . $this->getFrom() . '\n';
+			$headers .= 'X-Mailer: Lightbulb 1.0';
 
+			mail($this->getTo(), $this->getSubject(), $message, $headers);
 		}
 		
 		/* Getters and setters */
