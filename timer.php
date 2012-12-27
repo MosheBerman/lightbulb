@@ -24,12 +24,12 @@ namespace Lightbulb{
 			$this->operationName = $operation;
 			$this->timeInSeconds = microtime(true);
 		
-			echo "Starting " . $this->operationName . "...\n";
+			echo "Start " . $this->operationName . "...\n";
 		}
 	
 		function stop(){
 			$this->timeInSeconds = microtime(true) - $this->timeInSeconds;
-			echo $this->operationName . " took " . $this->timeInSeconds . " seconds.\n";
+			echo ucfirst($this->operationName) . " took " . $this->timeInSeconds . " seconds.\n";
 		}
 	}	
 }

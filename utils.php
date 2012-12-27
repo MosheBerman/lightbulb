@@ -53,7 +53,7 @@
 		$secondRow = $table->getElementsByTagName('tr')->item(1);	
 		$cells = $secondRow->getElementsByTagName('td');
 
-		$course = new Lightbulb\Course;
+		$course = new Course;
 
 		$course->startDate = valueForElementInList(0, $cells);
 		$course->endDate = valueForElementInList(1, $cells);		
@@ -95,7 +95,7 @@
 		}
 
 		//	Make a section
-		$section = new Lightbulb\Section;
+		$section = new Section;
 
 		//populate it
 		$section->section = valueForElementInList(0, $cells);

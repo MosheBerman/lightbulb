@@ -42,13 +42,13 @@
 	$CUNY_URL = "http://student.cuny.edu/cgi-bin/SectionMeeting/SectMeetEval.pl?DB=ORACLE_A&STYLE=NEW&COLLEGECODE=05";
 	$scraper = new Lightbulb\Scraper($CUNY_URL);
 	
-	$globalTimer->start("Lightulb 1.0 alpha");
+	$globalTimer->start("Lightulb version 1.0a");
 	
 	//
 	//	CURL request
 	//
 
-	$timer->start("cURL request");
+	$timer->start("requesting page via cURL");
 	$scraper->runCURL();
 	$timer->stop();
 
@@ -56,7 +56,7 @@
 	//	Announce cleanup
 	//
 
-	$timer->start("HTML Cleanup");
+	$timer->start("cleaning HTML");
 	$scraper->cleanUpHTML();
 	$timer->stop();
 
@@ -64,7 +64,7 @@
 	//	Announce DOMDocument
 	//
 
-	$timer->start("Load HTML document");
+	$timer->start("Loading HTML into DOM");
 	$scraper->parseHTML();
 	$timer->stop();
 
@@ -72,7 +72,7 @@
 	//	Pull records from the database here.
 	//
 		
-	$timer->start("Database load");
+	$timer->start("loading database");
 	
 	// A flag denoting if we should bother comparing and alerting 
 	$isDatabaseEmpty = false;

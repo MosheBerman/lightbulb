@@ -12,7 +12,6 @@ This file defines a course class for storing class information.
 * 
 */
 
-namespace Lightbulb{
 	class Course
 	{
 		
@@ -203,5 +202,5 @@ namespace Lightbulb{
 			return $this->instructor != "Staff";
 		}
 	}
-}
+
 ?>

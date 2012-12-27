@@ -4,8 +4,6 @@
 
 namespace Lightbulb{
 
-	include('Mail.php');
-
 	class Mailman{
 	
 		private $to;
