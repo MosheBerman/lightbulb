@@ -10,7 +10,7 @@
 
 */
 
-namespace lightbulb{
+namespace Lightbulb{
 	class Timer{
 	
 		private $timeInSeconds;

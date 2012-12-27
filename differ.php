@@ -10,8 +10,8 @@ differ.php
 
 
 */
-
-class Differ{
+namespace lightbulb{
+	class Differ{
 		
 		private $oldData;
 		private $newData;
@@ -20,7 +20,7 @@ class Differ{
 		public $courseSectionsThatHaveClosed;
 	
 		public $courseSectionsThatHaveNewProfessors;
-		public $coursesThatNoLongerHaveProfessors;
+		public $courseSectionsThatNoLongerHaveProfessors;
 	
 		public $newCourses;
 		public $cancelledCourses;
@@ -28,7 +28,7 @@ class Differ{
 		public $newCourseSections;
 		public $cancelledCourseSections;
 		
-		private $sectionsThatHaveNewRooms;
+		public $sectionsThatHaveNewRooms;
 		
 		//
 		//	Constructor
@@ -37,12 +37,12 @@ class Differ{
 		function __construct($_oldData = array(), $_newData = array()){			
 			
 			if(count($_oldData) == 0){
-				echo "DIFFER: No old data to diff.";
+				echo "WARNING [DIFFER]: No old data to diff.";
 				return null;
 			}		
 			
 			if(count($_newData) == 0){
-				echo "DIFFER: No new data to diff.";
+				echo "WARNING [DIFFER]: No new data to diff.";
 				return null;
 			}					
 			
@@ -67,7 +67,7 @@ class Differ{
 			$this->courseSectionsThatHaveClosed = array();
 			
 			$this->courseSectionsThatHaveNewProfessors = array();
-			$this->coursesThatNoLongerHaveProfessors = array();
+			$this->courseSectionsThatNoLongerHaveProfessors = array();
 			
 			$this->newCourses = array();
 			$this->cancelledCourses = array();
@@ -143,12 +143,12 @@ class Differ{
 								
 								//	Check for unlisted professors
 								if($oldSection->hasProfessor() && !$newSection->hasProfessor()){
-									$this->sectionsThatNoLongerHaveProfessors[] = $newSection;
+									$this->courseSectionsThatNoLongerHaveProfessors[] = $newSection;
 								}
 								
 								//	Check for newly listed professors
 								if(!$oldSection->hasProfessor() && $newSection->hasProfessor()){
-									$this->sectionsThatHaveNewProfessors[] = $newSection;
+									$this->courseSectionsThatHaveNewProfessors[] = $newSection;
 								}
 							}
 						}
@@ -310,40 +310,77 @@ class Differ{
 		
 		/* Convenience check methods */
 		
+		//
+		//	Returns true if there are opened sections
+		//
+		
 		function sectionsHaveOpened(){
-			return count($differ->courseSectionsThatHaveOpened) > 0;
+			return count($this->courseSectionsThatHaveOpened) > 0;
 		}
 		
-		function sectionsHaveClose(){
-			return count($differ->courseSectionsThatHaveClosed) > 0;
+		//
+		//	Returns true if sections have closed
+		//
+		
+		function sectionsHaveClosed(){
+			return count($this->courseSectionsThatHaveClosed) > 0;
 		}
+		
+		//
+		//	Returns true if there are new professors
+		//
 		
 		function sectionsHaveNewProfessors(){
 			return count($this->courseSectionsThatHaveNewProfessors) > 0;
 		}
 		
+		//
+		//	Return true if professors have changed to STAFF
+		//
+		
 		function sectionsLostProfessors(){
-			return count($this->coursesThatNoLongerHaveProfessors) > 0;			
+			return count($this->courseSectionsThatNoLongerHaveProfessors) > 0;			
 		}
+		
+		//
+		//	Returns true if there are new courses
+		//
 		
 		function hasNewCourses(){
 			return count($this->newCourses) > 0;			
 		}
 		
+		//
+		//	Returns true if there are cancelled courses
+		//
+		
 		function hasCancelledCourses(){
 			return count($this->cancelledCourses) > 0;			
 		}
+		
+		//
+		//	Returns true if there are new sections
+		//
 		
 		function hasNewSections(){
 			return count($this->newCourseSections) > 0;			
 		}		
 		
+		//
+		//	Returns true if there are cancelled sections
+		//
+		
 		function hasCancelledSections(){
 			return count($this->cancelledCourseSections) > 0;			
 		}			
 		
+		//
+		//	Returns true if there are room changes
+		//
+		
 		function hasRoomChanges(){
 			return count($this->sectionsThatHaveNewRooms) > 0;			
 		}		
+	}
 }
 ?>
