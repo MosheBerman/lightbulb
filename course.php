@@ -119,6 +119,7 @@ class Section
 	public $instructor;
 	public $buildingAndRoom;
 	public $isOnline;
+	public $course;
 
 	function Section($id = '', $courseID = '', $section = '', $code = '', $openSeats = 0, $dayAndTime = '', $instructor = '', $buildingAndRoom = '', $isOnline = ''){
 		$this->id = $id;
@@ -132,6 +133,10 @@ class Section
 		
 	}
 
+	//
+	//	Description Method
+	//
+	
 	function description(){
 		$description = "Section: " . $this->section . ", ";
 		$description .= "Code: " . $this->code . ", ";
@@ -142,6 +147,14 @@ class Section
 		$description .= "Online: " . $this->isOnline . "\n"; 
 
 		return $description;				
+	}
+	
+	//
+	//	Short description
+	//
+	
+	function shortDescription(){
+		echo $this->course->name . " section " . $this->section . ", code " . $this->code;
 	}
 	
 	//

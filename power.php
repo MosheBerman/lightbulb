@@ -398,7 +398,7 @@
 	$timer->stop();
 	
 	//
-	//
+
 	$timer->start("Checking changes");
 	
 	//
@@ -407,17 +407,32 @@
 	//	separate data object.
 	//
 	
-	$differ = new lightbulb\Differ();	
+	$differ = new Differ($storedCourses, $scrapedCourses);	
 	
 	if($isDatabaseEmpty == false){	
 		
+		$differ->registerChanges();
 		
+		
+		if($differ->sectionsHaveOpened()){
+			echo "The following sections have opened:\n";
+			showSections($differ->courseSectionsThatHaveOpened);
+		}
+		
+		if($differ->sectionsHaveClosed()){
+			echo "The following sections have closed:\n";
+			showSections($differ->courseSectionsThatHaveClosed);		
+		}
+		
+		/*
 		showCoursesWithTitle("Opened Sections: ", $differ->courseSectionsThatHaveOpened);
 		showCoursesWithTitle("Closed Sections: ", $differ->courseSectionsThatHaveClosed);
 		showCoursesWithTitle("New Professors: ", $differ->courseSectionsThatHaveNewProfessors);
 		showCoursesWithTitle("Removed Professors: ", $differ->coursesThatNoLongerHaveProfessors);
 		showCoursesWithTitle("New Courses: ",$differ->newCourses);
 		showCoursesWithTitle("Cancelled: " , $differ->cancelledCourses);
+		*/
+		
 	}
 	
 	//

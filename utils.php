@@ -145,6 +145,7 @@
 
 			$course->addSection($section);
 			$sections[] = $section;
+			$section->course = $course;
 		}
 
 		return $sections;
@@ -232,6 +233,16 @@
 	}
 	
 	//
+	//	Show sections
+	//
+	
+	function showSections(Array $sections){
+			foreach($sections as $section){
+				echo $section->shortDescription() . "\n";
+			}
+	}
+	
+	//
 	//	Returns the string with no newlines
 	//
 	
@@ -240,7 +251,9 @@
 	}
 	
 	//
-	//
+	//	Connect sections and courses together, since
+	//	they come out of the database disjunct from
+	//	each other.
 	//
 	
 	function installSectionsIntoCourses($storedSections, &$storedCourses){
@@ -248,6 +261,7 @@
 		foreach($storedSections as $section){
 			$course = courseForID($section->courseID, $storedCourses);
 			$course->addSection($section);	
+			$section->course = $course;
 		}
 	}
 	
