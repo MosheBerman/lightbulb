@@ -20,10 +20,29 @@ namespace Lightbulb{
 		private $curl_handle;
 		private $url;
 		private $response;
+
+		private $local;
+		private $path;
 		
-		function __construct($url){
+		function __construct($url = null, $auto = false){
+
+			//
+			//	If the local is true,
+			//	then load up the local file
+			//	and automatically process it.
+			//
+
+			
+
 			$this->url = $url;
 			$this->configure();	
+
+			if($auto == true){
+				$this->runCURL();
+				$this->cleanUpHTML();
+				$this->parseHTML();
+			}
+
 		}
 		
 		//
@@ -81,6 +100,18 @@ namespace Lightbulb{
 		function runCURL(){
 			$this->response = curl_exec($this->curl_handle);
 		}
+
+		//
+		//	Loads a local file - used  for
+		//  testing, instead of pulling from 
+		//	the live server, we load a
+		//	local file directly into the 
+		//	response field and use that.
+		//
+
+		function loadFile($filename){
+			$this->response = readfile($filename);
+		}
 		
 		//
 		//	Clean up pulled HTML
@@ -94,6 +125,7 @@ namespace Lightbulb{
 			//
 			
 			if(is_null($this->response)){
+				echo "WARNING [SCRAPER] : No response data to clean up.\n";
 				return;
 			}
 		

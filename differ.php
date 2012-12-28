@@ -37,12 +37,12 @@ namespace Lightbulb{
 		function __construct($_oldData = array(), $_newData = array()){			
 			
 			if(count($_oldData) == 0){
-				echo "WARNING [DIFFER]: No old data to diff.";
+				echo "WARNING [DIFFER]: No old data to diff.\n";
 				return null;
 			}		
 			
 			if(count($_newData) == 0){
-				echo "WARNING [DIFFER]: No new data to diff.";
+				echo "WARNING [DIFFER]: No new data to diff.\n";
 				return null;
 			}					
 			
