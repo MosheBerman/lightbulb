@@ -55,8 +55,14 @@
 
 	}
 
+	//
+	//	Test sendmail functionality.
+	//
 
+	$mailtest = new TestCase("");
+	$mailtest->testMail();
 
+	
 
 
 

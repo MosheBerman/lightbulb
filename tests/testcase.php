@@ -35,12 +35,7 @@
 
 		function testProperty($property){
 
-			if (!is_null($_filename)) {
-				$this->filename = $_filename;
-				die("no filename.\n");
-			}
-
-			$dir = "/Users/moshe/Code/Web/lightbulb/tests/pages/";
+			$dir = "./pages/";
 
 			$original = new lightbulb\Scraper($dir . "original.html", true);
 			$testCase = new lightbulb\Scraper($dir .$this->filename.".html", true);
@@ -50,7 +45,7 @@
 
 			$this->result = $differ->{$property};
 
-			return $result;
+			return $this->result;
 		}
 
 		//
@@ -59,6 +54,17 @@
 
 		function success(){
 			return (bool)(count($this->result) > 0);
+		}
+
+		//
+		//	Tests sending email
+		//
+
+		function testMail(){
+
+			$recipients = array('***REDACTED***', '***REDACTED***', '***REDACTED***');
+			$mailman = new lightbulb\Mailman("***REDACTED***", "", "Registration Alert", $recipients);
+			$mailman->sendMessage("Hello there from the Lightbulb mailman. This is a test email.");
 		}
 	}
 
