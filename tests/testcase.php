@@ -14,6 +14,8 @@
 
 		public $filename;
 
+		public $result;
+
 		//
 		//	Create a new test, optionally
 		//	passing in an html file.
@@ -38,13 +40,25 @@
 				die("no filename.\n");
 			}
 
-			$original = new lightbulb\Scraper("http://lightbulb.mosheberman.com/pages/original.html", true);
-			$testCase = new lightbulb\Scraper("http://lightbulb.mosheberman.com/pages/".$this->filename.".html", true);
+			$dir = "/Users/moshe/Code/Web/lightbulb/tests/pages/";
+
+			$original = new lightbulb\Scraper($dir . "original.html", true);
+			$testCase = new lightbulb\Scraper($dir .$this->filename.".html", true);
 
 			$differ = new lightbulb\Differ($original->courses, $testCase->courses);
 			$differ->registerChanges();
 
-			return count($differ->{$property}) > 0;
+			$this->result = $differ->{$property};
+
+			return $result;
+		}
+
+		//
+		//	Returns true if the test yielded a result
+		//
+
+		function success(){
+			return (bool)(count($this->result) > 0);
 		}
 	}
 

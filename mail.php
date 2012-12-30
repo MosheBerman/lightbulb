@@ -15,10 +15,10 @@ namespace Lightbulb{
 		private $from;
 		
 		function __construct($from = "", $message = "", $subject = "", $to = array()){
-			setFrom($from);
-			setMessage($message);
-			setSubject($subject);
-			setTo($to);
+			$this->setFrom($from);
+			$this->setMessage($message);
+			$this->setSubject($subject);
+			$this->setTo($to);
 		}
 
 		/* Send message */
@@ -28,7 +28,18 @@ namespace Lightbulb{
 			$headers .= 'Reply-To: ' . $this->getFrom() . '\n';
 			$headers .= 'X-Mailer: Lightbulb 1.0';
 
-			mail($this->getTo(), $this->getSubject(), $message, $headers);
+			$toString = "";
+
+			foreach($this->getTo() as $address){
+				
+				if($toString != ""){
+					$toString .= ", ";
+				}
+
+				$toString .=  $address;
+			}
+
+			mail($toString, $this->getSubject(), $message, $headers);
 		}
 		
 		/* Getters and setters */

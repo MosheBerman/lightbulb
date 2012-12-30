@@ -53,7 +53,7 @@ This file defines a course class for storing class information.
 		//
 
 		function addSection($section){
-			array_push($this->sections, $section);
+			$this->sections[$section->code] = $section;
 		}
 
 		//

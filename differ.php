@@ -38,12 +38,10 @@ namespace Lightbulb{
 			
 			if(count($_oldData) == 0){
 				echo "WARNING [DIFFER]: No old data to diff.\n";
-				return null;
 			}		
 			
 			if(count($_newData) == 0){
 				echo "WARNING [DIFFER]: No new data to diff.\n";
-				return null;
 			}					
 			
 			$this->oldData = $_oldData;
@@ -128,27 +126,27 @@ namespace Lightbulb{
 								
 								//	Check for newly opened sections
 								if($oldSection->isClosed() && $newSection->isOpen()){
-									$this->courseSectionsThatHaveOpened[] = $newSection;
+									$this->courseSectionsThatHaveOpened[$newSection->code] = $newSection;
 								}
 								
 								// Check for newly closed sections
 								if($oldSection->isOpen() && $newSection->isClosed()){
-									$this->courseSectionsThatHaveClosed[] = $newSection;
+									$this->courseSectionsThatHaveClosed[$newSection->code] = $newSection;
 								}
 								
 								//	Check for room changes
 								if($oldSection->buildingAndRoom != $newSection->buildingAndRoom){
-									$this->sectionsThatHaveNewRooms[] = $newSection;
+									$this->sectionsThatHaveNewRooms[$newSection->code] = $newSection;
 								}
 								
 								//	Check for unlisted professors
 								if($oldSection->hasProfessor() && !$newSection->hasProfessor()){
-									$this->courseSectionsThatNoLongerHaveProfessors[] = $newSection;
+									$this->courseSectionsThatNoLongerHaveProfessors[$newSection->code] = $newSection;
 								}
 								
 								//	Check for newly listed professors
 								if(!$oldSection->hasProfessor() && $newSection->hasProfessor()){
-									$this->courseSectionsThatHaveNewProfessors[] = $newSection;
+									$this->courseSectionsThatHaveNewProfessors[$newSection->code] = $newSection;
 								}
 							}
 						}
@@ -175,7 +173,7 @@ namespace Lightbulb{
 				
 				//	If the new course is null, it's been cancelled
 				if($newCourse == null){
-					$this->cancelledCourses[] = $oldCourse;
+					$this->cancelledCourses[$oldCourse->name] = $oldCourse;
 				}
 				
 				else if($newCourse != null){
@@ -191,9 +189,10 @@ namespace Lightbulb{
 						//	Check for section creation/cancellation
 						//
 			
-						$addedSections = sectionsAddedToCourse($oldCourse, $newCourse);
-						$removedSections = sectionsRemovedFromCourse($oldCourse, $newCourse);
-			
+						$addedSections = $this->sectionsAddedToCourse($oldCourse, $newCourse);
+						$removedSections = $this->sectionsRemovedFromCourse($oldCourse, $newCourse);
+	
+
 						$this->newCourseSections = array_merge($this->newCourseSections, $addedSections);
 						$this->cancelledCourseSections = array_merge($this->cancelledCourseSections, $removedSections);
 													
@@ -235,13 +234,14 @@ namespace Lightbulb{
 		
 		function sectionsRemovedFromCourse($oldCourse, $newCourse){
 		
-			//Ensure we have two valid courses
-			if(is_null($newCourse) || is_null($oldCourse)){
-				return array();
-			}
-		
 			// Track the removed sections
 			$removedSections = array();
+
+			//Ensure we have two valid courses
+			if(is_null($newCourse) || is_null($oldCourse)){
+				return $removedSections;
+			}
+		
 			
 			//	for each old section
 			foreach($oldCourse->sections as $oldSection){
@@ -262,7 +262,7 @@ namespace Lightbulb{
 				//	to know about it.
 				
 				if($sectionWasRemoved == true){
-					$removedSections[] = $oldSection;
+					$removedSections[$oldSection->code] = $oldSection;
 				}
 				
 			}
@@ -303,9 +303,11 @@ namespace Lightbulb{
 				//	to know about it.
 				
 				if($sectionWasAdded == true){
-					$addedSections[] = $newSection;
+					$addedSections[$newSection->code] = $newSection;
 				}
-			}		
+			}
+
+			return $addedSections;		
 		}
 		
 		/* Convenience check methods */

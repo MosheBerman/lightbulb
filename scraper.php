@@ -27,18 +27,14 @@ namespace Lightbulb{
 		function __construct($url = null, $auto = false){
 
 			//
-			//	If the local is true,
-			//	then load up the local file
-			//	and automatically process it.
+			//	Set up a URL and configure cURL
 			//
-
-			
 
 			$this->url = $url;
 			$this->configure();	
 
 			if($auto == true){
-				$this->runCURL();
+				$this->response = file_get_contents($url);
 				$this->cleanUpHTML();
 				$this->parseHTML();
 			}
@@ -250,7 +246,7 @@ namespace Lightbulb{
 
 				else if(elementIsCourseHeaderTable($table)){
 					$course = courseFromTable($table);
-					$this->courses[] = $course;
+					$this->courses[$course->name] = $course;
 				}
 
 				//

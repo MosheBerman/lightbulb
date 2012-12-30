@@ -145,7 +145,7 @@
 			}
 
 			$course->addSection($section);
-			$sections[] = $section;
+			$sections[$section->code] = $section;
 			$section->course = $course;
 		}
 

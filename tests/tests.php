@@ -48,7 +48,10 @@
 
 		echo 'Testing ' . $test . "..." . "\n";
 
-		echo 'Result: ' .$testcase->testProperty($tests[$test]);
+		$testcase->testProperty($tests[$test]);
+
+		echo "Result: " . $testcase->success() . "\n";
+
 
 	}
 

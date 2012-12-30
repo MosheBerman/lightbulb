@@ -146,20 +146,7 @@
 	//
 	
 	$timer->stop();
-	
-	$timer->start("Refreshing Database");
-	
-	//
-	//	Store the new data in the database.
-	//
-	
-	$serializer->serialize($scraper->courses);
-	
-	//
-	//
-	//
-	
-	$timer->stop();
+
 	
 	$timer->start("Alerting Users");
 	
@@ -174,10 +161,38 @@
 		//			and send appropriate alerts. 
 		//
 
+		$recipients = array('***REDACTED***', '***REDACTED***');
+
+		$mailman = new lightbulb\Mailman("cunyalerts@gmail.com", "", "Registration Alert", $recipients);
+
+		foreach ($differ->courseSectionsThatHaveOpened as $openSection) {
+
+			//	Hack for miriam
+			if ($section->course->name == 'ECON.   3400 (340.0)') {
+				$recipients[] = 'miriamberman1@gmail.com';
+				$mailman = new lightbulb\Mailman("cunyalerts@gmail.com", "", "Registration Alert", $recipients);			
+			}
+
+			$mailman->sendMessage("Hey! Psst! \n\n" . $openSection->shortDescription() . " has opened up.");
+		}
 
 	
 	}
 
+	$timer->stop();
+	
+		$timer->start("Refreshing Database");
+	
+	//
+	//	Store the new data in the database.
+	//
+	
+	$serializer->serialize($scraper->courses);
+	
+	//
+	//
+	//
+	
 	$timer->stop();
 	
 	//
