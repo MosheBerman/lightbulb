@@ -382,7 +382,36 @@ namespace Lightbulb{
 		
 		function hasRoomChanges(){
 			return count($this->sectionsThatHaveNewRooms) > 0;			
-		}		
+		}
+
+		//
+		//	Returns true if there are any section changes
+		//
+
+		function hasSectionChanges(){
+
+			return $this->sectionsHaveOpened() 
+			|| $this->sectionsHaveClosed() 
+			|| $this->sectionsHaveNewProfessors()
+			|| $this->sectionsLostProfessors()
+			|| $this->hasNewSections()
+			|| $this->hasCancelledSections()
+			|| $this->hasRoomChanges();
+
+		}
+
+		function hasCourseChanges(){
+			return $this->hasNewCourses()
+			|| $this->hasCancelledCourses();
+		}
+
+		//
+		//	Returns true if there are any changes
+		//		
+
+		function hasChanges(){
+			return  $this->hasSectionChanges() || $this->hasCourseChanges();
+		}
 	}
 }
 ?>

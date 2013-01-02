@@ -154,34 +154,16 @@
 	//	Send out alerts to users
 	//
 	
-	if($serializer->hasFailed() == false){
 		
-		//
-		//	TODO: 	Pull out users that want alerts
-		//			and send appropriate alerts. 
-		//
+	$alerter = new lightbulb\Alerter($differ, array());
 
-		$recipients = array('***REDACTED***', '***REDACTED***');
-
-		$mailman = new lightbulb\Mailman("cunyalerts@gmail.com", "", "Registration Alert", $recipients);
-
-		foreach ($differ->courseSectionsThatHaveOpened as $openSection) {
-
-			//	Hack for miriam
-			if ($section->course->name == 'ECON.   3400 (340.0)') {
-				$recipients[] = 'miriamberman1@gmail.com';
-				$mailman = new lightbulb\Mailman("cunyalerts@gmail.com", "", "Registration Alert", $recipients);			
-			}
-
-			$mailman->sendMessage("Hey! Psst! \n\n" . $openSection->shortDescription() . " has opened up.");
-		}
-
-	
+	if($alerter){
+		$alerter->alert();
 	}
 
 	$timer->stop();
 	
-		$timer->start("Refreshing Database");
+	$timer->start("Refreshing Database");
 	
 	//
 	//	Store the new data in the database.

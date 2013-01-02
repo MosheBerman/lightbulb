@@ -82,6 +82,18 @@ This file defines a course class for storing class information.
 		}
 		
 		//
+		//
+		//
+
+		function shortDescription(){
+
+			$description = $this->name;
+
+			return $description;
+		}
+
+
+		//
 		//	This method returns an SQL statement for itself to be 
 		//	entered into the database.
 		//

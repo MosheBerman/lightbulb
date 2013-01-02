@@ -10,12 +10,14 @@
 
 */
 
+	include('alerter.php');
 	include('course.php');
 	include('differ.php');
 	include('mail.php');
 	include('serializer.php');
 	include('timer.php');
+	include('user.php');
 	include('utils.php');
 	include('scraper.php');
-	
+
 ?>
