@@ -153,7 +153,6 @@
 	//
 	//	Send out alerts to users
 	//
-	
 		
 	$alerter = new lightbulb\Alerter($differ, array());
 

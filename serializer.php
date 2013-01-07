@@ -17,7 +17,7 @@ namespace Lightbulb{
 	{
 		
 		private $connection; 			// PDO object
-		private $connectionString;		// String
+		private $connectionString;		// PDO Connection String
 		private $username;
 		private $password;
 
@@ -77,7 +77,7 @@ namespace Lightbulb{
 
 		function connect(){
 			try{
-				$this->connection = new PDO($this->connectionString);
+				$this->connection = new PDO($this->connectionString, $this->username, $this->password);
 				$this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				return true;
 			}

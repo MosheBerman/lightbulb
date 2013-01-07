@@ -17,6 +17,7 @@
 	include('serializer.php');
 	include('timer.php');
 	include('user.php');
+	include('usermanager.php');
 	include('utils.php');
 	include('scraper.php');
 
