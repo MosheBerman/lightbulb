@@ -1,138 +1,86 @@
 <?php
 
-require_once '../private/CAS/CAS.php';
-
-phpCAS::client(CAS_VERSION_2_0, 'login.brooklyn.cuny.edu', 443, '/cas');
-// phpCAS::setNoCasServerValidation();
-phpCAS::setCasServerCACert("../private/CAS/BrooklynCollegeLogin.cert");
-
-
 //
-//	Force forceAuthentication
+//
 //
 
-$isLoggedIn = phpCAS::isAuthenticated();
+require('system.php');
 
- // if (!$isLoggedIn && isset($_REQUEST['login'])) {
-	phpCAS::forceAuthentication();
- // }
-
+$user_manager = new Lightbulb\UserManager;
+$UI_manager = new Lightbulb\UIManager;
 
 //
-//	Optional Logout
-//
+//	Attempt to log in
+//	
 
-if ($isLoggedIn && isset($_REQUEST['logout'])) {
-	phpCAS::logout();
-}
+if (isset($_REQUEST['action'])) {
 
-//
-//	If we've made it this far, we've logged in.
-//	So, we want to check if the user is in the 
-//	database. If the user is, show their info.
-//	If not, we need to add them and let em sign 
-//	up for classes.
-//
-
-if ($isLoggedIn){
-	
-	//
-	//	Prepare the connection
-	//
-
-	$CONNECTION_STRING = 'mysql:host=127.0.0.1;dbname=fluorescent;charset=utf8';
-	$username = '***REDACTED***';
-	$password = '***REDACTED***';
-
-	$connection = new PDO($CONNECTION_STRING);
-
-	$userQuery = $connection->query('SELECT * FROM Users');
-
-	$userProperties = array('id', 'number', 'email', 'username');
-
-	$userQuery->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'User', $userProperties);
+	$action = $_REQUEST['action'];
 
 	//
-	//	Pull the users from the database
+	//	Read out the request
 	//
 
-	$users = $userQuery->fetchAll();
+	$username = $_REQUEST['username'];
+	$password = $_REQUEST['password'];
+	$confirm = $_REQUEST['confirm'];
 
 	//
-	//	We want to check if the user
-	//	exists and if it doesn't add
-	//	them. 
+	//	Take appropriate action
 	//
 
-	$userExists = false;
-	$workingUser = null;
-
-	$username = phpCAS::getUser();
-
-	foreach ($users as $user) {
-		if ($user->username == $username) {
-			$userExists = true;
-			$workingUser = $user;
-			break;
-		}
+	if($action == 'login'){
+		$user_manager->login($username, $password);
 	}
 
-	if ($userExists == false) {
-	
-		$workingUser = new User(-1, "", "", $username);
-
-		//
-		//	TODO: Store user 
-		//
-
-
-		$sql = $connection->prepare("INSERT INTO USERS(number, email, username) VALUES('','','".$username."')");
-		$sql->execute();
-
+	else if($action == 'registration'){
+		$UI_manager->signupForm();
+		exit();
 	}
 
-	//
-	//	User exists, so lets run any
-	//	relevant actions.
-	//
+	else if($action == 'register'){
 
-	else {
-
-		$needsRedirect = false;
-
-		//
-		//	Save an updated phone number
-		//
-
-		if (isset($_REQUEST['phone'])) {
-
-			$sql = $connection->prepare("UPDATE USERS SET phone=`".$_REQUEST['phone']."` WHERE username = `".$workingUser->username."`");
-			$sql->execute();	
-			$needsRedirect = true;
+		if ($user_manager->usernameExists($username)) {
+			$UI_manager->signupForm("That username exists.");
+			exit();
 		}
 
-		//
-		//	Save an updated email
-		//
+		else if($password != $confirm){
+			$UI_manager->signupForm("Those passwords don't match.");
+			exit();
+		}
 
-		if (isset($_REQUEST['email'])) {	
-			$sql = $connection->prepare("UPDATE USERS SET email=`".$_REQUEST['email']."` WHERE username = `".$workingUser->username."`");
-			$sql->execute();	
-			$needsRedirect = true;
-		}		
+		else {
+			
+			$success = $user_manager->createUser($username, $password);
 
-		//
-		//	At the end, redirect after applying any changes
-		//
+			if($success){
+				$UI_manager->loginForm("User successfully created.");			
+			}
+			else{
+				$UI_manager->loginForm("User creation failed, please try again.");				
+			}
 
-		if($needsRedirect){
-			header("Location:/index.php");
+			exit();
 		}
 	}
 }
 
+//
+//	If the user isn't logged in, 
+//	then show a login form.
+//
 
-echo $isLoggedIn;
+if ($user_manager->isLoggedOut()) {
+	$UI_manager->loginForm();
+	exit();
+}
+else{
+	echo "Welcome.";
+
+	exit();
+}
+
 ?>
 
 

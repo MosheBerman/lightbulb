@@ -11,9 +11,9 @@
 
 */
 
-	include('bcrypt.php');
-
 	namespace lightbulb{
+
+		include('system.php');		
 
 		class User
 		{
@@ -47,7 +47,7 @@
 			//
 
 			function insertStatement(){
-				return "INSERT INTO Users('username', 'password') Values('".$this->username."','".Bcrypt::hash($this->password)."') ";
+				return "INSERT INTO Users(username, password) Values('".$this->username."','".\Bcrypt::hash($this->password)."') ";
 			}
 
 			//
@@ -62,7 +62,7 @@
 			//
 
 			function updateStatement(){
-				return "UPDATE Users password='".$this->password."', email='".$this->email."', number='".$this->number."' where id='"$this->id"'";
+				return "UPDATE Users password='".$this->password."', email='".$this->email."', number='".$this->number."' where id='".$this->id."'";
 			}
 		}
 

@@ -10,18 +10,16 @@
 
 	*/
 
-		include_once("system.php");
-		include('user.php');
-		include('bcrypt.php');
 
 namespace lightbulb{
+
+	include_once("system.php");
+
+	use \PDO as PDO;
 
 	class UserManager{
 
 		private $users;
-
-		private $currentUser;
-		private $isLoggedIn;
 
 		//
 		//	Create a new user manager
@@ -29,6 +27,7 @@ namespace lightbulb{
 
 		function __construct(){
 			$this->users = array();
+			$this->refresh();
 		}
 
 		//
@@ -74,8 +73,12 @@ namespace lightbulb{
 			//	Pull the users from the database
 			//
 
-			$this->users = $userQuery->fetchAll();
+			$this->users = array();
+			$results = $userQuery->fetchAll();
 
+			foreach ($results as $user) {
+				$this->users[] = $user[0];
+			}		
 		}
 
 		//
@@ -84,6 +87,9 @@ namespace lightbulb{
 
 		function createUser($username, $password){
 
+			if (!isset($username) || !isset($password)) {
+				return false;
+			}
 
 			$user = new User($username);
 			$user->password = $password;
@@ -94,7 +100,20 @@ namespace lightbulb{
 			//	Execute the insertion
 			//
 
-			return $connection->prepare($user->InsertStatement())->execute();
+			$insert = $user->insertStatement();
+
+			$sql = $connection->prepare($insert); 
+
+			echo "\n" . $insert . "\n\n";
+
+			try{
+				$sql->execute();
+				return true;
+			}
+			catch(PDOException $e){
+				echo $e;
+				return false;
+			}
 
 		}
 
@@ -113,7 +132,7 @@ namespace lightbulb{
 				//	Execute the insertion
 				//
 
-				$success = $connection->prepare($user->UpdateStatement())->execute();
+				$success = $connection->prepare($user->updateStatement())->execute();
 
 				$this->refresh();
 
@@ -128,7 +147,7 @@ namespace lightbulb{
 			$user = $this->userForName($username);
 
 			if ($user = $this->currentUser) {
-				$user->password = crypt::hash($password);
+				$user->password = Bcrypt::hash($password);
 				$this->updateUser($user);
 			}
 		}
@@ -163,22 +182,22 @@ namespace lightbulb{
 		//	Attempts to log a user in
 		//
 
-		function  loginUser($user, $password){
+		function login($user, $password){
 
+			$this->refresh();
 			$user = $this->userForName($user);
 
 			if (!$user) {
+				$this->logout();
 				return false;
 			}
 
 			else{
-				if (Bcrypt::check($password, $user->password)) {
-					$currentUser = $user;
-					$isLoggedIn = true;
+				if (bcrypt_check($password, $user->password)) {
+					$_SESSION['user'] = $user;
 				}
 				else{
-					$currentUser = null;
-					$isLoggedIn = false;
+					$this->logout();
 				}
 			}
 
@@ -190,7 +209,7 @@ namespace lightbulb{
 		//
 
 		function logout(){
-			$this->user = null;
+				unset($_SESSION['user']);
 		}
 
 		/* User lookup functions */
@@ -213,8 +232,34 @@ namespace lightbulb{
 		//
 
 		function usernameExists($username){
+			$this->refresh();
 			return $this->userForName($username) != null;
 		}
+
+		//
+		//	Checks if anyone is logged in
+		//
+
+		function isLoggedIn(){
+			return isset($_SESSION['user']);
+		}
+
+		//
+		//	Checks that nobody is logged in
+		//
+
+		function isLoggedOut(){
+			return !isset($_SESSION['user']);
+		}		
+
+		//
+		//	Returns the currently logged in user.
+		//
+
+		function currentUser(){
+			return $_SESSION['user'];
+		}
+
 
 	}
 }

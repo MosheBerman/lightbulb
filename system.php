@@ -4,21 +4,34 @@
 	
 	lightbulb-system.php
 
-	This file includes all of the files 
-	required for lightbulb system to 
+	This file require_onces all of the files 
+	require_onced for lightbulb system to 
 	operate correctly.
 
 */
 
-	include('alerter.php');
-	include('course.php');
-	include('differ.php');
-	include('mail.php');
-	include('serializer.php');
-	include('timer.php');
-	include('user.php');
-	include('usermanager.php');
-	include('utils.php');
-	include('scraper.php');
+	require_once('alerter.php');
+	require_once('bcrypt.php');
+	require_once('course.php');
+	require_once('differ.php');
+	require_once('mail.php');
+	require_once('serializer.php');
+	require_once('timer.php');
+	require_once('uimanager.php');
+	require_once('user.php');
+	require_once('usermanager.php');
+	require_once('utils.php');
+	require_once('scraper.php');
+	require_once('session.php');
+
+	/*
+	**
+	**	DEBUG: Comment these out to turn off
+	**
+	*/
+
+	error_reporting(0);
+	ini_set('display_errors', 'On');
+
 
 ?>

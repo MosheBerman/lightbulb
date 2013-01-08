@@ -101,5 +101,3 @@ function bcrypt_check($password, $stored_hash, $legacy_handler = NULL)
 }
 
 function bcrypt_is_legacy_hash($hash) { return substr($hash, 0, 4) != '$2a$'; }
-
-?>
