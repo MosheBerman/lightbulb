@@ -1,10 +1,14 @@
 <?php
 
-//
-//
-//
+/*
 
-require('system.php');
+	index.php
+	
+	This is the homepage for the lightbulb website.
+
+*/
+
+require('./system/system.php');
 
 $user_manager = new Lightbulb\UserManager;
 $UI_manager = new Lightbulb\UIManager;
@@ -76,8 +80,7 @@ if ($user_manager->isLoggedOut()) {
 	exit();
 }
 else{
-	echo "Welcome.";
-
+	echo "Welcome " . $user_manager->currentUser()->username;
 	exit();
 }
 

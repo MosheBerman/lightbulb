@@ -10,7 +10,7 @@
 
 namespace lightbulb{
 
-include_once("system.php");
+	include_once("system.php");
 
 	class UIManager{
 
@@ -73,7 +73,7 @@ include_once("system.php");
 			$this->openTag("html");
 			$this->openTag("head");			
 			$this->openTag("title");
-			echo "Login";
+			echo $this->title();
 			$this->closeLastOpenedTag();
 			$this->openTag("style", array("type" => "text/css"));
 			echo "@import 'style.css';\n";
@@ -88,8 +88,8 @@ include_once("system.php");
 		function loginForm($message = null){
 			$this->header();
 			$this->openTag("body");
-			$this->openTag("div", array("id" => "wrapper"));
 			$this->topBanner();
+			$this->openTag("div", array("id" => "wrapper"));
 			if ($message) {
 				$this->notice($message);
 			}
@@ -115,8 +115,8 @@ include_once("system.php");
 			$this->header();
 			
 			$this->openTag("body");
+			$this->topBanner();			
 			$this->openTag("div", array("id" => "wrapper"));
-			$this->topBanner();
 
 			// Show an error message if appropriate
 			if($error){
@@ -169,7 +169,7 @@ include_once("system.php");
 			//
 
 			$this->openTag("span", array("id" => "title"));
-			echo "Lightbulb 1.0";
+			echo Meta::appName();
 			$this->closeLastOpenedTag();
 
 			//
@@ -214,7 +214,47 @@ include_once("system.php");
 			$this->openTag("h3", array("class"=>"notice"));
 			echo $message . "\n";
 			$this->closeLastOpenedTag();
-		}		
+		}	
+
+		//
+		//	Returns the appropriate title
+		//	
+
+		function title(){
+
+			$action = $_REQUEST['action'];
+
+			//
+			//	Return the correct title 
+			//	based upon the action.
+			//
+
+			if ($action == 'registration') {
+				return "Register";
+			}
+
+			//
+			//
+			//
+
+			else if($action == 'login') {
+				return 'Log In';
+			}
+
+			//
+			//
+			//
+
+			else if($action == 'logout') {
+				return 'Log Out';
+			}
+
+			//
+			//
+			//
+
+			return Meta::appName();
+		}
 	}
 
 }

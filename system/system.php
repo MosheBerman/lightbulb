@@ -15,6 +15,7 @@
 	require_once('course.php');
 	require_once('differ.php');
 	require_once('mail.php');
+	require_once('meta.php');
 	require_once('serializer.php');
 	require_once('timer.php');
 	require_once('uimanager.php');
