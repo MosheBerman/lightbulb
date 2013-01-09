@@ -175,23 +175,29 @@
 
 		$timer->stop();
 		
-		$timer->start("Refreshing Database");
-		
-		//
-		//	Store the new data in the database.
-		//
-		
-		$serializer->serialize($scraper->courses);
-		
-		//
-		//
-		//
-		
-		$timer->stop();
 	}	
 	else{
 		echo "Alerting is disabled in switches.php.";
 	}
+
+	//
+	//	Update the database.
+	//
+
+
+	$timer->start("Refreshing Database");
+		
+	//
+	//	Store the new data in the database.
+	//
+		
+	$serializer->serialize($scraper->courses);
+	
+	//
+	//
+	//
+		
+	$timer->stop();
 
 	//
 	//	Finally print total time

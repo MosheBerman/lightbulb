@@ -73,6 +73,14 @@ if (isset($_REQUEST['action'])) {
 	}
 
 	//
+	//	Show an FAQ page
+	//
+
+	else if($action == 'faq'){
+		$UI_manager->faq();
+	}
+
+	//
 	//	Register the user 
 	//
 
@@ -155,22 +163,6 @@ if (isset($_REQUEST['action'])) {
 	// exit(); 
 }
 
-//
-//	If the user is logged out show a login form.
-//
-
-if($user_manager->isLoggedOut()){
-	$UI_manager->loginForm();
-}
-
-//
-//	We're logged in, so show an appropriate page
-//
-
-else{
-	$UI_manager->homepage();	
-}
-exit();
-
+$UI_manager->homepage();	
 
 ?>

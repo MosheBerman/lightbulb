@@ -17,11 +17,6 @@
 	Background gray: #d9d9d9;
 */
 
-*{
-	color: #914d63;
-	background-color:#eeeeee;
-}
-
 body{
 	background-color: #7b2240;
 }
@@ -33,31 +28,61 @@ body{
 	border-color:#fbe892;
 }
 
+#topBanner a{
+	color: #914d63;
+	background-color: #fbe892;
+}
+
+#topBanner a:hover{
+	color: #914d63;
+	background-color:#f8d126;
+}
+
 #title{
 	background-color: transparent;
 	color:#f8d126;
 }
 
 #wrapper{
-	background-color: #eee;
+	background-color: transparent;
+	border: none;
+}
+
+/* Content */
+
+
+p.content{
+	border-color: #f8d126;
+	color: #f8d126;	
+}
+
+.content a{
+	background-color: transparent;
+	color: #fbe892;
+}
+
+.content a:hover{
+	color: #f8d126;
 }
 
 /* Form stuff */
 
-.formLabel{
+.formLabel, .content{
 	background-color: #5b172c;	
 	color:#eee;	
+	border-color:  #fbe892;;
 }
 
 input{
-	border-color: #5b172c;
+	border-color:  #fbe892;
 }
 
 input[type="submit"]{
 	color: #5b172c;
+	border-color: #914d63;
 }
 
-.notice{
+.notice, .titleBar{
 	color:#f8d126;	
 	background-color: #5b172c;
 	border-color: none;	

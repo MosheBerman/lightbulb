@@ -240,56 +240,57 @@ namespace lightbulb{
 			//
 
 			$this->openTag("span", array("id" => "title"));
+				
+			if($this->user_manager->isLoggedIn()){
+				echo ucfirst($this->user_manager->currentUser()->username) . "'s " ;
+			}
+
 			echo Meta::appName();
+
 			$this->closeLastOpenedTag();
 
 			//
-			//	Show the appropriate button
+			//	Check what the action is
+			//
+
+			$action = '';
+
+			if(isset($_REQUEST['action'])){
+				$action = $_REQUEST['action'];
+			}			
+
+			//
+			//	Show the appropriate buttons
 			//
 
 			if($this->user_manager->isLoggedOut()){
 
 				//
-				//	Check what the action is
+				//	If we're on the login page,
+				//	hide the login button. Else,
+				//	we want to show it.
 				//
 
-				$action = '';
+				if ($action != 'showlogin') {
 
-				if(isset($_REQUEST['action'])){
-					$action = $_REQUEST['action'];
+					$this->openTag("a", array("href" => "/?action=showlogin"));
+					echo "Sign In";
+					$this->closeLastOpenedTag();					
 				}
 
 				//
 				//	If we're on the registration page,
-				//	then we want to show a "home" button.
+				//	don't show the register button,
+				//	otherwise, do.
 				//
 
-				if($action == 'registration'){
-
-					$this->openTag("a", array("href" => "/?action=showlogin"));
-					echo "Sign In";
-					$this->closeLastOpenedTag();					
-
-					$this->openTag("a", array("href" => "/?action=", "class" => "floatLeft"));
-					echo "Back";
-					$this->closeLastOpenedTag();
-				}
-
-				//
-				//	Otherwise, we just want to show 
-				//	the register and sign in buttons.
-				//
-
-				else{
-
-					$this->openTag("a", array("href" => "/?action=showlogin"));
-					echo "Sign In";
-					$this->closeLastOpenedTag();					
+				if($action != 'registration'){
 
 					$this->openTag("a", array("href" => "/?action=registration"));
 					echo "Get an Account";
 					$this->closeLastOpenedTag();
 				}
+
 			}
 
 			//
@@ -300,7 +301,30 @@ namespace lightbulb{
 				$this->openTag("a", array("href" => "/?action=logout"));
 				echo "Log Out";
 				$this->closeLastOpenedTag();
+			}			
+
+			//
+			//	Otherwise, we just want to show 
+			//	the register and sign in buttons.
+			//
+
+			if ($action != faq){					
+				$this->openTag("a", array("href" => "/?action=faq"));
+				echo "What is this?";
+				$this->closeLastOpenedTag();
 			}
+
+			//
+			//	If we're not on the homepage, show 
+			//	a home button.
+			//
+
+			if(!empty($action)){
+				$this->openTag("a", array("href" => "/?action=", "class" => "floatLeft"));
+				echo "Home";
+				$this->closeLastOpenedTag();
+			}			
+
 
 			$this->closeLastOpenedTag();
 		}
@@ -326,17 +350,90 @@ namespace lightbulb{
 		}	
 
 		//
-		//	Echoes a simple homepage
+		//
+		//
+
+		function titleBar($message){
+			$this->openTag("h3", array("class"=>"titleBar"));
+			echo $message . "\n";
+			$this->closeLastOpenedTag();			
+		}
+
+		//
+		//	Echoes a homepage
 		//
 
 		function homepage(){
+			
+			$this->header();
+
+			$this->openTag("body");
+			$this->topBanner();			
+			$this->openTag("div", array("id" => "wrapper"));
+
+			$this->titleBar("Welcome");
+			$this->openTag("p", array("class"=> "content"));
+			echo "Welcome to " . Meta::appName() . "! " . Meta::appName() . ".";
+			$this->closeLastOpenedTag();			
+
+			$this->closeOpenTags();	
+
+			exit();
+
+		}
+
+		//
+		//	Echoes an FAQ page
+		//
+
+		function faq(){
 			$this->header();
 			
 			$this->openTag("body");
 			$this->topBanner();			
 			$this->openTag("div", array("id" => "wrapper"));
 
-			echo "Welcome " . $this->user_manager->currentUser()->username;
+			$this->titleBar("Welcome");
+			$this->openTag("p", array("class"=> "content"));
+			echo "Welcome to " . Meta::appName() . "! " . Meta::appName() . " is a way for Brooklyn College students to get alerts when classes open, close, and when professors are listed.";
+			$this->closeLastOpenedTag();
+
+			$this->titleBar("How it Works");
+			$this->openTag("p", array("class"=> "content"));
+			echo "First, you sign up and log in. Then you add either a phone number or email address. Next you choose some course sections to follow. When there's a change, you'll get notified.";
+			$this->closeLastOpenedTag();
+
+
+			$this->titleBar("What does it cost?");
+			$this->openTag("p", array("class"=> "content"));
+			echo "Nothing. " . Meta::appName() . " is a free service.";
+			$this->closeLastOpenedTag();
+
+			$this->titleBar("Why is it free?");
+			$this->openTag("p", array("class"=> "content"));
+			echo "CUNY should offer this. Also, I'm too lazy to add PayPal.";
+			$this->closeLastOpenedTag();
+
+			$this->titleBar("Who made this?");
+			$this->openTag("p", array("class"=> "content"));
+			echo Meta::appName() . ' is brought to you by <a href="http://mosheberman.com">Moshe Berman</a> and <a href="http://twitter.com/ginzbaum">Ginzbaum</a>. (Hooray for internet nicknames.)';
+			$this->closeLastOpenedTag();
+
+			$this->titleBar("Seriously, why'd you make it?");
+			$this->openTag("p", array("class"=> "content"));
+			echo "I needed it. It helped me get into some classes.";
+			$this->closeLastOpenedTag();			
+
+
+			$this->titleBar("I really, really, want to pay you for this!");
+			$this->openTag("p", array("class"=> "content"));
+			echo 'Do you? Go <a href="http://itunes.apple.com/us/app/ibrooklyn/id500958091?mt=8">download iBrooklyn from the App Store</a>. Leave a nice review. Tell your friends to do the same. It\'ll make me happy.';
+			$this->closeLastOpenedTag();			
+
+			$this->titleBar("Ok, how do I get in?");
+			$this->openTag("p", array("class"=> "content"));
+			echo 'Think about it. Good, now click on the "Get an Account" button up there. Good work chief.';
+			$this->closeLastOpenedTag();
 
 			$this->closeOpenTags();	
 

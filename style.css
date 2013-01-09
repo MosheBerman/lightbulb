@@ -16,7 +16,7 @@ body{
 
 #wrapper{
 	width: 600px;
-	margin: 0 auto;
+	margin: 15px auto;
 	overflow: hidden;
 	border-left: 1px solid;
 	border-right: 1px solid;	
@@ -32,7 +32,6 @@ body{
 	height: 44px;
 	text-align: center;
 	border-bottom: 1px solid;
-	margin-bottom: 15px;
 	background-color: !important #fff;
 }
 
@@ -75,7 +74,7 @@ body{
 input{
 	float: left;
 	clear: both;	
-	height: 100px;
+	height: 60px;
 	width: 580px;
 	margin: 10px;
 	font-size: 50px;
@@ -84,8 +83,12 @@ input{
 
 input[type="text"], input[type="password"]{
 	background-color: !important #fff;	
-	border: 1px solid;	
+	border: none;	
 	display: block;	
+}
+
+input[type="submit"]{
+	font-size: 36px;
 }
 
 /* labels for the form inputs*/
@@ -93,9 +96,10 @@ input[type="text"], input[type="password"]{
 .formLabel{
 	display: block;
 	float: left;	
-	width: 580px;
+	width: 578px;
 	height: 20px;
 	padding-top: 5px;
+	border:1px solid;
 	border-bottom: none;
 	margin: 10px;	
 	margin-bottom: -10px;
@@ -103,9 +107,31 @@ input[type="text"], input[type="password"]{
 
 /* Banners */
 
-.notice, .error{
+.notice, .error, .titleBar{
 	border: 1px solid;
 	padding: 10px 0;
 	border-left: none;
 	border-right: none;
+}
+
+.titleBar{
+	margin: !important 0 auto;
+	border: 1px solid;
+	border-bottom: none;
+}
+
+/* Regular contemt */
+
+.content{
+	padding: 5px 10px;
+	margin:0;
+	margin-top: -18px;
+	line-height: 1.5em;
+	border: 1px solid;
+	border-top: 1px dashed;
+	text-align: left;
+}
+
+.content a{
+	background-color: transparent;
 }
