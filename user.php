@@ -11,7 +11,6 @@
 
 */
 
-	namespace lightbulb{
 
 		include('system.php');		
 
@@ -66,6 +65,5 @@
 			}
 		}
 
-	}
 
 ?>

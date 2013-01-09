@@ -33,13 +33,66 @@ input[type='text'], input[type='password']{
 	border: 1px solid #93d500;
 }
 
+.formLabel{
+	display: block;
+	width: 600px;
+	height: 20px;
+
+	border: 1px solid #93d500;
+	color: #93d500;
+	background-color: #c6f833;	
+
+	float: left;
+}
+
+/* Top Bar */
+
+#topBanner{
+	display: none;
+	width: 100%;
+	padding: 0;
+	height: 44px;
+	text-align: center;
+}
+
+#topBanner #title{
+	display: block;
+	float: left;
+	text-align: center;
+	width: 580px;
+	height: 34px;
+	margin-top: 5px;
+	line-height: 34px;
+}
+
+#topBanner a{
+	float: right;
+	margin-right: 10px;
+	height: 34px;
+	margin-top: 5px;
+	line-height: 34px;
+	vertical-align: middle;
+	text-decoration: none;
+	padding: 0 10px;
+
+	display: block;
+	
+	border: 1px solid #93d500;
+	color: #93d500;
+	background-color: #c6f833;	
+}
+
+#topBanner a:visited{
+	margin-right: 10px;
+	color: #93d500;
+}
+
 /* Banners */
 
-.warning{
-	border: 1px solid #ffdc0f;
-	color: #ffdc0f;
-	background-color: #fffbb8;
-	border-radius: 5px;
+.notice{
+	border: 1px solid #93d500;
+	color: #93d500;
+	background-color: #c6f833;
 }
 
 .error{

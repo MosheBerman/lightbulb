@@ -10,6 +10,8 @@
 
 namespace lightbulb{
 
+include_once("system.php");
+
 	class UIManager{
 
 		private $tag_stack;
@@ -87,7 +89,7 @@ namespace lightbulb{
 			$this->header();
 			$this->openTag("body");
 			$this->openTag("div", array("id" => "wrapper"));
-
+			$this->topBanner();
 			if ($message) {
 				$this->notice($message);
 			}
@@ -111,9 +113,10 @@ namespace lightbulb{
 
 		function signupForm($error = null){
 			$this->header();
-
+			
 			$this->openTag("body");
 			$this->openTag("div", array("id" => "wrapper"));
+			$this->topBanner();
 
 			// Show an error message if appropriate
 			if($error){
@@ -122,20 +125,20 @@ namespace lightbulb{
 
 			$this->openTag("form", array("method"=>"post"));
 			
-			$this->openTag("label");
+			$this->openTag("label", array("class" => "formLabel"));
 			echo "Choose a username:";
 			$this->closeLastOpenedTag();
 
 			$this->openTag("input", array("type"=>"text", "id" => "username", "name" => "username"));
 			$this->closeLastOpenedTag();
 
-			$this->openTag("label");
+			$this->openTag("label", array("class" => "formLabel"));
 			echo "Choose a password:";
 			$this->closeLastOpenedTag();			
 			$this->openTag("input", array("type"=>"password", "id" => "password", "name" => "password"));			
 			$this->closeLastOpenedTag();	
 
-			$this->openTag("label");
+			$this->openTag("label", array("class" => "formLabel"));
 			echo "Confirm your password:";
 			$this->closeLastOpenedTag();
 
@@ -149,6 +152,48 @@ namespace lightbulb{
 			$this->closeLastOpenedTag();	
 
 			$this->closeOpenTags();
+		}
+
+		//
+		//	Prints out the top banner
+		//
+
+		function topBanner(){
+
+			$user_manager = new UserManager;			
+
+			$this->openTag("span", array("id" => "topBanner"));
+
+			//
+			//
+			//
+
+			$this->openTag("span", array("id" => "title"));
+			echo "Lightbulb 1.0";
+			$this->closeLastOpenedTag();
+
+			//
+			//	Show the appropriate button
+			//
+
+			if($user_manager->isLoggedOut()){
+				if($_REQUEST['action'] == 'registration'){
+					$this->openTag("a", array("href" => "/?action=", "class" => "floatLeft"));
+					echo "Back";
+					$this->closeLastOpenedTag();
+				}else{
+					$this->openTag("a", array("href" => "/?action=registration"));
+					echo "Get an Account";
+					$this->closeLastOpenedTag();
+				}
+			}
+			else if($user_manager->isLoggedIn()){
+				$this->openTag("a", array("href" => "/?action=logout"));
+				echo "Log Out";
+				$this->closeLastOpenedTag();
+			}
+
+			$this->closeLastOpenedTag();
 		}
 
 		//

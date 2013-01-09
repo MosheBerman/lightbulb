@@ -16,6 +16,7 @@ namespace lightbulb{
 	include_once("system.php");
 
 	use \PDO as PDO;
+	use \User as User;
 
 	class UserManager{
 
@@ -73,12 +74,7 @@ namespace lightbulb{
 			//	Pull the users from the database
 			//
 
-			$this->users = array();
-			$results = $userQuery->fetchAll();
-
-			foreach ($results as $user) {
-				$this->users[] = $user[0];
-			}		
+			$this->users = $userQuery->fetchAll();
 		}
 
 		//
@@ -102,10 +98,8 @@ namespace lightbulb{
 
 			$insert = $user->insertStatement();
 
-			$sql = $connection->prepare($insert); 
-
-			echo "\n" . $insert . "\n\n";
-
+			$sql = $connection->prepare($insert);
+			
 			try{
 				$sql->execute();
 				return true;
