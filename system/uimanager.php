@@ -13,6 +13,7 @@ namespace lightbulb{
 	include_once("system.php");
 
 	use \Meta as Meta;
+	use \Switches as Switches;	
 
 	class UIManager{
 
@@ -79,6 +80,10 @@ namespace lightbulb{
 			$this->openTag("title");
 			echo $this->title();
 			$this->closeLastOpenedTag();
+
+			$this->openTag("meta", array("name"=>"viewport", "content"=>"width=device-width, initial-scale=1, maximum-scale=1"));
+			$this->closeLastOpenedTag();
+
 			$this->openTag("style", array("type" => "text/css"));
 			echo "@import 'style.css';\n";
 			echo "@import 'color.css';\n";			
@@ -91,10 +96,24 @@ namespace lightbulb{
 		//
 
 		function loginForm($message = null){
+
+			//
+			//	Check for a master kill of login
+			//
+
+			if (Switches::$LOG_IN_ENABLED == false) {
+				$this->noticePage('Login is disabled.');
+			}
+
+			//
+			//	Otherwise, proceed to log in
+			//
+
 			$this->header();
 			$this->openTag("body");
 			$this->topBanner();
 			$this->openTag("div", array("id" => "wrapper"));
+
 			if ($message) {
 				$this->notice($message);
 			}
@@ -131,6 +150,19 @@ namespace lightbulb{
 		//
 
 		function signupForm($error = null){
+
+			//
+			//	Check if there's a lock on signups
+			//
+
+			if (Switches::$NEW_SIGN_UPS_ENABLED == false) {
+				$this->noticePage('Signup is disabled.');
+			}
+
+			//
+			//	Otherwise, proceed to print a signup form
+			//
+
 			$this->header();
 			
 			$this->openTag("body");
@@ -176,12 +208,32 @@ namespace lightbulb{
 		}
 
 		//
+		//	Prints out a notice and exits
+		//
+
+		function noticePage($message = null){
+
+			$this->header();
+			$this->openTag("body");
+			$this->topBanner();
+			$this->openTag("div", array("id" => "wrapper"));
+			
+			if ($message) {
+				$this->notice($message);
+			}
+
+			$this->closeOpenTags();
+
+			exit();				
+
+		}
+
 		//	Prints out the top banner
 		//
 
 		function topBanner(){	
 
-			$this->openTag("span", array("id" => "topBanner"));
+			$this->openTag("div", array("id" => "topBanner"));
 
 			//
 			//	Print the app name

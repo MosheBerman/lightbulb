@@ -10,7 +10,7 @@
 	it makes for an interesting alert system.
 
 */
- 
+ 	
 	//
 	//	Tell PHP to stop managing my time.
 	//
@@ -22,7 +22,15 @@
 	//
 
 	require_once('system/system.php');
-	
+
+	//
+	//	Check for a master kill switch
+	//
+
+	if (Switches::$CRON_ENABLED == false) {
+		die("Cron is disabled.");
+	}	
+
 	//
 	//	Setup timers for tracking operation times.
 	//
@@ -142,40 +150,49 @@
 	}
 	
 	//
-	//
+	//	Stop the timer
 	//
 	
 	$timer->stop();
 
-	
-	$timer->start("Alerting Users");
-	
 	//
-	//	Send out alerts to users
+	//	Check for permission to alert users
 	//
-		
-	$alerter = new lightbulb\Alerter($differ, array());
 
-	if($alerter){
-		$alerter->alert();
+	if (Switches::$ALERTS_ENABLED == true) {
+
+		$timer->start("Alerting Users");
+		
+		//
+		//	Send out alerts to users
+		//
+			
+		$alerter = new lightbulb\Alerter($differ, array());
+
+		if($alerter){
+			$alerter->alert();
+		}
+
+		$timer->stop();
+		
+		$timer->start("Refreshing Database");
+		
+		//
+		//	Store the new data in the database.
+		//
+		
+		$serializer->serialize($scraper->courses);
+		
+		//
+		//
+		//
+		
+		$timer->stop();
+	}	
+	else{
+		echo "Alerting is disabled in switches.php.";
 	}
 
-	$timer->stop();
-	
-	$timer->start("Refreshing Database");
-	
-	//
-	//	Store the new data in the database.
-	//
-	
-	$serializer->serialize($scraper->courses);
-	
-	//
-	//
-	//
-	
-	$timer->stop();
-	
 	//
 	//	Finally print total time
 	//

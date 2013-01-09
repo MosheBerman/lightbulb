@@ -25,7 +25,7 @@ if (isset($_REQUEST['action'])) {
 	//	Read out the request
 	//
 
-	$username = isset($_REQUEST['username']) ? strtolower($_REQUEST['username']) : "";
+	$username = isset($_REQUEST['username']) ? trim(strtolower($_REQUEST['username'])) : "";
 	$password = isset($_REQUEST['password']) ? $_REQUEST['password'] : "";
 	$confirm = isset($_REQUEST['confirm']) ? $_REQUEST['confirm'] : "";
 

@@ -17,13 +17,60 @@ body{
 #wrapper{
 	width: 600px;
 	margin: 0 auto;
-	padding-top:46px;
 	overflow: hidden;
 	border-left: 1px solid;
 	border-right: 1px solid;	
-	height: 100%;
 	z-index: 1;
 }
+
+/* Top Bar */
+
+#topBanner{
+	display: block;
+	width: 100%;
+	padding: 0;
+	height: 44px;
+	text-align: center;
+	border-bottom: 1px solid;
+	margin-bottom: 15px;
+	background-color: !important #fff;
+}
+
+#topBanner #title{
+	display: block;
+	float: left;
+	padding: 0 0 0 10px;
+	height: 34px;
+	margin: 5px auto;
+	line-height: 34px;
+	font-weight: bold;
+	font-size: 18px;
+	z-index: 100;
+}
+
+#topBanner a{
+	display: block;	
+	float: right;
+	margin-right: 10px;
+	height: 34px;
+	margin-top: 5px;
+	line-height: 34px;
+	vertical-align: middle;
+	text-decoration: none;
+	padding: 0 10px;
+
+	
+	border: 1px solid;
+
+	z-index: 101;	
+}
+
+#topBanner a:visited{
+	margin-right: 10px;
+}
+
+
+/* Form stuff */
 
 input{
 	float: left;
@@ -46,72 +93,19 @@ input[type="text"], input[type="password"]{
 .formLabel{
 	display: block;
 	float: left;	
-	width: 578px;
+	width: 580px;
 	height: 20px;
 	padding-top: 5px;
-	border: 1px solid;
 	border-bottom: none;
 	margin: 10px;	
 	margin-bottom: -10px;
 }
 
-
-/* Top Bar */
-
-#topBanner{
-	display: block;
-	position: fixed;
-	width: 100%;
-	padding: 0;
-	height: 44px;
-	text-align: center;
-	border-bottom: 1px solid;
-	background-color: !important #fff;
-}
-
-#topBanner #title{
-	display: block;
-	float: left;
-	padding: 0 0 0 10px;
-	height: 34px;
-	margin: 5px auto;
-	line-height: 34px;
-	font-weight: bold;
-	font-size: 18px;
-	z-index: 100;
-}
-
-#topBanner a{
-	float: right;
-	margin-right: 10px;
-	height: 34px;
-	margin-top: 5px;
-	line-height: 34px;
-	vertical-align: middle;
-	text-decoration: none;
-	padding: 0 10px;
-
-	display: block;
-	
-	border: 1px solid;
-
-	z-index: 101;	
-}
-
-#topBanner a:visited{
-	margin-right: 10px;
-}
-
 /* Banners */
 
-.notice{
+.notice, .error{
 	border: 1px solid;
 	padding: 10px 0;
 	border-left: none;
 	border-right: none;
-}
-
-.error{
-	border: 1px solid;
-	border-radius: 5px;	
 }

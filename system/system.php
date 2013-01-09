@@ -24,16 +24,25 @@
 	require_once('utils.php');
 	require_once('scraper.php');
 	require_once('session.php');
+	require_once('switches.php');
 
-	/*
-	**
-	**	DEBUG: Set A_ALL or 0 to 
-	**	toggle error reporting.
-	**
-	*/
 
-	error_reporting(0);
-	ini_set('display_errors', 'On');
+
+	//
+	//	Configure erros, based on the 
+	//	switches defined in switches.php
+	//
+
+	if (Switches::$LOG_ERRORS == false) {
+		error_reporting(E_ALL);
+		ini_set('display_errors', 'On');		
+	}
+	else{
+		error_reporting(0);
+		ini_set('display_errors', 'Off');		
+	}
+
+	
 
 
 ?>

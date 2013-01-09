@@ -11,8 +11,10 @@
 	Control Maroon: #914d63
 	Light Pink: #7b2240
 	Yellow: #f8d126
+	Light Yellow: #fbe892;
 	Gray: #524c45
 	White is of course: #fff
+	Background gray: #d9d9d9;
 */
 
 *{
@@ -24,10 +26,46 @@ body{
 	background-color: #7b2240;
 }
 
+/* Top Banner */
+
 #topBanner{
 	background-color: #5b172c;
+	border-color:#fbe892;
 }
 
 #title{
 	background-color: transparent;
+	color:#f8d126;
+}
+
+#wrapper{
+	background-color: #eee;
+}
+
+/* Form stuff */
+
+.formLabel{
+	background-color: #5b172c;	
+	color:#eee;	
+}
+
+input{
+	border-color: #5b172c;
+}
+
+input[type="submit"]{
+	color: #5b172c;
+}
+
+.notice{
+	color:#f8d126;	
+	background-color: #5b172c;
+	border-color: none;	
+}
+
+
+.error{
+	color:#f8d126;	
+	background-color: #5b172c;
+	border-color: none;	
 }
