@@ -27,7 +27,8 @@
 
 	/*
 	**
-	**	DEBUG: Comment these out to turn off
+	**	DEBUG: Set A_ALL or 0 to 
+	**	toggle error reporting.
 	**
 	*/
 

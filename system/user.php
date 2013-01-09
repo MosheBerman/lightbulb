@@ -26,11 +26,11 @@
 			public $followedCourseIDs;
 			public $followedSectionIDs;
 
-			function __construct($username="")
+			function __construct($username)
 			{
-				
-				$this->username = $username;
 
+				$this->username = $username;
+					
 				$this->followedCourseIDs = array();
 				$this->followedSectionIDs = array();
 			}

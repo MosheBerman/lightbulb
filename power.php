@@ -21,7 +21,7 @@
 	//	Include some files
 	//
 
-	require_once('./system/system.php');
+	require_once('system/system.php');
 	
 	//
 	//	Setup timers for tracking operation times.

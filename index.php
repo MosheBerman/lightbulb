@@ -8,13 +8,13 @@
 
 */
 
-require('./system/system.php');
+require('../private/system/system.php');
 
 $user_manager = new Lightbulb\UserManager;
 $UI_manager = new Lightbulb\UIManager;
 
 //
-//	Attempt to log in
+//	If there's an action, handle it
 //	
 
 if (isset($_REQUEST['action'])) {
@@ -25,33 +25,114 @@ if (isset($_REQUEST['action'])) {
 	//	Read out the request
 	//
 
-	$username = $_REQUEST['username'];
-	$password = $_REQUEST['password'];
-	$confirm = $_REQUEST['confirm'];
+	$username = isset($_REQUEST['username']) ? strtolower($_REQUEST['username']) : "";
+	$password = isset($_REQUEST['password']) ? $_REQUEST['password'] : "";
+	$confirm = isset($_REQUEST['confirm']) ? $_REQUEST['confirm'] : "";
 
 	//
-	//	Take appropriate action
+	//	Perform a login
 	//
 
 	if($action == 'login'){
-		$user_manager->login($username, $password);
+
+		 if (!ctype_alnum($username)) {
+		 		$UI_manager->loginForm('Invalid username.');
+		 }
+
+		$success = $user_manager->login($username, $password);
+
+		if ($success == false) {
+			$UI_manager->loginForm('Login failed.');
+		}
 	}
+
+	//
+	//	Perform a logout
+	//
+
+	else if($action == 'logout'){
+		$user_manager->logout();
+	}
+
+	//
+	//	Show a signup form
+	//
 
 	else if($action == 'registration'){
 		$UI_manager->signupForm();
-		exit();
+
+
 	}
+
+	//
+	//	Show a login form
+	//
+
+	else if($action == 'showlogin'){
+		$UI_manager->loginForm();
+	}
+
+	//
+	//	Register the user 
+	//
 
 	else if($action == 'register'){
 
-		if ($user_manager->usernameExists($username)) {
-			$UI_manager->signupForm("That username exists.");
-			exit();
+		//
+		//	Handle if there's no username
+		//
+
+		if($username == "" || !isset($username)){
+			$UI_manager->signupForm("You need to pick a username.");	
 		}
+
+		//
+		//	Handle symbols etc.
+		//
+
+		else if (!ctype_alnum($username)) {
+			$UI_manager->signupForm("Usernames can only have letters and numbers.");	
+		}
+
+		//
+		//	Handle a whitespace'd username
+		//
+
+		else if (preg_match('/\s/',$username)) {
+			$UI_manager->signupForm("You can't put spaces in a username.");	
+		}
+
+		//
+		//	Handle the case of an existing username
+		//
+
+		else if ($user_manager->usernameExists($username)) {
+			$UI_manager->signupForm("That username exists.");
+		}
+
+		//
+		//	Handle the case of an empty password
+		//
+
+		else if($password == "" || !isset($password)){
+			$UI_manager->signupForm("You gotta pick a password.");
+		}
+
+		//
+		//
+		//
+
+		else if($confirm == "" || !isset($confirm)){
+			$UI_manager->signupForm("You gotta confirm your password.");			
+		}
+
+
+		//
+		//	Handle mismatched passwords
+		//
 
 		else if($password != $confirm){
 			$UI_manager->signupForm("Those passwords don't match.");
-			exit();
 		}
 
 		else {
@@ -62,127 +143,34 @@ if (isset($_REQUEST['action'])) {
 				$UI_manager->loginForm("User successfully created.");			
 			}
 			else{
-				$UI_manager->loginForm("User creation failed, please try again.");				
+				$UI_manager->signupForm("User creation failed, please try again.");				
 			}
-
-			exit();
 		}
 	}
+
+	//
+	//	We've finished whatever action it is, so exit.
+	//
+
+	// exit(); 
 }
 
 //
-//	If the user isn't logged in, 
-//	then show a login form.
+//	If the user is logged out show a login form.
 //
 
-if ($user_manager->isLoggedOut()) {
+if($user_manager->isLoggedOut()){
 	$UI_manager->loginForm();
-	exit();
 }
+
+//
+//	We're logged in, so show an appropriate page
+//
+
 else{
-	echo "Welcome " . $user_manager->currentUser()->username;
-	exit();
+	$UI_manager->homepage();	
 }
+exit();
+
 
 ?>
-
-
-
-<html>
-	<head>
-		<title>
-			<?php
-
-				if ($isLoggedIn) {
-					echo "Welcome to Lightbulb";
-				}
-
-				else{
-					echo "Log In";
-				}
-			?>
-
-
-		</title>
-	</head>
-	<body>
-
-		<div id="wrapper">
-			<div id="header">
-				<div id="topbar">
-
-					<?php if($isLoggedIn){ ?>
-
-					<span id="username">
-						<?php echo phpCAS::username() ?>
-					</span>
-					<span id="logout">
-						<a class="button" href="?logout">
-							Logout
-						</a>
-					</span>
-
-					<?php 
-
-						}
-						else{
-					 ?>
-
-					 <span>
-					 	Lightbulb
-					 </span>
-					 <span id="login">
-					 	<a href="/?login">Log In</a>
-					 </span>
-
-					 <?php } ?>
-				</div>
-			</div>
-			<div>
-
-			</div>
-		</div>
-
-	<!--
-		<p>Welcome, <?php echo phpCAS::getUser(); ?>!</p>
-		<ul id="links">
-		<li>
-			<a href="https://login.brooklyn.cuny.edu/cas/login?service=https://portal.brooklyn.edu/uPortal/Login&vm=portal6" target="_blank">
-				BC Portal
-			</a>
-		</li>
-		<li>
-			<a href="https://login.brooklyn.cuny.edu/cas/login?service=http%3A%2F%2Fwebsql.brooklyn.cuny.edu%2Ffacultyevaluations%2Findex.jsp" target="_blank">
-				BC Feedback Reports
-			</a>
-		</li>
-		<li>
-			<a href="https://login.brooklyn.cuny.edu/cas/login?service=https%3A%2F%2Fwebsql.brooklyn.cuny.edu%2Fealerts%2Fprocess_login.jsp" target="_blank">
-				CUNY eAlerts
-			</a>
-		</li>
-		<li>
-			<a href="https://login.brooklyn.cuny.edu/cas/login?service=https%3A%2F%2Fwebsql.brooklyn.cuny.edu%2Fegrades%2Fcheckmail_egrades.jsp" target="_blank">
-				eGrades
-			</a>
-		</li>
-		<li>
-			<a href="https://login.brooklyn.cuny.edu/cas/login?service=https%3A%2F%2Fwebsql.brooklyn.cuny.edu%2Fdegree_progress%2Fstudent%2FloginStuAction" target="_blank">
-				My Degree Progress
-			</a>
-		</li>		
-		<li>
-			<a href="https://login.brooklyn.cuny.edu/cas/login?service=https%3A%2F%2Fwebsql.brooklyn.cuny.edu%2Fserva%2Fauthenticate.jsp" target="_blank">
-				SERVA
-			</a>
-		</li>
-		<li>
-			<a href="?logout=">
-				Logout
-			</a>
-		</li>
-		</ul>
-	-->
-
-	</body>
-</html>

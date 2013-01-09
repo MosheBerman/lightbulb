@@ -1,0 +1,33 @@
+/*
+
+	color.css
+
+	This is the color stylesheet for 
+	the web interface of lightbulb.
+
+	For my info:
+
+	Dark Gradient Maroon: #5b172c
+	Control Maroon: #914d63
+	Light Pink: #7b2240
+	Yellow: #f8d126
+	Gray: #524c45
+	White is of course: #fff
+*/
+
+*{
+	color: #914d63;
+	background-color:#eeeeee;
+}
+
+body{
+	background-color: #7b2240;
+}
+
+#topBanner{
+	background-color: #5b172c;
+}
+
+#title{
+	background-color: transparent;
+}

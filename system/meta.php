@@ -21,16 +21,17 @@
 
 	class Meta{
 
-		private $APPNAME = "Lightbulb";
-		private $VERSION = '1.0';
-		private $AUTHORS = array('Moshe Berman', 'Yosef Gunsburg');
+		public static $APPNAME = "Lightbulb";
+		public static $SLOGAN = "Registration Alerts. At your service.";		
+		public static $VERSION = '1.0';
+		public static $AUTHORS = array('Moshe Berman', 'Yosef Gunsburg');
 
 		//
 		//
 		//
 
 		function __construct(){
-
+			
 		}
 
 		//
@@ -39,7 +40,7 @@
 		//
 
 		static function appName(){
-			return $APPNAME;
+			return Meta::$APPNAME;
 		}
 
 		//
@@ -47,7 +48,15 @@
 		//
 
 		static function fullAppName(){
-			return $APPNAME . ' ' . $VERSION;
+			return Meta::$APPNAME . ' ' . Meta::$VERSION;
+		}
+
+		//
+		//	Returns the full name with the slogan
+		//
+
+		static function fullNameWithSlogan(){
+			return Meta::$APPNAME . ' - ' . Meta::$SLOGAN;
 		}
 	}
 

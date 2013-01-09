@@ -1,3 +1,12 @@
+/*
+
+	style.css
+
+	This is the desktop stylesheet for 
+	the web interface of lightbulb.
+
+*/
+
 body{
 	text-align: center;
 	padding: 0;
@@ -8,61 +17,68 @@ body{
 #wrapper{
 	width: 600px;
 	margin: 0 auto;
+	padding-top:46px;
 	overflow: hidden;
-	border-left: 1px solid #93d500;
-	border-right: 1px solid #93d500;	
+	border-left: 1px solid;
+	border-right: 1px solid;	
 	height: 100%;
-}
-
-form{
-
+	z-index: 1;
 }
 
 input{
-	color: #93d500;
+	float: left;
+	clear: both;	
 	height: 100px;
 	width: 580px;
 	margin: 10px;
 	font-size: 50px;
-	background: !important #fff;
-	float: left;
-	clear: both;
+	
 }
 
-input[type='text'], input[type='password']{
-	border: 1px solid #93d500;
+input[type="text"], input[type="password"]{
+	background-color: !important #fff;	
+	border: 1px solid;	
+	display: block;	
 }
+
+/* labels for the form inputs*/
 
 .formLabel{
 	display: block;
-	width: 600px;
+	float: left;	
+	width: 578px;
 	height: 20px;
-
-	border: 1px solid #93d500;
-	color: #93d500;
-	background-color: #c6f833;	
-
-	float: left;
+	padding-top: 5px;
+	border: 1px solid;
+	border-bottom: none;
+	margin: 10px;	
+	margin-bottom: -10px;
 }
+
 
 /* Top Bar */
 
 #topBanner{
-	display: none;
+	display: block;
+	position: fixed;
 	width: 100%;
 	padding: 0;
 	height: 44px;
 	text-align: center;
+	border-bottom: 1px solid;
+	background-color: !important #fff;
 }
 
 #topBanner #title{
 	display: block;
 	float: left;
-	text-align: center;
-	width: 580px;
+	padding: 0 0 0 10px;
 	height: 34px;
-	margin-top: 5px;
+	margin: 5px auto;
 	line-height: 34px;
+	font-weight: bold;
+	font-size: 18px;
+	z-index: 100;
 }
 
 #topBanner a{
@@ -77,27 +93,25 @@ input[type='text'], input[type='password']{
 
 	display: block;
 	
-	border: 1px solid #93d500;
-	color: #93d500;
-	background-color: #c6f833;	
+	border: 1px solid;
+
+	z-index: 101;	
 }
 
 #topBanner a:visited{
 	margin-right: 10px;
-	color: #93d500;
 }
 
 /* Banners */
 
 .notice{
-	border: 1px solid #93d500;
-	color: #93d500;
-	background-color: #c6f833;
+	border: 1px solid;
+	padding: 10px 0;
+	border-left: none;
+	border-right: none;
 }
 
 .error{
-	border: 1px solid #ff0f32;
-	color: #ff0f32;
-	background-color: #ffccd3;
+	border: 1px solid;
 	border-radius: 5px;	
 }

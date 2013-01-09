@@ -12,12 +12,16 @@ namespace lightbulb{
 
 	include_once("system.php");
 
+	use \Meta as Meta;
+
 	class UIManager{
 
 		private $tag_stack;
+		private $user_manager;
 
 		function __construct(){
 			$this->tag_stack = array();
+			$this->user_manager = new UserManager();
 		}
 
 		//
@@ -77,6 +81,7 @@ namespace lightbulb{
 			$this->closeLastOpenedTag();
 			$this->openTag("style", array("type" => "text/css"));
 			echo "@import 'style.css';\n";
+			echo "@import 'color.css';\n";			
 			$this->closeLastOpenedTag();
 			$this->closeLastOpenedTag();
 		}
@@ -94,17 +99,31 @@ namespace lightbulb{
 				$this->notice($message);
 			}
 
-			$this->openTag("form", array("method"=>"post"));
+			$this->openTag("form", array("method"=>"post", "action" => "/index.php"));
+
+			$this->openTag("label", array("class" => "formLabel"));
+			echo "Enter your username:";
+			$this->closeLastOpenedTag();
+
 			$this->openTag("input", array("type"=>"text", "id" => "username", "name" => "username"));
 			$this->closeLastOpenedTag();
+			
+			$this->openTag("label", array("class" => "formLabel"));
+			echo "Enter your password:";
+			$this->closeLastOpenedTag();
+
 			$this->openTag("input", array("type"=>"password", "id" => "password", "name" => "password"));			
 			$this->closeLastOpenedTag();			
-			$this->openTag("input", array('type'=> 'hidden', 'name'=> 'action', 'value' => 'login'));
+			
+			$this->openTag("input", array("type"=> "hidden", "name"=> "action", "value" => "login"));
 			$this->closeLastOpenedTag();							
-			$this->openTag("input", array('type'=> 'submit'));
+			
+			$this->openTag("input", array("type"=> "submit", "name" => "submit",  "id" =>"submit"));
 			$this->closeLastOpenedTag();			
 
 			$this->closeOpenTags();
+
+			exit();			
 		}
 
 		//
@@ -145,27 +164,27 @@ namespace lightbulb{
 			$this->openTag("input", array("type"=>"password", "id" => "confirm", "name" => "confirm"));			
 			$this->closeLastOpenedTag();		
 
-			$this->openTag("input", array('type'=> 'hidden', 'name'=> 'action', 'value' => 'register'));
+			$this->openTag("input", array("type"=> "hidden", "name"=> "action", "value" => "register"));
 			$this->closeLastOpenedTag();							
 
-			$this->openTag("input", array('type'=> 'submit'));
+			$this->openTag("input", array("type"=> "submit", "name" => "submit",  "id" =>"submit"));
 			$this->closeLastOpenedTag();	
 
 			$this->closeOpenTags();
+
+			exit();			
 		}
 
 		//
 		//	Prints out the top banner
 		//
 
-		function topBanner(){
-
-			$user_manager = new UserManager;			
+		function topBanner(){	
 
 			$this->openTag("span", array("id" => "topBanner"));
 
 			//
-			//
+			//	Print the app name
 			//
 
 			$this->openTag("span", array("id" => "title"));
@@ -176,18 +195,56 @@ namespace lightbulb{
 			//	Show the appropriate button
 			//
 
-			if($user_manager->isLoggedOut()){
-				if($_REQUEST['action'] == 'registration'){
+			if($this->user_manager->isLoggedOut()){
+
+				//
+				//	Check what the action is
+				//
+
+				$action = '';
+
+				if(isset($_REQUEST['action'])){
+					$action = $_REQUEST['action'];
+				}
+
+				//
+				//	If we're on the registration page,
+				//	then we want to show a "home" button.
+				//
+
+				if($action == 'registration'){
+
+					$this->openTag("a", array("href" => "/?action=showlogin"));
+					echo "Sign In";
+					$this->closeLastOpenedTag();					
+
 					$this->openTag("a", array("href" => "/?action=", "class" => "floatLeft"));
 					echo "Back";
 					$this->closeLastOpenedTag();
-				}else{
+				}
+
+				//
+				//	Otherwise, we just want to show 
+				//	the register and sign in buttons.
+				//
+
+				else{
+
+					$this->openTag("a", array("href" => "/?action=showlogin"));
+					echo "Sign In";
+					$this->closeLastOpenedTag();					
+
 					$this->openTag("a", array("href" => "/?action=registration"));
 					echo "Get an Account";
 					$this->closeLastOpenedTag();
 				}
 			}
-			else if($user_manager->isLoggedIn()){
+
+			//
+			//	Otherwise, we're logged in.
+			//
+
+			else if($this->user_manager->isLoggedIn()){
 				$this->openTag("a", array("href" => "/?action=logout"));
 				echo "Log Out";
 				$this->closeLastOpenedTag();
@@ -217,12 +274,34 @@ namespace lightbulb{
 		}	
 
 		//
+		//	Echoes a simple homepage
+		//
+
+		function homepage(){
+			$this->header();
+			
+			$this->openTag("body");
+			$this->topBanner();			
+			$this->openTag("div", array("id" => "wrapper"));
+
+			echo "Welcome " . $this->user_manager->currentUser()->username;
+
+			$this->closeOpenTags();	
+
+			exit();
+		}
+
+		//
 		//	Returns the appropriate title
 		//	
 
 		function title(){
 
-			$action = $_REQUEST['action'];
+			$action = null;
+
+			if(isset($_REQUEST['action'])){
+				$action = $_REQUEST['action'];
+			}
 
 			//
 			//	Return the correct title 
@@ -234,15 +313,15 @@ namespace lightbulb{
 			}
 
 			//
-			//
+			//	Return a login title
 			//
 
-			else if($action == 'login') {
+			else if($action == 'showlogin') {
 				return 'Log In';
 			}
 
 			//
-			//
+			//	Return a logout title
 			//
 
 			else if($action == 'logout') {
@@ -250,7 +329,7 @@ namespace lightbulb{
 			}
 
 			//
-			//
+			//	Return the app name
 			//
 
 			return Meta::appName();

@@ -87,6 +87,10 @@ namespace lightbulb{
 				return false;
 			}
 
+			else if($username == "" || $password == ""){
+				return false;
+			}
+
 			$user = new User($username);
 			$user->password = $password;
 
@@ -189,12 +193,14 @@ namespace lightbulb{
 			else{
 				if (bcrypt_check($password, $user->password)) {
 					$_SESSION['user'] = $user;
+					return true;
 				}
 				else{
 					$this->logout();
 				}
 			}
 
+			return false;
 
 		}
 
