@@ -145,7 +145,7 @@
 		
 		if($differ->hasNewSections()){
 			echo "The sections are new:\n";
-			
+			showSections($differ->newCourseSections);
 		}
 	}
 	
@@ -177,7 +177,7 @@
 		
 	}	
 	else{
-		echo "Alerting is disabled in switches.php.";
+		echo "Alerting is disabled in switches.php.\n";
 	}
 
 	//
