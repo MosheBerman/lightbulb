@@ -10,6 +10,10 @@
 
 require('../private/system/system.php');
 
+if (Switches::$HUMBLE_HOME) {
+	die('moo');
+}
+
 $user_manager = new Lightbulb\UserManager;
 $UI_manager = new Lightbulb\UIManager;
 
@@ -28,6 +32,10 @@ if (isset($_REQUEST['action'])) {
 	$username = isset($_REQUEST['username']) ? trim(strtolower($_REQUEST['username'])) : "";
 	$password = isset($_REQUEST['password']) ? $_REQUEST['password'] : "";
 	$confirm = isset($_REQUEST['confirm']) ? $_REQUEST['confirm'] : "";
+	$phone = isset($_REQUEST['phone']) ? $_REQUEST['phone'] : "";
+
+	//	clean up the phone number
+	$phone = preg_replace("/[^0-9]/", "", $phone);
 
 	//
 	//	Perform a login
@@ -36,13 +44,13 @@ if (isset($_REQUEST['action'])) {
 	if($action == 'login'){
 
 		 if (!ctype_alnum($username)) {
-		 		$UI_manager->loginForm('Invalid username.');
+		 		$UI_manager->loginPage('Invalid username.');
 		 }
 
 		$success = $user_manager->login($username, $password);
 
 		if ($success == false) {
-			$UI_manager->loginForm('Login failed.');
+			$UI_manager->loginPage('Login failed.');
 		}
 	}
 
@@ -69,7 +77,7 @@ if (isset($_REQUEST['action'])) {
 	//
 
 	else if($action == 'showlogin'){
-		$UI_manager->loginForm();
+		$UI_manager->loginPage();
 	}
 
 	//
@@ -77,7 +85,12 @@ if (isset($_REQUEST['action'])) {
 	//
 
 	else if($action == 'faq'){
-		$UI_manager->faq();
+		if(Switches::$FAQ == false) {
+			$UI_manager->noticePage("FAQ is disabled.");
+		}
+		else{
+			$UI_manager->faq();
+		}
 	}
 
 	//
@@ -91,7 +104,7 @@ if (isset($_REQUEST['action'])) {
 		//
 
 		if($username == "" || !isset($username)){
-			$UI_manager->signupForm("You need to pick a username.");	
+			$UI_manager->signupForm("You need to pick a username.",$_REQUEST);	
 		}
 
 		//
@@ -99,7 +112,7 @@ if (isset($_REQUEST['action'])) {
 		//
 
 		else if (!ctype_alnum($username)) {
-			$UI_manager->signupForm("Usernames can only have letters and numbers.");	
+			$UI_manager->signupForm("Usernames can only have letters and numbers.",$_REQUEST);	
 		}
 
 		//
@@ -107,7 +120,23 @@ if (isset($_REQUEST['action'])) {
 		//
 
 		else if (preg_match('/\s/',$username)) {
-			$UI_manager->signupForm("You can't put spaces in a username.");	
+			$UI_manager->signupForm("You can't put spaces in a username.",$_REQUEST);	
+		}
+
+		//
+		//	Handle an empty phone number
+		//
+
+		else if($phone == "" || !isset($phone)){
+			$UI_manager->signupForm("Enter your ten digit phone number so you can get alerts.", $_REQUEST);
+		}
+
+		//
+		//	Handle invalid phone numbers
+		//
+
+		else if(strlen($phone) < 10 || strlen($phone) > 10){
+			$UI_manager->signupForm("Please enter a ten digit phone number that can recieve texts.", $_REQUEST);
 		}
 
 		//
@@ -115,7 +144,7 @@ if (isset($_REQUEST['action'])) {
 		//
 
 		else if ($user_manager->usernameExists($username)) {
-			$UI_manager->signupForm("That username exists.");
+			$UI_manager->signupForm("That username exists.", $_REQUEST);
 		}
 
 		//
@@ -123,15 +152,15 @@ if (isset($_REQUEST['action'])) {
 		//
 
 		else if($password == "" || !isset($password)){
-			$UI_manager->signupForm("You gotta pick a password.");
+			$UI_manager->signupForm("You gotta pick a password.", $_REQUEST);
 		}
 
 		//
-		//
+		//	Handle a blank confirmation
 		//
 
 		else if($confirm == "" || !isset($confirm)){
-			$UI_manager->signupForm("You gotta confirm your password.");			
+			$UI_manager->signupForm("You gotta confirm your password.", $_REQUEST);			
 		}
 
 
@@ -140,15 +169,20 @@ if (isset($_REQUEST['action'])) {
 		//
 
 		else if($password != $confirm){
-			$UI_manager->signupForm("Those passwords don't match.");
+			$UI_manager->signupForm("Those passwords don't match.", $_REQUEST);
 		}
+
+		//
+		//	Otherwise, attempt to sign up
+		//
+
 
 		else {
 			
-			$success = $user_manager->createUser($username, $password);
+			$success = $user_manager->createUser($username, $password, $phone);
 
 			if($success){
-				$UI_manager->loginForm("User successfully created.");			
+				$UI_manager->loginPage("User successfully created.");			
 			}
 			else{
 				$UI_manager->signupForm("User creation failed, please try again.");				

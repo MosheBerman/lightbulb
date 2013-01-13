@@ -7,15 +7,51 @@
 
 */
 
-body{
-	text-align: center;
-	padding: 0;
-	margin: 0;
-	font-family: sans-serif;
-}
+/*-----------------------------------------------------------------------------------
+  Global Reset v0.3 (based on http://meyerweb.com/eric/tools/css/reset/ - v1.0 | 20080212)
+-----------------------------------------------------------------------------------*/
+  html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, code, em, img, small, strike, strong, sub, sup, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline; background: transparent; }
+  body { line-height: 1; }
+  ol, ul { list-style: none; }
+  :focus { outline: 0; }
+  table { border-collapse: collapse; border-spacing: 0; }
+
+
+/*-------------------------------------------
+  Fonts
+-------------------------------------------*/
+  @font-face {
+    font-family: 'ComeniaSansCondRegular';
+    src: url('../fonts/comenia_sans_co-webfont.eot');
+    src: local('☺'), url('../fonts/comenia_sans_co-webfont.woff') format('woff'), url('../fonts/comenia_sans_co-webfont.ttf') format('truetype'), url('../fonts/comenia_sans_co-webfont.svg#webfontWDfTSCpx') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'ComeniaSansCondBold';
+    src: url('../fonts/comenia_sans_co_bold-webfont.eot');
+    src: local('☺'), url('../fonts/comenia_sans_co_bold-webfont.woff') format('woff'), url('../fonts/comenia_sans_co_bold-webfont.ttf') format('truetype'), url('../fonts/comenia_sans_co_bold-webfont.svg#webfont7RYPTQcC') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
+/*---------------------------
+  Elements
+---------------------------*/
+	body.no-fixed { padding-top: 0; }
+	a { text-decoration: none; }
+	h1, h2, h3, h4, h5, h6 { font-family: 'ComeniaSansCondRegular',  'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif; font-weight: normal; }
+
+body {
+	background-color: #D9D9D9;
+	 font-family: 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif; 
+	 text-align: center; 
+}	
 
 #wrapper{
-	width: 600px;
+	width: 1008px;
 	margin: 15px auto;
 	overflow: hidden;
 	border-left: 1px solid;
@@ -35,16 +71,23 @@ body{
 	background-color: !important #fff;
 }
 
-#topBanner #title{
+#topBanner a#title{
 	display: block;
 	float: left;
 	padding: 0 0 0 10px;
 	height: 34px;
-	margin: 5px auto;
 	line-height: 34px;
+	text-align:  center;
+	vertical-align: middle;
 	font-weight: bold;
 	font-size: 18px;
-	z-index: 100;
+	border: none;
+}
+
+#topBanner a#title img{
+	height: 34px;
+	width: 34px;
+	float: left;
 }
 
 #topBanner a{
@@ -71,43 +114,48 @@ body{
 
 /* Form stuff */
 
-input{
-	float: left;
-	clear: both;	
-	height: 60px;
-	width: 580px;
-	margin: 10px;
-	font-size: 50px;
-	
+form{
+	margin: 5px auto;
+	text-align: center;
 }
 
-input[type="text"], input[type="password"]{
-	background-color: !important #fff;	
-	border: none;	
-	display: block;	
-}
-
-input[type="submit"]{
-	font-size: 36px;
-}
-
-/* labels for the form inputs*/
-
-.formLabel{
+.formRow{
+	clear: both;
 	display: block;
-	float: left;	
-	width: 578px;
-	height: 20px;
-	padding-top: 5px;
-	border:1px solid;
-	border-bottom: none;
-	margin: 10px;	
-	margin-bottom: -10px;
+	width: 480px;
+	text-align: center;
+	margin: 0 auto;
+	padding: 0;
+}
+
+input {
+	border: 1px solid;
+	width: 200px;
+	height: 25px;
+	margin: 5px;
+	border-style: outset;
+}
+
+label, label.formLabel{
+	display: inline-block;
+	width: 260px;
+	height: 25px;
+	text-align: right;
+}
+
+.formRow:last-child{
+	text-align: right;
+	border-bottom: 1px solid;
+}
+
+#submit{
+	margin-right: 5px;
+	width: 60px; 
 }
 
 /* Banners */
 
-.notice, .error, .titleBar{
+.notice, .error{
 	border: 1px solid;
 	padding: 10px 0;
 	border-left: none;
@@ -115,20 +163,30 @@ input[type="submit"]{
 }
 
 .titleBar{
-	margin: !important 0 auto;
+	display: block;
+	height: 35px;	
 	border: 1px solid;
+	padding: 10px 0 0 5px;	
+	line-height: 35px;
 	border-bottom: none;
+	margin-top: 10px;
+	text-decoration: underline;
+	font-weight: bold;	
 }
 
-/* Regular contemt */
+.faqTitleBar{
+	text-align: left;
+	padding-left: 5px;
+}
+
+/* Regular content */
 
 .content{
-	padding: 5px 10px;
-	margin:0;
-	margin-top: -18px;
+	padding: 0 10px;
+	margin: 0 ;
 	line-height: 1.5em;
 	border: 1px solid;
-	border-top: 1px dashed;
+	border-top: none;
 	text-align: left;
 }
 

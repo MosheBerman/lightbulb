@@ -10,10 +10,13 @@
 
 */
 
+
 	require_once('alerter.php');
+	require_once('api.php');
 	require_once('bcrypt.php');
 	require_once('course.php');
 	require_once('differ.php');
+	require_once('follower.php');
 	require_once('mail.php');
 	require_once('meta.php');
 	require_once('serializer.php');
@@ -23,10 +26,9 @@
 	require_once('usermanager.php');
 	require_once('utils.php');
 	require_once('scraper.php');
+	require_once('search.php');
 	require_once('session.php');
 	require_once('switches.php');
-
-
 
 	//
 	//	Configure erros, based on the 

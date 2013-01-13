@@ -28,14 +28,23 @@ body{
 	border-color:#fbe892;
 }
 
+#topBanner a#title{
+	background-color: transparent;
+	color: #f8d126;
+}
+
+#topBanner a#title:hover{
+ 	color: #fbe892;	
+}
+
 #topBanner a{
 	color: #914d63;
-	background-color: #fbe892;
+	background-color:#f8d126;	
 }
 
 #topBanner a:hover{
 	color: #914d63;
-	background-color:#f8d126;
+	background-color: #fbe892;	
 }
 
 #title{
@@ -67,14 +76,14 @@ p.content{
 
 /* Form stuff */
 
-.formLabel, .content{
+span.formRow, .content{
 	background-color: #5b172c;	
-	color:#eee;	
-	border-color:  #fbe892;;
+	color: #f8d126;	
 }
 
+
 input{
-	border-color:  #fbe892;
+	border-color: #7b2240;
 }
 
 input[type="submit"]{
@@ -93,4 +102,8 @@ input[type="submit"]{
 	color:#f8d126;	
 	background-color: #5b172c;
 	border-color: none;	
+}
+
+#submit{
+	background-color: #f8d126;
 }

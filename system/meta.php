@@ -24,7 +24,7 @@
 		public static $APPNAME = "Lightbulb";
 		public static $SLOGAN = "Registration Alerts. At your service.";		
 		public static $VERSION = '1.0';
-		public static $AUTHORS = array('Moshe Berman', 'Yosef Gunsburg');
+		public static $AUTHORS = array('Moshe Berman');
 
 		//
 		//

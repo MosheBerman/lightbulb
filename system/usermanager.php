@@ -66,7 +66,7 @@ namespace lightbulb{
 
 			$userQuery = $connection->query('SELECT * FROM Users');
 
-			$userProperties = array('id', 'number', 'email', 'username', 'password');
+			$userProperties = array('id', 'number', 'email', 'username', 'password', 'isWatchingCourses');
 
 			$userQuery->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'User', $userProperties);
 
@@ -81,18 +81,19 @@ namespace lightbulb{
 		//	This function creates a user.
 		//
 
-		function createUser($username, $password){
+		function createUser($username, $password, $phone){
 
-			if (!isset($username) || !isset($password)) {
+			if (!isset($username) || !isset($password) || !isset($phone)) {
 				return false;
 			}
 
-			else if($username == "" || $password == ""){
+			else if($username == "" || $password == "" || $phone == ""){
 				return false;
 			}
 
 			$user = new User($username);
 			$user->password = $password;
+			$user->number = $phone;
 
 			$connection = $this->connection();
 
@@ -103,7 +104,7 @@ namespace lightbulb{
 			$insert = $user->insertStatement();
 
 			$sql = $connection->prepare($insert);
-			
+		
 			try{
 				$sql->execute();
 				return true;
@@ -260,6 +261,28 @@ namespace lightbulb{
 			return $_SESSION['user'];
 		}
 
+		//
+		//	Validates input. Yay!
+		//
+
+		function isValid( $what, $data ) {
+		 
+		 	 switch($what) {
+		 
+		        // validate email address
+		        case 'email':
+		            $pattern = "/^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,3})$/i";
+		        break;
+		 
+		        default:
+		            return false;
+		        break;
+		 
+		    }
+		 
+		    return preg_match($pattern, $data) ? true : false;
+		 
+		}		
 
 	}
 }

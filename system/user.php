@@ -18,6 +18,7 @@
 		{
 
 			public $id;
+			public $isWatchingCourses;
 			public $email;
 			public $number;
 			public $username;
@@ -46,7 +47,7 @@
 			//
 
 			function insertStatement(){
-				return "INSERT INTO Users(username, password) Values('".$this->username."','".\Bcrypt::hash($this->password)."') ";
+				return "INSERT INTO Users(username, password, number) Values('".$this->username."','".\Bcrypt::hash($this->password)."', '".$this->number."') ";
 			}
 
 			//
@@ -63,6 +64,18 @@
 			function updateStatement(){
 				return "UPDATE Users password='".$this->password."', email='".$this->email."', number='".$this->number."' where id='".$this->id."'";
 			}
+
+			//	
+			//	Returns a follow statement
+			//
+
+			function followStatement($follow){
+
+				$follow = $follow ? 1 : 0;
+				
+				return "UPDATE Users isWatchingCourses='".$follow."'' WHERE id='".$this->id."'";;
+			}
+
 		}
 
 
