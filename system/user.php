@@ -24,7 +24,6 @@
 			public $username;
 			public $password;
 
-			public $followedCourseIDs;
 			public $followedSectionIDs;
 
 			function __construct($username)
@@ -51,7 +50,8 @@
 			}
 
 			//
-			//	Returns an update statement
+			//	Returns an update statement which 
+			//	sets the user's password
 			//
 			//	We also assume a valid ID has been
 			//	set on the User instance.
@@ -67,14 +67,47 @@
 
 			//	
 			//	Returns a follow statement
+			//	which changes the general 
+			//	course follow status of a 
+			//	user.
 			//
 
-			function followStatement($follow){
+			function followCourseStatement($follow){
 
 				$follow = $follow ? 1 : 0;
-				
+
 				return "UPDATE Users isWatchingCourses='".$follow."'' WHERE id='".$this->id."'";;
 			}
+
+			//
+			//	Returns a statement which fetches all sections 
+			//	which the current user follows.
+			//
+
+			function followedSectionsStatement(){
+				// TODO: Inner join to see selected courses?
+
+
+			}
+
+			//
+			//	Returns an update statement which
+			//	follows a course section for the user.
+			//
+
+			function followSectionStatement($code){
+				return "INSERT INTO FollowedSections(userID, sectionCode) VALUES(". $this->id.", ".$code.")";
+			}
+
+			//
+			//	Returns an update statement which
+			//	unfollows a course section for the user.
+			//
+
+			function unfollowSectionStatement($code){
+				return "DELETE FROM FollowedSections WHERE UserID='".$this->id."' AND sectionCode='".$code."'";
+			}
+
 
 		}
 

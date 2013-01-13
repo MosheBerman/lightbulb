@@ -78,6 +78,15 @@ namespace lightbulb{
 		}
 
 		//
+		//	This function populates the current user
+		//	with the sections followed by that user.
+		//
+
+		function refreshCurrentUser(){
+			
+		}
+
+		//
 		//	This function creates a user.
 		//
 

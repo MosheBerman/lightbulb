@@ -21,9 +21,9 @@
 
 namespace lightbulb{
 
-	/**
-	* 
-	*/
+	include_once('system.php');
+	include_once('usermanager.php');
+
 	class Follower extends UserManager
 	{
 		
@@ -58,7 +58,7 @@ namespace lightbulb{
 			//	Prepare the update statement
 			//
 
-			$updateStatement = $this->currentUser()->followStatement($shouldFollowCourses);
+			$updateStatement = $this->currentUser()->followCourseStatement($shouldFollowCourses);
 
 			//
 			//	Execute the update
@@ -80,8 +80,50 @@ namespace lightbulb{
 		}
 
 		//
+		//	This function follows a course section.
 		//
+
+		function follow($code){
+			if (!is_numeric($code) || strlen($code) != 4) {
+				return $this->error("Course codes must be four digits.");
+			}
+
+			//
+			//	Prepare an update statement
+			//
+
+			$updateStatement = $this->currentUser()->followSectionStatement($code);
+
+			//
+			//	Execute the update
+			//
+
+			$connection->prepare($updateStatement)->execute();
+
+
+		}
+
 		//
+		//	This function unfollows a course section.
+		//
+
+		function unfollow($code){
+			if (!is_numeric($code) || strlen($code) != 4) {
+				return $this->error("Course codes must be four digits.");
+			}
+
+			//
+			//	Prepare an update statement
+			//
+
+			$updateStatement = $this->currentUser()->unfollowSectionStatement($code);
+
+			//
+			//	Execute the update
+			//
+
+			$connection->prepare($updateStatement)->execute();
+		}
 
 
 		//

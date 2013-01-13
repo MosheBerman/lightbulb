@@ -11,7 +11,7 @@
 require('../private/system/system.php');
 
 if (Switches::$HUMBLE_HOME) {
-	die('moo');
+	die('quack');
 }
 
 $user_manager = new Lightbulb\UserManager;
