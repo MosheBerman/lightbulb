@@ -72,9 +72,9 @@ This file defines a course class for storing class information.
 			$numberOfSections = count($this->sections);
 			
 			$description .= "Sections: " . $numberOfSections . "" . "\n"; 		
+			$description .= "\n";
 
 			foreach ($this->sections as $section) {
-				$description .= "\n";
 				$description .= $section->description()  . "\n";
 			}
 
@@ -132,16 +132,18 @@ This file defines a course class for storing class information.
 		public $buildingAndRoom;
 		public $isOnline;
 		public $course;
+		public $courseName;
 
 		function Section($id = '', $courseID = '', $section = '', $code = '', $openSeats = 0, $dayAndTime = '', $instructor = '', $buildingAndRoom = '', $isOnline = ''){
 			$this->id = $id;
 			$this->courseID = $courseID;
 			$this->section = $section;
-			$this->code = $code;
+			$this->code = str_pad((string)$code, 4, "0", STR_PAD_LEFT);
 			$this->openSeats = $openSeats;
 			$this->instructor = $instructor;
 			$this->buildingAndRoom = $buildingAndRoom;
 			$this->isOnline = $isOnline;
+			$this->courseName = '';
 			
 		}
 
@@ -150,7 +152,8 @@ This file defines a course class for storing class information.
 		//
 		
 		function description(){
-			$description = "Section: " . $this->section . ", ";
+			$description = $this->courseName ? ("Course :" . $this->courseName . "") : "";
+			$description .= "Section: " . $this->section . ", ";
 			$description .= "Code: " . $this->code . ", ";
 			$description .= " " . $this->openSeats . " open seats, "; 		
 			$description .= " " . $this->dayAndTime . ", "; 		
@@ -166,7 +169,7 @@ This file defines a course class for storing class information.
 		//
 		
 		function shortDescription(){
-			echo $this->course->name . " section " . $this->section . ", code " . $this->code;
+			echo $this->course->name . " section " . $this->section . ", code " . $this->code . " with " . $this->instructor;
 		}
 		
 		//

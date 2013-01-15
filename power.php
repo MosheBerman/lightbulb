@@ -129,7 +129,7 @@
 		}
 		
 		if($differ->sectionsLostProfessors()){
-			echo "The following sections have new professors:\n";
+			echo "The following sections' professors were removed:\n";
 			showSections($differ->courseSectionsThatNoLongerHaveProfessors);
 		}
 		
@@ -144,8 +144,13 @@
 		}
 		
 		if($differ->hasNewSections()){
-			echo "The sections are new:\n";
+			echo "These sections are new:\n";
 			showSections($differ->newCourseSections);
+		}
+
+		if ($differ->hasCancelledCourseSections()) {
+			echo "These sections were cancelled:\n";
+			showSections($differ->cancelledCourseSections);
 		}
 	}
 	

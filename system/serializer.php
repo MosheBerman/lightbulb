@@ -7,6 +7,11 @@
 	This file contains a class responsible for
 	reading and saving CUNY courses to a database. 
 
+	NOTE: To ensure that serializer and differ 
+	both operate correctly, the name and code
+	columns in the mysql database must be of the 
+	type varchar. Otherwise, keys can be wrong.
+	
 */
 
 namespace Lightbulb{

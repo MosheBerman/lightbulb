@@ -108,6 +108,14 @@
 				return "DELETE FROM FollowedSections WHERE UserID='".$this->id."' AND sectionCode='".$code."'";
 			}
 
+			//
+			//	Returns the sections and course info followed by this user.
+			//	Best used with PDO's associative array fetch type.
+			//
+
+			function showFollowedSectionsStatement(){
+				return "Select Sections.*, Courses.* from FollowedSections inner join Sections on Sections.code = FollowedSections.code inner join Courses on Courses.id = Sections.courseID Where FollowedSection.userID = ".$this->id."";
+			}
 
 		}
 
