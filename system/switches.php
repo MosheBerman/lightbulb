@@ -26,7 +26,7 @@
 		static public $NEW_SIGN_UPS_ENABLED = true;
 		static public $LOG_IN_ENABLED = true;
 		static public $FAQ = true;
-		static public $HUMBLE_HOME = true; // turn on to hide the site
+		static public $HUMBLE_HOME = false; // turn on to hide the site
 
 		//
 		//	CRON Switches

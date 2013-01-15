@@ -404,7 +404,7 @@ namespace lightbulb{
 			$this->printFAQ("Why is it free?", "I'm too lazy to add a payment system to this.");
 			$this->printFAQ("I want to pay!", 'Do you? Go <a href="http://itunes.apple.com/us/app/ibrooklyn/id500958091?mt=8">download iBrooklyn from the App Store</a>. Leave a nice review. Tell your friends to do the same. It\'ll make me happy.');
 			$this->printFAQ("I really, really, want to pay you for this!", "If I helped you, you can <a href=\"http://amzn.com/w/1JN459HVK4WGO\"> send me something from my Amazon Wishlist.</a>" );				
-			$this->printFAQ("Who made this?", Meta::appName() . ' is brought to you by <a href="http://mosheberman.com">@moshberm</a> with thanks to <a href="http://twitter.com/ginzbaum">@ginzbaum</a>. (Hooray for internet nicknames.)');
+			$this->printFAQ("Who made this?", Meta::appName() . ' is brought to you by <a href="http://mosheberman.com">Moshe Berman</a> and <a href="http://ciscostudies.blogspot.com">Yosef Gunsburg</a>.');
 			$this->printFAQ("But why?", "I wanted it. It helped me get into some classes. Oh, if anyone wants to drop English 1012, lemme know.");
 			$this->printFAQ("Ok, how do I get in?", 'There\'s a link up top. Or, <a href="http://lightbulb.moshberman.com/index.php?action=registration">click here</a>. ');
 			$this->printFAQ("Do you really need English 2?", "Nope. I got an A during my second semester in Brooklyn College. If you can recommend any interesting classes, get in touch.");

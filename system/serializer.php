@@ -126,6 +126,15 @@ namespace Lightbulb{
 			}
 			else{
 				$this->isDatabaseEmpty = false;
+
+				$associativeCourses = array();
+				$oldCourses = $this->courses;
+				$this->courses = array();				
+
+				foreach ($oldCourses as $course) {
+						$this->courses[(string)$course->name] = $course; 
+				}
+
 				installSectionsIntoCourses($this->sections, &$this->courses); 
 			}	
 		}

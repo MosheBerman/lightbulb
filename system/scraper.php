@@ -54,7 +54,7 @@ namespace Lightbulb{
 		$curl_handle = curl_init();
 
 		$URL_PARAMS = array('MAXCOURSE' => "037|64|MUSC.  ,119",
-		  'COURSECNT' => "1507",
+		  'COURSECNT' => "1600",
 		  'PREFIX' => "title",
 		  'NUMBER'  => "ANY", 
 		  'SUBJECT' => "Select All",
@@ -64,10 +64,6 @@ namespace Lightbulb{
 	  	  'COMPLETE' => "1",
 		  'STYLE' => "NEW",
       	  'DB' => "ORACLE_A",
-		  'DBSTATUS' => "ORACLE_A* : from database, A_DateTime is '2012/12/15 18:30:00', B_DateTime is '2012/12/15 17:00:00'",
-		  'ASOF' => "<FONT class='orange'>UPDATED</FONT> <FONT class='gray'>12/15/2012,  6:30:00 PM</FONT>'",
-		  'DBSTATORIG' => "ORACLE_A* : from database, A_DateTime is '2012/12/15 18:30:00', B_DateTime is '2012/12/15 17:00:00'", 
-	  	  'ASOFORIG' => "<FONT class='orange'>UPDATED</FONT> <FONT class='gray'>12/15/2012,  6:30:00 PM</FONT>", 
 	  	  'sessions' => "BOTH",
 	  	  'only_open' => "ALL",
 	  	  'sacsed' => "YES",
@@ -149,8 +145,11 @@ namespace Lightbulb{
 			$response = str_replace('FORM', 'form', $response);	
 			$response = str_replace('TITLE', 'title', $response);
 			$response = str_replace('HIDDEN', 'hidden', $response);
-			$respone = str_replace('Â', '', $response);
-		
+			
+			//	Remove non-ASCII characters. Tralalala
+			//	http://www.stemkoski.com/php-remove-non-ascii-characters-from-a-string/
+			$response = preg_replace('/[^(\x20-\x7F)]*/','', $response);
+
 			//	Specific hacks and fixes for the W3 validator
 
 			$response = str_replace('/styles/maintwo.css', 'http://student.cuny.edu/styles/maintwo.css', $response);
@@ -246,7 +245,7 @@ namespace Lightbulb{
 
 				else if(elementIsCourseHeaderTable($table)){
 					$course = courseFromTable($table);
-					$this->courses[$course->name] = $course;
+					$this->courses[(string)$course->name] = $course;
 				}
 
 				//

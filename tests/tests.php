@@ -10,7 +10,7 @@
 
 	*/
 		
-	require_once('../system.php');
+	require_once('../system/system.php');
 	require('testcase.php');
 
 	$tests = array(	'Open Sections' => 'courseSectionsThatHaveOpened',

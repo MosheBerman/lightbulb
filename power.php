@@ -45,7 +45,7 @@
 	$CUNY_URL = "http://student.cuny.edu/cgi-bin/SectionMeeting/SectMeetEval.pl?DB=ORACLE_A&STYLE=NEW&COLLEGECODE=05";
 	$scraper = new Lightbulb\Scraper($CUNY_URL);
 	
-	$globalTimer->start("Lightulb version 1.0a");
+	$globalTimer->start(Meta::fullAppName());
 	
 	//
 	//	CURL request

@@ -53,7 +53,7 @@ This file defines a course class for storing class information.
 		//
 
 		function addSection($section){
-			$this->sections[$section->code] = $section;
+			$this->sections[(string)$section->code] = $section;
 		}
 
 		//
