@@ -148,7 +148,7 @@
 			showSections($differ->newCourseSections);
 		}
 
-		if ($differ->hasCancelledCourseSections()) {
+		if ($differ->hasCancelledSections()) {
 			echo "These sections were cancelled:\n";
 			showSections($differ->cancelledCourseSections);
 		}

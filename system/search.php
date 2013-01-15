@@ -22,7 +22,7 @@ namespace lightbulb{
 		}
 
 		//
-		//
+		//	Allow users to search by section code/name
 		//
 
 		function searchForSection($term=null, $json_encode = true){
@@ -35,10 +35,18 @@ namespace lightbulb{
 		}
 
 		//
-		//	
+		//	Allow users to search by course name/description
 		//
 
 		function searchForCourse($term=null, $json_encode = true){
+
+		}
+
+		//
+		//	Allow users to search by professor
+		//
+
+		function searchForProfessor($term=null, $json_encode = true){
 
 		}
 	}

@@ -25,7 +25,7 @@ $code = isset($_REQUEST['code']) ? $_REQUEST['code'] : null;
 $shouldFollow = isset($_REQUEST['follow']) ?$_REQUEST['follow'] : null;
 
 if ($token == "") {
-	return "Invalid token";
+	//return "Invalid token";
 }
 
 
@@ -56,7 +56,7 @@ if (isset($action)) {
 
 	else if($action == 'toggleFollowCourses'){
 		$follower = new lightbulb\Follower;
-		$follower->setShouldFollowCourses($shouldFollow);
+		return $follower->setShouldFollowCourses($shouldFollow);
 	}
 
 	//
