@@ -12,7 +12,6 @@
 
 
 	require_once('alerter.php');
-	require_once('api.php');
 	require_once('bcrypt.php');
 	require_once('course.php');
 	require_once('differ.php');
@@ -35,7 +34,7 @@
 	//	switches defined in switches.php
 	//
 
-	if (Switches::$LOG_ERRORS == false) {
+	if (Switches::$LOG_ERRORS == true) {
 		error_reporting(E_ALL);
 		ini_set('display_errors', 'On');		
 	}

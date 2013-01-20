@@ -80,23 +80,12 @@
 			}
 
 			//
-			//	Returns a statement which fetches all sections 
-			//	which the current user follows.
-			//
-
-			function followedSectionsStatement(){
-				// TODO: Inner join to see selected courses?
-
-
-			}
-
-			//
 			//	Returns an update statement which
 			//	follows a course section for the user.
 			//
 
 			function followSectionStatement($code){
-				return "INSERT INTO FollowedSections(userID, sectionCode) VALUES(". $this->id.", ".$code.")";
+				return "INSERT INTO FollowedSections(userID, code) VALUES(". $this->id.", ".$code.")";
 			}
 
 			//
@@ -105,7 +94,7 @@
 			//
 
 			function unfollowSectionStatement($code){
-				return "DELETE FROM FollowedSections WHERE UserID='".$this->id."' AND sectionCode='".$code."'";
+				return "DELETE FROM FollowedSections WHERE UserID='".$this->id."' AND code='".$code."'";
 			}
 
 			//
@@ -114,8 +103,17 @@
 			//
 
 			function showFollowedSectionsStatement(){
-				return "Select Sections.*, Courses.* from FollowedSections inner join Sections on Sections.code = FollowedSections.code inner join Courses on Courses.id = Sections.courseID Where FollowedSection.userID = ".$this->id."";
+				return "SELECT Courses.id as coursesID, Sections.id as sectionsID, Sections.*, Courses.* FROM FollowedSections INNER JOIN Sections ON Sections.code = FollowedSections.code INNER JOIN Courses ON Courses.id = Sections.courseID WHERE FollowedSections.userID = '".$this->id."'";
 			}
+
+			//
+			//	Returns the sections and course info followed by this user.
+			//	Best used with PDO's associative array fetch type.
+			//
+
+			function showFollowedSectionCodesStatement(){
+				return "SELECT * FROM FollowedSections";
+			}			
 
 		}
 

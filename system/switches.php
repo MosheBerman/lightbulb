@@ -22,7 +22,7 @@
 		//	UI Switches
 		//
 
-		static public $LOG_ERRORS = false;
+		static public $LOG_ERRORS = true;
 		static public $NEW_SIGN_UPS_ENABLED = true;
 		static public $LOG_IN_ENABLED = true;
 		static public $FAQ = true;

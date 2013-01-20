@@ -24,6 +24,8 @@ namespace lightbulb{
 	include_once('system.php');
 	include_once('usermanager.php');
 
+	use \PDO as PDO;
+
 	class Follower extends UserManager
 	{
 		
@@ -89,6 +91,16 @@ namespace lightbulb{
 			}
 
 			//
+			//	Check that we're not already following
+			//
+
+			$following = $this->isFollowingSection($code);
+
+			if ($following) {
+				return false;
+			}
+
+			//
 			//	Prepare an update statement
 			//
 
@@ -98,8 +110,7 @@ namespace lightbulb{
 			//	Execute the update
 			//
 
-			$connection->prepare($updateStatement)->execute();
-
+			$this->connection()->prepare($updateStatement)->execute();
 
 		}
 
@@ -122,7 +133,7 @@ namespace lightbulb{
 			//	Execute the update
 			//
 
-			$connection->prepare($updateStatement)->execute();
+			$this->connection()->prepare($updateStatement)->execute();
 		}
 
 
@@ -140,6 +151,23 @@ namespace lightbulb{
 
 		function response($code = 0, $message = "", $payload = null){
 			return json_encode(array("code" => $code, "message", "payload" => $payload));
+		}
+
+		//
+		//	Returns true if the user is following a section
+		//
+
+		function isFollowingSection($code){
+			
+			$followedStatement = $this->currentUser()->showFollowedSectionCodesStatement();
+
+			$results = $this->connection()->query($followedStatement, PDO::FETCH_ASSOC);
+
+//			foreach ($results as $result) {
+
+//			}
+
+			return false;
 		}
 	}
 }

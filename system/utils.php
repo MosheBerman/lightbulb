@@ -9,7 +9,7 @@
 
 */
 
-	require_once('course.php');
+	require_once('system.php');
 
 	/* Table validation methods */ 
 	

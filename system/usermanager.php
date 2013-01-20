@@ -78,15 +78,6 @@ namespace lightbulb{
 		}
 
 		//
-		//	This function populates the current user
-		//	with the sections followed by that user.
-		//
-
-		function refreshCurrentUser(){
-			
-		}
-
-		//
 		//	This function creates a user.
 		//
 
@@ -192,7 +183,6 @@ namespace lightbulb{
 
 		function login($user, $password){
 
-			$this->refresh();
 			$user = $this->userForName($user);
 
 			if (!$user) {
@@ -219,7 +209,7 @@ namespace lightbulb{
 		//
 
 		function logout(){
-				unset($_SESSION['user']);
+				unset($_SESSION['user']);	
 		}
 
 		/* User lookup functions */
@@ -268,31 +258,7 @@ namespace lightbulb{
 
 		function currentUser(){
 			return $_SESSION['user'];
-		}
-
-		//
-		//	Validates input. Yay!
-		//
-
-		function isValid( $what, $data ) {
-		 
-		 	 switch($what) {
-		 
-		        // validate email address
-		        case 'email':
-		            $pattern = "/^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,3})$/i";
-		        break;
-		 
-		        default:
-		            return false;
-		        break;
-		 
-		    }
-		 
-		    return preg_match($pattern, $data) ? true : false;
-		 
-		}		
-
+		}	
 	}
 }
 
