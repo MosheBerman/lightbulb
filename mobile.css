@@ -133,3 +133,27 @@ input[type="text"], input[type="password"]{
 .content a{
 	background-color: transparent;
 }
+
+#controlPanelTitle{
+	text-align: center;
+	padding: 5px;
+	text-decoration: underline;
+}
+
+#controlPanel form{
+	margin 5px auto;
+}
+
+#controlPanel .notice{
+	display: block;
+	margin: 5px auto;
+}
+
+#controlPanel table, #controlPanel table td{
+	border: 1px solid;
+	border-collapse: collapse;
+}
+
+.hideOnMobile{
+	display: none;
+}

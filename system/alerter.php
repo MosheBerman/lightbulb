@@ -11,11 +11,13 @@
 
 namespace lightbulb{
 
+	include_once('system.php');
+
 	class Alerter{
 
 		private $differ;
 		private $users;
-
+		private $follower;
 
 		function __construct($differ, $users){
 
@@ -26,6 +28,7 @@ namespace lightbulb{
 
 			$this->differ = $differ;
 			$this->users = $users;
+			$this->follower = new Follower();
 
 		}
 
@@ -36,8 +39,11 @@ namespace lightbulb{
 			}
 
 			if($this->differ->hasChanges()){
-				echo "Alerting would happen here.\n";
-			}
+
+
+				
+
+				}
 			else{
 				echo "No changes to alert.\n";
 			}

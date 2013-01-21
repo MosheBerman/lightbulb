@@ -182,7 +182,7 @@ label, label.formLabel{
 /* Regular content */
 
 .content{
-	padding: 0 10px;
+	padding: 0 10px;`
 	margin: 0 ;
 	line-height: 1.5em;
 	border: 1px solid;
@@ -192,4 +192,40 @@ label, label.formLabel{
 
 .content a{
 	background-color: transparent;
+}
+
+/* Control Panel */
+
+#controlPanel{
+	border-top: 1px solid;
+	text-align: center;
+	padding: 10px;
+}
+
+#controlPanelTitle{
+	text-align: left;
+	text-decoration: underline;
+}
+
+#controlPanel table{
+	margin: 0 auto;
+}
+
+td{
+	padding: 5px;
+}
+
+#controlPanel table, #controlPanel table td{
+	border: 1px solid;
+	border-collapse: collapse;
+}
+
+#controlPanel .notice{
+	margin: 10px auto;
+	padding: 5px;
+	border: none;
+}
+
+.showOnMobile{
+	display: none;
 }

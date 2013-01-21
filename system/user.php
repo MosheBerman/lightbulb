@@ -112,7 +112,7 @@
 			//
 
 			function showFollowedSectionCodesStatement(){
-				return "SELECT * FROM FollowedSections";
+				return "SELECT * FROM FollowedSections WHERE userID = '".$this->id."'";
 			}			
 
 		}

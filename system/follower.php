@@ -101,6 +101,14 @@ namespace lightbulb{
 			}
 
 			//
+			//
+			//
+
+			if(!$this->isCodeValid($code)){
+				return false;
+			}
+
+			//
 			//	Prepare an update statement
 			//
 
@@ -163,11 +171,44 @@ namespace lightbulb{
 
 			$results = $this->connection()->query($followedStatement, PDO::FETCH_ASSOC);
 
-//			foreach ($results as $result) {
-
-//			}
+			foreach ($results as $result) {
+				if ((int)$result['code'] == (int)$code) {
+					return true;
+				}
+			}
 
 			return false;
+		}
+
+		//
+		//	Returns true if a section exists.
+		//
+
+		function isCodeValid($code){
+			$followedStatement = "SELECT code from Sections";
+			$results = $this->connection()->query($followedStatement, PDO::FETCH_ASSOC);			
+
+			foreach ($results as $result) {
+
+				if ((int)$result['code'] == (int)$code) {
+					return true;
+				}
+			}
+
+			return false;
+
+		}
+
+		//
+		//	Returns phone numbers mapped to course sections.
+		//
+
+		function alertInformation($code){
+
+			$followedStatement = "SELECT Users.number, FollowedSections.section FROM FollowedSections INNER JOIN Sections ON Sections.code = FollowedSections.code INNER JOIN Users ON Users.id = FollowedSections.userID WHERE FollowedSections.code = '".$code."'";
+			$results = $this->connection()->query($followedStatement, PDO::FETCH_ASSOC);
+
+			return $results;
 		}
 	}
 }

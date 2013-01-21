@@ -33,7 +33,7 @@
 		//
 
 		static public $CRON_ENABLED = true;
-		static public $ALERTS_ENABLED = false;
+		static public $ALERTS_ENABLED = true;
 	}
 
 ?>

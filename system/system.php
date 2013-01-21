@@ -28,6 +28,8 @@
 	require_once('search.php');
 	require_once('session.php');
 	require_once('switches.php');
+	require_once('twilio.php');
+	require_once('Twilio/Twilio.php');
 
 	//
 	//	Configure erros, based on the 

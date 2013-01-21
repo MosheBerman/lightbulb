@@ -107,3 +107,16 @@ input[type="submit"]{
 #submit{
 	background-color: #f8d126;
 }
+
+
+/* Control Panel */
+
+#controlPanel {
+	background-color: #5b172c;
+	color: #f8d126;
+}
+
+#controlPanel table , #controlPanel table *{
+	border-color: #f8d126;
+	color: #f8d126;
+}
