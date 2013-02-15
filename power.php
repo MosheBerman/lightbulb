@@ -114,42 +114,42 @@
 		$differ->registerChanges();
 		
 		if($differ->sectionsHaveOpened()){
-			echo "The following sections have opened:\n";
+			echo "\n\nThe following sections have opened:\n";
 			showSections($differ->courseSectionsThatHaveOpened);
 		}
 		
 		if($differ->sectionsHaveClosed()){
-			echo "The following sections have closed:\n";
+			echo "\n\nThe following sections have closed:\n";
 			showSections($differ->courseSectionsThatHaveClosed);		
 		}
 		
 		if($differ->sectionsHaveNewProfessors()){
-			echo "The following sections have new professors:\n";
+			echo "\n\nThe following sections have new professors:\n";
 			showSections($differ->courseSectionsThatHaveNewProfessors);
 		}
 		
 		if($differ->sectionsLostProfessors()){
-			echo "The following sections' professors were removed:\n";
+			echo "\n\nThe following sections' professors were removed:\n";
 			showSections($differ->courseSectionsThatNoLongerHaveProfessors);
 		}
 		
 		if($differ->hasNewCourses()){
-			echo "These courses are new:\n";
+			echo "\n\nThese courses are new:\n";
 			showCourses($differ->newCourses);
 		}
 		
 		if($differ->hasCancelledCourses()){
-			echo "These courses have been cancelled:\n";
+			echo "\n\nThese courses have been cancelled:\n";
 			showCourses($differ->cancelledCourses);
 		}
 		
 		if($differ->hasNewSections()){
-			echo "These sections are new:\n";
+			echo "\n\nThese sections are new:\n";
 			showSections($differ->newCourseSections);
 		}
 
 		if ($differ->hasCancelledSections()) {
-			echo "These sections were cancelled:\n";
+			echo "\n\nThese sections were cancelled:\n";
 			showSections($differ->cancelledCourseSections);
 		}
 	}
@@ -164,7 +164,7 @@
 	//	Check for permission to alert users
 	//
 
-	if (Switches::$ALERTS_ENABLED == true) {
+	if (Switches::$ALERTS_ENABLED == true && $differ->hasChanges()) {
 
 		$timer->start("Alerting Users");
 		
@@ -172,14 +172,23 @@
 		//	Send out alerts to users
 		//
 			
-		$alerter = new lightbulb\Alerter($differ, array());
+		$alerter = new TwilioSender();
 
-		if($alerter){
-			$alerter->alert();
-		}
+		$userManager = new Lightbulb\UserManager();
+
+		$me = $userManager->userForName("moshe");
+
+		$people = array($me);
+
+		//$people = $userManager->allUsers();
+
+		$alerter->messagePeople($people, "Lightbulb found an update. Log on to check if your sections opened.");
 
 		$timer->stop();
 		
+	}
+	else if(Switches::$ALERTS_ENABLED == true && !$differ->hasChanges()){
+		echo "Alerting is enabled but there's no changes.\n";
 	}	
 	else{
 		echo "Alerting is disabled in switches.php.\n";
@@ -195,9 +204,11 @@
 	//
 	//	Store the new data in the database.
 	//
-		
-	$serializer->serialize($scraper->courses);
 	
+	if(!$serializer->hasFailed()){
+		$serializer->serialize($scraper->courses);
+	}
+
 	//
 	//
 	//

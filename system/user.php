@@ -23,6 +23,7 @@
 			public $number;
 			public $username;
 			public $password;
+			public $isQuietModeEnabled;
 
 			public $followedSectionIDs;
 
@@ -76,7 +77,7 @@
 
 				$follow = $follow ? 1 : 0;
 
-				return "UPDATE Users isWatchingCourses='".$follow."'' WHERE id='".$this->id."'";;
+				return "UPDATE Users Set isWatchingCourses='".$follow."'' WHERE id='".$this->id."'";
 			}
 
 			//
@@ -113,7 +114,21 @@
 
 			function showFollowedSectionCodesStatement(){
 				return "SELECT * FROM FollowedSections WHERE userID = '".$this->id."'";
-			}			
+			}	
+
+			//	
+			//	Returns a follow statement
+			//	which changes the general 
+			//	course follow status of a 
+			//	user.
+			//
+
+			function toggleQuietMode($enabled){
+
+				$enabled = $enabled ? 1 : 0;
+
+				return "UPDATE Users Set isQuietModeEnabled='".$enabled."'' WHERE id='".$this->id."'";
+			}		
 
 		}
 

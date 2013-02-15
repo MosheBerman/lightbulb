@@ -203,6 +203,7 @@ namespace Lightbulb{
 						$removedSections = $this->sectionsRemovedFromCourse($oldCourse, $newCourse);
 	
 
+						//	TODO: Investigate this - I think we're duplicating added courses here...
 						$this->newCourseSections = array_merge($this->newCourseSections, $addedSections);
 						$this->cancelledCourseSections = array_merge($this->cancelledCourseSections, $removedSections);
 							
@@ -421,6 +422,16 @@ namespace Lightbulb{
 
 		function hasChanges(){
 			return  $this->hasSectionChanges() || $this->hasCourseChanges();
+		}
+
+		//
+		//	This function saves the latest
+		//	changes to the database for 
+		//	semipublic aggregation.
+		//
+
+		function aggregate(){
+
 		}
 	}
 }

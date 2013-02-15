@@ -366,6 +366,12 @@ namespace lightbulb{
 					$this->openTag("p", array("class"=> "content"));
 					echo Meta::appName() . " allows Brooklyn College students to recieve text alerts when classes open and close. Alerts for course changes are also available. You can <a href=\"/?action=registration\">create an account here.</a>";
 					$this->closeLastOpenedTag();
+					$this->openTag("p", array("class"=> "content"));
+					echo "After you sign up, enter the 4 digit registration codes of course sections that you want to follow. You'll get a text when CUNY updates thier website, and you can come back here to check on your classes.";
+					$this->closeLastOpenedTag();
+					$this->openTag("p", array("class"=>"content"));
+					echo 'Unlike the geniuses in <a href="http://www.nytimes.com/2013/02/05/nyregion/tech-savvy-baruch-college-students-seek-an-edge-in-registration.html?_r=0">this article</a>, lightbulb doesn\'t log in to anything and hasn\'t come close to a million hits on any server.';
+					$this->closeLastOpenedTag();					
 				}
 
 				$this->closeOpenTags();	
@@ -402,7 +408,7 @@ namespace lightbulb{
 				$this->printFAQ("What does it cost?", "Right now, nothing. " . Meta::appName() . " is a free <em>while I test it out</em>.");			
 				$this->printFAQ("I want to pay!", 'Do you? Go <a href="http://itunes.apple.com/us/app/ibrooklyn/id500958091?mt=8">download iBrooklyn from the App Store</a>. Leave a nice review. Tell your friends to do the same. It\'ll make me happy.');
 				$this->printFAQ("I really, really, want to pay you for this!", "If I helped you, you can <a href=\"http://amzn.com/w/1JN459HVK4WGO\"> send me something from my Amazon Wishlist.</a>" );				
-				$this->printFAQ("But why?", "I wanted it. It helped me get into some classes. Oh, if anyone wants to drop English 1012, lemme know.");
+				$this->printFAQ("But why?", "I wanted it. It helped me get into some classes. Oh, if anyone wants to drop core robotics, lemme know.");
 				$this->printFAQ("Can you hold a class for me?", "No.");
 				$this->printFAQ("Why not?", "Gaming the system usually doesn't pay. I tried it once and lost a course for someone. Don't put me in that position.");
 				$this->printFAQ("How do honors classes work?", "I don't really know.");
@@ -415,7 +421,7 @@ namespace lightbulb{
 
 			//
 			//	Prints a question for the FAQ
-			//
+			// 
 
 			function printFAQ($title = "FAQ", $answer = "Answer"){
 				$this->printFAQTitle($title);
@@ -612,7 +618,7 @@ namespace lightbulb{
 
 					<input type="hidden" name="code" value=<?php echo '"'.$code.'"' ?> />
 					<input type="hidden" name="action" value="unfollow" />
-					<input type="submit" value="Drop"  style="color: #5b172c;" class="dropButton" />
+					<input type="submit" value="Unfollow"  style="color: #5b172c;" class="dropButton" />
 				</form>
 
 				<?php

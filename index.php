@@ -112,6 +112,9 @@ if (isset($_REQUEST['action'])) {
 			header("Location: ./");	
 		}else{
 
+
+			//	TODO: Move this logic into the UserManager
+			
 			//
 			//	Handle if there's no username
 			//

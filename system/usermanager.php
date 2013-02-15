@@ -258,7 +258,56 @@ namespace lightbulb{
 
 		function currentUser(){
 			return $_SESSION['user'];
+		}
+
+		//
+		//	Returns all of the users
+		//
+
+		function allUsers(){
+			return $this->users;
 		}	
+
+		//
+		//	Returns users that want texts
+		//
+
+		function usersWhoWantTexts(){
+
+			//
+			//	TODO: Get a general array pf all students who want texts 
+			//
+
+		}
+
+		//
+		//	This method returns users 
+		//	who are following a given
+		//	section. 
+		//
+		//	The second parameter
+		//	is optional, if left empty,
+		//	the current set of users will
+		//	be used. ($this->allUsers())
+		//
+
+		function usersForSection($code = null, $users = null){
+
+			//	If there's no code, return null
+			if ($code == null) {
+				return null;
+			}
+
+			//	If there's no users, default to all users
+			if ($users == null) {
+				$users = $this->allUsers();
+			}
+
+			//	
+			//	TODO: Follow sections
+			//
+
+		}
 	}
 }
 

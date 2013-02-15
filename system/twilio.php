@@ -24,16 +24,16 @@
     	}
 
     	function messagePeople($people, $message){
-       		foreach ($people as $number => $name) {
+       		foreach ($people as $user) {
  
-        		$sms = $client->account->sms_messages->create(
+        		$sms = $this->client->account->sms_messages->create(
  
 	        	// Step 6: Change the 'From' number below to be a valid Twilio number 
         		// that you've purchased, or the (deprecated) Sandbox number
     	        "***REDACTED***", 
  
         	    // the number we are sending to - Any phone number
-            	$number,
+            	$user->number,
  
             	// the sms body
             	$message

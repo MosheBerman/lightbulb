@@ -140,7 +140,7 @@ namespace Lightbulb{
 						$this->courses[(string)$course->name] = $course; 
 				}
 
-				installSectionsIntoCourses($this->sections, &$this->courses); 
+				\installSectionsIntoCourses($this->sections, &$this->courses); 
 			}	
 		}
 

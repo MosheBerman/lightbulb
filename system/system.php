@@ -12,6 +12,7 @@
 
 
 	require_once('alerter.php');
+	require_once('api.php');
 	require_once('bcrypt.php');
 	require_once('course.php');
 	require_once('differ.php');
