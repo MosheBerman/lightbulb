@@ -9,10 +9,11 @@ Lightbulb was a project I wrote during sophomore year at Brooklyn College.
 
 It had several parts:
 
-1. A bot that scraped the Brooklyn College course system and regularly alerted me of changes to course listings.
-2. A student-facing webapp was planned but never finished. As a part of this, I had planned to build out an API, which could eventually be used for an app as well.
+1. A bot that scraped the Brooklyn College course system and regularly alerted me of changes to course listings. The bot is written in PHP, and most of what's visible in this repository is the bot. 
+2. There was a cron job that ran the scraping and diffing code regularly. The cron configuration has unfortunately has been lost to time. 
+3. A student-facing webapp was planned but never finished. As a part of this, I had planned to build out an API, which could eventually be used for an app as well.
 
-The bot is written in PHP, and is mostly visible in this repository. There was a cron job that ran it regularly. The cron configuration has unfortunately has been lost to time. I stopped working on this project when CUNY switched over all of the colleges to CUNYFirst. 
+I stopped working on this project when CUNY switched over all of the colleges to CUNYFirst, because my scraper was incompatible with the new website's layout and interaction model. In 2014 I did a partial rewrite in Python for CUNYFirst as my independent study coursework but never used the product to actually alert.
 
 # Time Complexity
 
